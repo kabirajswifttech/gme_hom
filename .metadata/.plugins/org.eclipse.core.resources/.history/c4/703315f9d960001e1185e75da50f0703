@@ -1,0 +1,15 @@
+package com.gme.hom.kyc.services;
+
+import com.gme.hom.api.models.APIData;
+
+public interface KYCService {
+
+	String onBoard(APIData data) throws Exception;
+
+	String updateUserById(APIData data) throws Exception;
+
+	String updateUserByMerchantId(APIData data) throws Exception;
+	
+	
+	
+}

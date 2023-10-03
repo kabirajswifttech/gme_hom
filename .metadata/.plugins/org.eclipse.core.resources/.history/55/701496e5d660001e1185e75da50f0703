@@ -1,0 +1,70 @@
+package com.gme.hom.merchants.signup.models;
+
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class UserSignupRequest {
+    @JsonInclude(Include.NON_NULL)
+    @JsonProperty("id")
+    private long id;
+
+    @JsonProperty("user_signup_id")
+    private UUID userSignupId;
+
+    @JsonProperty("merchant_type")
+    private String merchantType;
+
+    @JsonProperty("user_type")
+    private String userType;
+    
+    @JsonProperty("user_subtype")
+    private String userSubtype;
+    
+    @JsonProperty("contact_type")
+    private String contactType;
+    
+    @JsonProperty("contact_info")
+    private String contactInfo;
+
+    @JsonProperty("incorporation_country")
+    private String incorporationCountry;
+
+    @JsonProperty("email_id")
+    private String emailId;
+
+    @JsonProperty("phone_code")
+    private String phoneCode;
+
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+
+    @JsonProperty("is_email_otp_verified")
+    private boolean isEmailOtpVerified;
+
+    @JsonProperty("is_sms_otp_verified")
+    private boolean isSmsOtpVerified;
+
+    @JsonProperty("status")
+    private String status;
+
+    @JsonProperty("ip_address")
+    private String ipAddress;
+
+    @JsonProperty("signup_source")
+    private String signupSource;
+
+    @JsonProperty("entity_hash")
+    private String entityHash;
+
+    @JsonProperty("password")
+    private String password;
+
+}

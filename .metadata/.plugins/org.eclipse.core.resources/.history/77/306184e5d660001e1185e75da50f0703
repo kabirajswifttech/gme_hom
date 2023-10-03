@@ -1,0 +1,20 @@
+package com.gme.hom.merchants.signup.repository;
+
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.gme.hom.merchants.signup.models.UserSignup;
+
+public interface UserSignupRepository extends JpaRepository<UserSignup, Long> {
+	
+	//@Query("SELECT u FROM UserSignup u WHERE u.emailId = ?1")
+	Optional<UserSignup> findByEmailId(String username);
+	
+	
+	Optional<UserSignup> findByPhoneNumber(String username);
+	
+	
+	
+}

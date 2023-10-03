@@ -1,0 +1,14 @@
+package com.gme.hom.kyc.bankDetails.repositories;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetails;
+import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsDTO;
+
+public interface MerchantsBankDetailsRepository extends JpaRepository<MerchantsBankDetails, Long> {
+	@Query(value="select m from MerchantsBankDetails m WHERE m.merchantID=?1", nativeQuery = true)
+	MerchantsBankDetailsDTO findByMerchantId(Long id);
+
+}

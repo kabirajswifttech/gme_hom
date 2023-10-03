@@ -1,0 +1,121 @@
+package com.gme.hom.kyc.merchants.model;
+
+import java.sql.Date;
+import java.util.UUID;
+
+import com.gme.hom.kyc.merchants.config.MerchantType;
+
+public interface MerchantDTO {
+
+
+    UUID getMerchant_id();
+
+    MerchantType getMerchant_type();
+
+    String getEmail_id();
+
+    String getPhone_code();
+
+    String getPhone_number();
+
+    String getIncorporation_country();
+
+    String getBusiness_name();
+
+    String getBusiness_name_native();
+
+    String getBusiness_type();
+
+    String getIndustry_type();
+
+    String getProduct_type();
+
+    String getBusiness_nature();
+
+    Date getIncorporation_date();
+
+    String getBizz_reg_no();
+
+    String getCorp_reg_no();
+
+    String getBusiness_profile();
+
+    String getPostal_code();
+
+    String getAddress1();
+
+    String getAddress2();
+
+    String getCity();
+
+    String getWebsite();
+
+    String getCurrency_preference();
+
+    int getApprox_txn_monthly_volume();
+
+    int getApprox_txn_yearly_volume();
+
+    String getKyc_status();
+
+    String getKyc_remarks();
+
+    String getRba_status();
+
+    String getRba_remarks();
+
+    String getCompliance_status();
+
+    String getCompliance_remarks();
+
+    String getDoc_path();
+
+    String getNotification_method();
+
+    String getPreferred_date_format();
+
+    String getPreferred_time_zone();
+
+    UUID getSecurity_stamp();
+
+    boolean getTerms_conditions_accepted();
+
+    boolean getPrivacy_policy_accepted();
+
+    boolean getPricing_policy_accepted();
+
+    boolean getMarketing_email_subscription();
+
+    String getStatus();
+
+    boolean getIs_active();
+
+    String getRemarks();
+
+    String getExt_map_id_1();
+
+    String getExt_map_id_2();
+
+    String getExt_map_id_3();
+
+    String getRef_col_1();
+
+    String getRef_col_2();
+
+    String getRef_col_3();
+
+    String getRef_col_4();
+
+    String getRef_col_5();
+
+   
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

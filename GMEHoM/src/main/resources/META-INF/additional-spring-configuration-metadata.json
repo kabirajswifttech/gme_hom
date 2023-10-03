@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "com.gme.orgname",
+    "type": "java.lang.String",
+    "description": "A description for 'com.gme.orgname'"
+  },
+  {
+    "name": "com.gme.orgname",
+    "type": "java.lang.String",
+    "description": "A description for 'com.gme.orgname'"
+  },
+  {
+    "name": "gme.orgname",
+    "type": "java.lang.String",
+    "description": "A description for 'gme.orgname'"
+  },
+  {
+    "name": "db.password",
+    "type": "java.lang.String",
+    "description": "A description for 'db.password'"
+  },
+  {
+    "name": "db.url",
+    "type": "java.lang.String",
+    "description": "A description for 'db.url'"
+  }
+]}

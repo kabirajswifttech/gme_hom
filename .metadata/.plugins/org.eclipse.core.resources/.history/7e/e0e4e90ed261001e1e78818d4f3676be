@@ -1,0 +1,43 @@
+package com.gme.hom.kyc.directors.model;
+
+import java.sql.Date;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.micrometer.common.lang.NonNull;
+
+public interface MerchantsDirectorsDetailsDTO {
+    @JsonInclude(Include=NonNull)
+	Long getId();
+
+    UUID getMerchant_director_id();
+
+    Long getMerchant_id();
+
+    String getFull_name();
+
+    String getFull_name_native();
+
+    String getNationality();
+
+    Date getDob();
+
+    String getPhone_code();
+
+    String getPhone_number();
+
+    String getEmail_id();
+
+    String getResidence_country();
+
+    String getRemarks();
+
+    String getStatus();
+
+    Boolean getIs_active();
+
+    String getEntity_hash();
+
+}

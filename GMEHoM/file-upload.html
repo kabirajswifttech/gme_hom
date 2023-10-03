@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Multipart file uploader</title>
+    </head>
+    <body>        
+        <form action="http://localhost:8080/documents" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file"><br>
+            <select name="doc_type">
+                <option value="CITIZENSHIP">CITIZENSHIP</option>
+                <option value="PASSPORT">PASSPORT</option>
+            </select>
+
+          <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>

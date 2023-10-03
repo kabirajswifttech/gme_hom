@@ -1,0 +1,30 @@
+package com.gme.hom.merchants.signup.models;
+import java.util.UUID;
+
+public interface UserSignupDTO {
+
+    UUID getUser_signup_id();
+
+    String getMerchant_type();
+
+    String getIncorporation_country();
+
+    String getEmail_id();
+
+    String getPhone_code();
+
+    String getPhone_number();
+
+    boolean getIs_email_otp_verified();
+
+    boolean getIs_sms_otp_verified();
+
+    String getStatus();
+
+    String getIp_address();
+
+    String getSignup_source();
+
+    
+
+}

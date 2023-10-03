@@ -1,0 +1,37 @@
+package com.example.demo.model;
+
+import static jakarta.persistence.GenerationType.SEQUENCE;
+
+
+
+
+@Entity(name = "Merchant")
+@Table(name = "merchants")
+public class Merchant extends SuperMerchant {
+
+
+}
+    
+
+    
+
+
+
+	
+
+
+
+	
+	
+
+
+
+	
+	
+
+	
+	
+	
+	
+
+}

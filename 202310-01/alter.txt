@@ -1,0 +1,4 @@
+alter table users_signup rename column merchant_type to source_type;
+alter table users_signup add column association_type text;
+alter table users_signup rename column email_id to contact_info;
+alter table users_signup add column contact_type text;

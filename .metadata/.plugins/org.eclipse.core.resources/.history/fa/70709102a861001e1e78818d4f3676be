@@ -1,0 +1,47 @@
+package com.gme.hom.kyc.bankDetails.model;
+
+import java.sql.Date;
+import java.util.UUID;
+
+public interface MerchantsBankDetailsDTO {
+    long getId();
+
+    UUID getMerchant_bank_id();
+
+    long getMerchant_id();
+
+    String getBank_id();
+
+    String getAccount_name();
+
+    String getAccount_number();
+
+    String getSwift_code();
+
+    String getBic_code();
+
+    String getIfsc_code();
+
+    String getIban_cbu_card_number();
+
+    boolean getIs_verified();
+
+    String getStatus();
+
+    boolean getIs_active();
+
+    String getEntity_hash();
+
+    String getCreated_by();
+
+    Date getCreated_date();
+
+    Date getCreated_date_utc();
+
+    String getUpdated_by();
+
+    Date getUpdated_date();
+
+    Date getUpdated_date_utc();
+
+}

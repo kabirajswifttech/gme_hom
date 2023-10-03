@@ -1,0 +1,18 @@
+package com.gme.hom.usersecurity.models;
+
+import com.gme.hom.usersecurity.config.UserSecurityStatus;
+
+public interface UserSecurityDTO {
+	
+		String getEmail_id();
+
+		String getUsername();
+
+		String getRoles();
+		
+		UserSecurityStatus getStatus();
+		
+		boolean getIs_active();
+		
+		boolean getIs_email_id_verified();
+}

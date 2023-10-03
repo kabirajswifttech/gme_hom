@@ -1,0 +1,43 @@
+package com.gme.hom.kyc.bankDetails.model;
+
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class MerchantsBankDetailsRequest {
+    
+
+    @JsonInclude(Include.NON_NULL)
+    @JsonProperty("merchant_id")
+    private long merchantId;
+
+    @JsonProperty("bank_id")
+    private String bankId;
+
+    @JsonProperty("account_name")
+    private String accountName;
+
+    @JsonProperty("account_number")
+    private String accountNumber;
+
+    @JsonProperty("swift_code")
+    private String swiftCode;
+
+    @JsonProperty("bic_code")
+    private String bicCode;
+
+    @JsonProperty("ifsc_code")
+    private String ifscCode;
+
+    @JsonProperty("iban_cbu_card_number")
+    private String ibanCbuCardNumber;
+
+
+}

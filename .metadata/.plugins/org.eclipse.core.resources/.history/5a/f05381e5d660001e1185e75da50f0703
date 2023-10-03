@@ -1,0 +1,41 @@
+package com.gme.hom.merchants.signup.services;
+
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.gme.hom.api.models.APIData;
+import com.gme.hom.merchants.signup.models.UserSignup;
+import com.gme.hom.merchants.signup.models.UserSignupRequest;
+@Service
+public interface UserSignupService {
+
+	UserSignup saveUserSignup(UserSignup userSignup);
+
+	Optional<UserSignup> getUserSignupByEmailId(String email);
+
+	boolean userSignupAlreadyExixts(Long id);
+
+	Optional<UserSignup> findByPhoneNumber(String phoneNumber);
+
+	String verifyOTP(APIData data, Long id) throws Exception;
+
+	Long startEmailSignup(UserSignupRequest usr) throws Exception;
+
+	Long startPhoneSignup(UserSignupRequest usr) throws Exception;
+
+	String resendEmailOTP(UserSignupRequest usr, Long id) throws Exception;
+
+	String resendSMSOTP(UserSignupRequest usr, Long id) throws Exception;
+
+	String setPasswordByEmail(UserSignupRequest usr, Long id)throws Exception;
+
+	Optional<UserSignup> getUserSignupById(Long id);
+
+	Long startEmailAndPhoneSignup(UserSignupRequest usr) throws Exception;
+
+	String setPasswordByPhoneNumber(UserSignupRequest usr, Long id) throws Exception;
+
+	String setPasswordByPhoneAndEmail(UserSignupRequest usr, Long id) throws Exception;
+
+}
