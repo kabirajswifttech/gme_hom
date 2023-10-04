@@ -16,7 +16,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -40,13 +39,13 @@ public class Merchant extends PersistenceEntityWithUpdateApproval {
 	@Id
 	@SequenceGenerator(name = "merchants_id_seq", sequenceName = "merchants_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_id_seq")
-	@Column(name="id", nullable = false)
+	@Column(name="id", nullable = false, updatable = false)
     private Long id;
 	
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name="merchant_id", nullable=false)
-    private UUID merchantId;
+	@GenericGenerator(strategy="org.hibernate.id.UUIDGenerator",name = "uuid2")
+	@GeneratedValue(generator = "uuid2")
+    @Column(name="merchant_id", updatable = false, nullable = false)
+    private UUID merchantId = UUID.randomUUID();
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)

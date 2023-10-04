@@ -40,8 +40,9 @@ public class MerchantServiceImpl implements MerchantService {
 		//merchant.setEntityHash(ChecksumService.getChecksum(merchant, GlobalConfig.DATA_ENTITY_HASH));
 		merchant.setId(1l);
 		merchant.setCreatedBy("Kabiraj");
+		merchant = merchantRepo.save(merchant);
 		merchantLogRepo.save(new MerchantLog(merchant));
-		return merchantRepo.save(merchant);
+		return merchant;
 		}
 		throw new DuplicateKeyException("Merchant already Registered!");
 	}

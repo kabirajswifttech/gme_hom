@@ -1,5 +1,7 @@
 package com.gme.hom.common.models;
 
+import java.sql.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -11,42 +13,42 @@ import lombok.Setter;
 public class PersistenceEntityWithUpdateApproval {
 
 	@Column(name = "is_active")
-	private boolean isActive;
+	protected boolean isActive;
 
 	@Column(name = "remarks")
-	private String remarks;
+	protected String remarks;
 
 	@Column(name = "created_by", nullable = false)
-	private String createdBy;
+	protected String createdBy;
 
 	// @CreationTimestamp
 	// @GeneratedValue
 	@Column(name = "created_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-	private java.sql.Date createdDate;
+	protected Date createdDate;
 
 	// @CreationTimestamp
 	@Column(name = "created_date_utc", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-	private java.sql.Date createdDateUTC;
+	protected Date createdDateUTC;
 
 	// @UpdateTimestamp
 	@Column(name = "updated_by")
-	private String updatedBy;
+	protected String updatedBy;
 
 	@Column(name = "updated_date")
-	private java.sql.Date updatedDate;
+	protected java.sql.Date updatedDate;
 
 	@Column(name = "updated_date_utc")
-	private java.sql.Date updatedDateUTC;
+	protected java.sql.Date updatedDateUTC;
 
 	@Column(name = "approved_by")
-	private String approvedBy;
+	protected String approvedBy;
 
 	@Column(name = "approved_date")
-	private java.sql.Date approvedDate;
+	protected java.sql.Date approvedDate;
 
 	@Column(name = "approved_date_utc")
-	private java.sql.Date approvedDateUTC;
+	protected java.sql.Date approvedDateUTC;
 
 	@Column(name = "entity_hash")
-	private String entityHash;
+	protected String entityHash;
 }

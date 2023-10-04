@@ -1,0 +1,9 @@
+package com.gme.hom.kyc.merchants.model;
+
+public class Snippet {
+	@PrePersist
+	    protected void onCreate() {
+	        setMerchantId(UUID.randomUUID());
+	    }
+}
+
