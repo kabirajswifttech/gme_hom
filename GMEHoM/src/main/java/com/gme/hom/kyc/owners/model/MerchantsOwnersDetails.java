@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.gme.hom.common.models.PersistenceEntityWithUpdateApproval;
+import com.gme.hom.common.models.PersistenceEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,14 +15,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity(name="Merchants_owners_details")
 @Table(name="merchants_owners_details")
-public class MerchantsOwnersDetails extends PersistenceEntityWithUpdateApproval {
+@AllArgsConstructor
+@NoArgsConstructor
+public class MerchantsOwnersDetails extends PersistenceEntity {
     @Id
     @SequenceGenerator(name = "merchants_owners_seq", sequenceName = "merchants_owners_details_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_owners_seq")

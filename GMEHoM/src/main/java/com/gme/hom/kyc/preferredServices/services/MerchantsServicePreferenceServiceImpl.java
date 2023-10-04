@@ -1,27 +1,28 @@
 package com.gme.hom.kyc.preferredServices.services;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.codes.MerchantStatusCodes;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreference;
-import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceRequest;
 import com.gme.hom.kyc.preferredServices.repositories.MerchantsServicePreferenceRepository;
-import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class MerchantsServicePreferenceServiceImpl implements MerchantsServicePreferenceService {
 	
 	private MerchantsServicePreferenceRepository servicePreferenceRepo;
-
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(MerchantsServicePreferenceServiceImpl.class);
+	
 	@Override
 	public MerchantsServicePreference save(MerchantsServicePreference servicePref) {
 		servicePref.setActive(true);

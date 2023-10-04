@@ -19,6 +19,7 @@ import com.gme.hom.kyc.merchants.model.Merchant;
 import com.gme.hom.kyc.merchants.model.MerchantDTO;
 import com.gme.hom.kyc.merchants.model.MerchantLog;
 import com.gme.hom.kyc.merchants.repositories.MerchantLogRepository;
+import com.gme.hom.kyc.merchants.repositories.MerchantLogSaveRepo;
 import com.gme.hom.kyc.merchants.repositories.MerchantRepository;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
@@ -32,7 +33,7 @@ public class MerchantServiceImpl implements MerchantService {
 	MerchantRepository merchantRepo;
 	
 	@Autowired
-	MerchantLogRepository merchantLogRepo;
+	MerchantLogSaveRepo merchantLogRepo;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MerchantServiceImpl.class);
 
@@ -63,17 +64,21 @@ public class MerchantServiceImpl implements MerchantService {
 	}
 
 	@Override
-	@Transactional
+	//@Transactional
 	public Merchant update(Merchant merchant) {
 		//merchant.setUpdatedBy(UserSecurityService.getUsername());
 		try {
 			Optional<Merchant> merchantDB = merchantRepo.findById(merchant.getId());
 			if(!merchantDB.isEmpty()) {
 				merchant.setMerchantId(merchantDB.get().getMerchantId());
-				System.out.println("Merchnat uuid: "+merchant.getMerchantId());
+				System.out.println(merchant);
 				Merchant newMerchant = merchantRepo.save(merchant);
-				System.out.println("Merchnat uuid: "+merchant.getMerchantId());
-				merchantLogRepo.save(new MerchantLog(newMerchant));
+				System.out.println(newMerchant);
+				MerchantLog mLog = new MerchantLog(newMerchant);
+				mLog.setId(newMerchant.getId());
+				System.out.println(mLog);
+				//System.out.println(merchantLogRepo.save(mLog));;
+				System.out.println(merchantLogRepo.save(mLog));;
 				return merchant;
 			}
 			else {

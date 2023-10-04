@@ -5,20 +5,23 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
-import com.gme.hom.GlobalConfig;
-import com.gme.hom.kyc.merchants.model.Merchant;
+import org.springframework.stereotype.Service;
+
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetails;
 import com.gme.hom.kyc.owners.repositories.MerchantsOwnersDetailsRepository;
-import com.gme.hom.security.services.ChecksumService;
-import com.gme.hom.usersecurity.services.UserSecurityService;
 
-public class MerchantsOwnersDetailsServiceImpl implements MerchantsOwnerDetailsService {
+import lombok.AllArgsConstructor;
+@Service
+@AllArgsConstructor
+public class MerchantsOwnersDetailsServiceImpl implements MerchantsOwnersDetailsService {
 	private MerchantsOwnersDetailsRepository ownersRepo;
 	@Override
 	public MerchantsOwnersDetails save(MerchantsOwnersDetails ownersDetails) throws NoSuchAlgorithmException, IOException {
 
-		ownersDetails.setCreatedBy(UserSecurityService.getUsername());
-		ownersDetails.setEntityHash(ChecksumService.getChecksum(ownersDetails, GlobalConfig.DATA_ENTITY_HASH));
+		//ownersDetails.setCreatedBy(UserSecurityService.getUsername());
+		//ownersDetails.setEntityHash(ChecksumService.getChecksum(ownersDetails, GlobalConfig.DATA_ENTITY_HASH));
+		
+		ownersDetails.setCreatedBy("Dummy text");
 		return ownersRepo.save(ownersDetails);
 	}
 
@@ -38,7 +41,7 @@ public class MerchantsOwnersDetailsServiceImpl implements MerchantsOwnerDetailsS
 	}
 
 	public MerchantsOwnersDetails update(MerchantsOwnersDetails owner) {
-		owner.setUpdatedBy(UserSecurityService.getUsername());
+		//owner.setUpdatedBy(UserSecurityService.getUsername());
 		return ownersRepo.save(owner);
 	}
 

@@ -107,7 +107,7 @@ public class APIData {
 	
 	@Valid
 	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("make_payment_info")
+	@JsonProperty("merchants_service_preference_details")
 	private MerchantsServicePreferenceRequest merchantServicePreferenceRequest;
 	
 	@Valid

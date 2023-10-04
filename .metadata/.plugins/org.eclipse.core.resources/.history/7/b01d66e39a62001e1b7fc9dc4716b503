@@ -1,0 +1,25 @@
+package com.gme.hom.kyc.merchants.repositories;
+
+import org.springframework.stereotype.Repository;
+
+import com.gme.hom.kyc.merchants.model.MerchantLog;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+
+@Repository
+public class MerchantLogSaveRepo {
+	@PersistenceContext
+	private EntityManager entityManager;
+	
+	@Transactional
+	public int save(MerchantLog m) {
+	    return entityManager.createNativeQuery("INSERT INTO merchants_log (id, merchant_id, email_id) VALUES (?,?,?)")
+	      .setParameter(1, m.getId())
+	      .setParameter(2, m.getMerchantId())
+	      .setParameter(3, m.getEmailId())
+	      .executeUpdate();
+	}
+	
+}

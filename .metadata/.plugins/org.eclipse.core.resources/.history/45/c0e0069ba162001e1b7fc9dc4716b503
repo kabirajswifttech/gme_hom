@@ -1,0 +1,20 @@
+package com.gme.hom.kyc.merchants.services;
+
+import org.springframework.data.jpa.repository.Query;
+
+import com.gme.hom.kyc.merchants.model.MerchantLog;
+import com.gme.hom.kyc.merchants.repositories.MerchantLogRepository;
+import java.util.List;
+import java.util.Optional;
+
+//
+//public class MerchantLogRepositoryImpl implements MerchantLogRepository {
+//	@Override
+//	public Optional<MerchantLog> save(MerchantLog log) {
+//		Long id = saveAndGetId(log.getId(), log.getMerchantId(), log.getEmailId());
+//		return findById(id);
+//				
+//	}
+//
+//
+//}

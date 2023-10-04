@@ -1,0 +1,149 @@
+-- public.merchants definition
+
+-- Drop table
+
+DROP TABLE public.merchants;
+
+CREATE TABLE public.merchants (
+	id bigserial NOT NULL,
+	merchant_id uuid unique NULL DEFAULT uuid_generate_v4(),
+	merchant_type text NULL,
+	email_id text NULL,
+	phone_code text NULL,
+	phone_number text NULL,
+	incorporation_country text NULL,
+	business_name text NULL,
+	business_name_native text NULL,
+	business_type text NULL,
+	industry_type text NULL,
+	product_type text NULL,
+	business_nature text NULL,
+	incorporation_date date NULL,
+	bizz_reg_no text NULL,
+	corp_reg_no text NULL,
+	business_profile text NULL,
+	postal_code text NULL,
+	address1 text NULL,
+	address2 text NULL,
+	city text NULL,
+	website text NULL,
+	currency_preference text NULL,
+	approx_txn_monthly_volume int4 NULL,
+	approx_txn_yearly_volume int4 NULL,
+	kyc_status text NULL,
+	kyc_remarks text NULL,
+	rba_status text NULL,
+	rba_remarks text NULL,
+	compliance_status text NULL,
+	compliance_remarks text NULL,
+	doc_path text NULL,
+	notification_method text NULL,
+	preferred_date_format text NULL,
+	preferred_time_zone text NULL,
+	security_stamp uuid NULL DEFAULT uuid_generate_v4(),
+	terms_conditions_accepted bool NULL,
+	privacy_policy_accepted bool NULL,
+	pricing_policy_accepted bool NULL,
+	marketing_email_subscription bool NULL,
+	status text NULL,
+	is_active bool NULL,
+	remarks text NULL,
+	ext_map_id_1 text NULL,
+	ext_map_id_2 text NULL,
+	ext_map_id_3 text NULL,
+	ref_col_1 text NULL,
+	ref_col_2 text NULL,
+	ref_col_3 text NULL,
+	ref_col_4 text NULL,
+	ref_col_5 text NULL,
+	entity_hash text NULL,
+	created_by text NULL,
+	created_date timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	created_date_utc timestamptz NULL DEFAULT (now() AT TIME ZONE 'UTC'::text),
+	updated_by text NULL,
+	updated_date timestamp NULL,
+	updated_date_utc timestamp NULL,
+	approved_by text NULL,
+	approved_date timestamp NULL,
+	approved_date_utc timestamp NULL,
+	CONSTRAINT merchants_email_id_key UNIQUE (email_id),
+	CONSTRAINT merchants_pkey PRIMARY KEY (id)
+);
+ALTER TABLE merchants
+ADD CONSTRAINT merchant_id UNIQUE (merchant_id);
+ALTER TABLE merchants
+revoke update (merchant_id) on merchants;
+ADD CONSTRAINT merchant_id UNIQUE (merchant_id);
+
+alter table merchants alter column merchant_id to merchnat_id uuid unique NULL DEFAULT uuid_generate_v4();
+
+
+
+
+
+
+-- public.merchants_log definition
+
+-- Drop table
+
+DROP TABLE public.merchants_log;
+
+CREATE TABLE public.merchants_log (
+	id bigserial NOT NULL,
+	merchant_id uuid NOT NULL,
+	merchant_type text NULL,
+	email_id text NULL,
+	phone_code text NULL,
+	phone_number text NULL,
+	incorporation_country text NULL,
+	business_name text NULL,
+	business_name_native text NULL,
+	business_type text NULL,
+	industry_type text NULL,
+	product_type text NULL,
+	business_nature text NULL,
+	incorporation_date date NULL,
+	bizz_reg_no text NULL,
+	corp_reg_no text NULL,
+	business_profile text NULL,
+	postal_code text NULL,
+	address1 text NULL,
+	address2 text NULL,
+	city text NULL,
+	website text NULL,
+	currency_preference text NULL,
+	approx_txn_monthly_volume int4 NULL,
+	approx_txn_yearly_volume int4 NULL,
+	kyc_status text NULL,
+	kyc_remarks text NULL,
+	rba_status text NULL,
+	rba_remarks text NULL,
+	compliance_status text NULL,
+	compliance_remarks text NULL,
+	doc_path text NULL,
+	notification_method text NULL,
+	preferred_date_format text NULL,
+	preferred_time_zone text NULL,
+	security_stamp uuid NULL DEFAULT uuid_generate_v4(),
+	terms_conditions_accepted bool NULL,
+	privacy_policy_accepted bool NULL,
+	pricing_policy_accepted bool NULL,
+	marketing_email_subscription bool NULL,
+	status text NULL,
+	is_active bool NULL,
+	remarks text NULL,
+	ext_map_id_1 text NULL,
+	ext_map_id_2 text NULL,
+	ext_map_id_3 text NULL,
+	ref_col_1 text NULL,
+	ref_col_2 text NULL,
+	ref_col_3 text NULL,
+	ref_col_4 text NULL,
+	ref_col_5 text NULL,
+	entity_hash text NULL,
+	created_by text NULL,
+	created_date timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	created_date_utc timestamptz NULL DEFAULT (now() AT TIME ZONE 'UTC'::text),
+	CONSTRAINT merchants_log_pkey PRIMARY KEY (id),
+	CONSTRAINT merchants_log_merchant_id_fkey FOREIGN KEY (merchant_id) REFERENCES public.merchants(merchant_id)
+);

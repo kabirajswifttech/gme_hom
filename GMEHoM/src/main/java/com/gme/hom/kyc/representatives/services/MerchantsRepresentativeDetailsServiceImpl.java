@@ -28,8 +28,8 @@ public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepre
 	public MerchantsRepresentativeDetails addMerchantRepresentativesDetails(MerchantsRepresentativeDetailsRequest representativeReq,
 			Long merchantId) throws NoSuchAlgorithmException, IOException {
 		MerchantsRepresentativeDetails representative = new MerchantsRepresentativeDetails(representativeReq);
-		representative.setCreatedBy(UserSecurityService.getUsername());
-		representative.setEntityHash(ChecksumService.getChecksum(representative, GlobalConfig.DATA_ENTITY_HASH));
+		//representative.setCreatedBy(UserSecurityService.getUsername());
+		//representative.setEntityHash(ChecksumService.getChecksum(representative, GlobalConfig.DATA_ENTITY_HASH));
 		representative.setMerchantId(merchantId);
 		representative.setActive(true);
 		representative.setStatus(MerchantStatusCodes.PENDING.toString());
@@ -66,7 +66,7 @@ public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepre
 
 	@Override
 	public MerchantsRepresentativeDetails update(MerchantsRepresentativeDetails representativeDetails) {
-		representativeDetails.setUpdatedBy(UserSecurityService.getUsername());
+		//representativeDetails.setUpdatedBy(UserSecurityService.getUsername());
 		return representativeRepo.save(representativeDetails);
 	}
 

@@ -18,6 +18,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -32,13 +33,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity(name = "merchants_log")
+@Entity
 @Table(name = "merchants_log")
 public class MerchantLog extends PersistenceEntity{
-
+	
 	@Id
-	@SequenceGenerator(name = "merchants_log_seq", sequenceName = "merchants_log_id_seq", allocationSize = 1)
-	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_log_seq")
+	@GeneratedValue
+	Long x;
+	
+	//@Id
+	//@SequenceGenerator(name = "merchants_log_seq", sequenceName = "merchants_log_id_seq", allocationSize = 1)
+	//@GeneratedValue(strategy = SEQUENCE, generator = "merchants_log_seq")
 	@Column(name="id", nullable = false)
     private Long id;
 	
@@ -204,7 +209,7 @@ public class MerchantLog extends PersistenceEntity{
     
     public MerchantLog(Merchant merchant) {
     	super();
-    	//this.id=merchant.getId();
+    	this.id=merchant.getId();
 		this.merchantId = merchant.getMerchantId();
 		this.merchantType = merchant.getMerchantType();
         this.emailId = merchant.getEmailId();

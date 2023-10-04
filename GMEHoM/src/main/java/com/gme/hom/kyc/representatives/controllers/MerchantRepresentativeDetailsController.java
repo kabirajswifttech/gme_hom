@@ -27,13 +27,15 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/merchant_representative_details")
+@RequestMapping("/api/v1/merchants_representative_details")
 public class MerchantRepresentativeDetailsController {
 
 	private MerchantsRepresentativeDetailsService representativesService;
 
+	
+	
 	@PostMapping("")
-	public ResponseEntity<APIResponse> addMerchantRepresentativeDetails(APIRequest apiReq) {
+	public ResponseEntity<APIResponse> addMerchantRepresentativeDetails(@Valid @RequestBody APIRequest apiReq) {
 		APIResponse ar = new APIResponse();
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.ADD_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
@@ -41,7 +43,8 @@ public class MerchantRepresentativeDetailsController {
 				MerchantsRepresentativeDetailsRequest representativeReq = apiReq.getData()
 						.getMerchantsRepresentativeDetailsRequest();
 				MerchantsRepresentativeDetails representative = new MerchantsRepresentativeDetails(representativeReq);
-				representativesService.save(representative);
+				representative = representativesService.save(representative);
+				ar.setData(representative.getId());
 				ar.setStatus(APIResponseCode.SUCCESS.toString());
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
 			} catch (Exception e) {
@@ -56,7 +59,7 @@ public class MerchantRepresentativeDetailsController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<APIResponse> getMerchantsRepresentativesDetails(@RequestBody APIRequest apiReq) {
+	public ResponseEntity<APIResponse> getMerchantsRepresentativesDetails(@Valid @RequestBody APIRequest apiReq) {
 		APIResponse ar = new APIResponse();
 		try {
 			if (apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString())
