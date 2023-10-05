@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.gme.hom.kyc.merchants.model.Merchant;
-import com.gme.hom.kyc.merchants.model.MerchantDTO;
 
 public interface MerchantService {
 	

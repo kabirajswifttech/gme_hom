@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetails;
-import com.gme.hom.kyc.owners.model.MerchantsOwnersDetailsDTO;
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetailsLog;
 import com.gme.hom.kyc.owners.repositories.MerchantsOwnersDetailsLogRepository;
 import com.gme.hom.kyc.owners.repositories.MerchantsOwnersDetailsRepository;

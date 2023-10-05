@@ -8,10 +8,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
-import com.gme.hom.kyc.codes.MerchantStatusCodes;
-import com.gme.hom.kyc.codes.ResponseMessageCodes;
+import com.gme.hom.kyc.config.MerchantStatusCodes;
+import com.gme.hom.kyc.config.ResponseMessageCodes;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
-import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsLog;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
 import com.gme.hom.kyc.representatives.repositories.MerchantsRepresentativeDetailsLogRepository;

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gme.hom.kyc.stockholders.model.MerchantsStockholdersDetails;
-import com.gme.hom.kyc.stockholders.model.MerchantsStockholdersDetailsDTO;
 
 public interface MerchantsStockholdersDetailsService {
 

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
     <typeInfo handle="=GMEHoM/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.gme.hom.kyc.merchants.repositories{MerchantLogRepository.java[MerchantLogRepository" modifiers="513" timestamp="1696415693113"/>
+    <typeInfo handle="=GMEHoM/C:\/Users\/kabee.shrestha\/.m2\/repository\/org\/springframework\/data\/spring-data-jpa\/3.0.9\/spring-data-jpa-3.0.9.jar=/maven.pomderived=/true=/=/org.eclipse.jst.component.archivename=/spring-data-jpa-3.0.9.jar=/=/maven.groupId=/org.springframework.data=/=/maven.artifactId=/spring-data-jpa=/=/maven.version=/3.0.9=/=/maven.scope=/compile=/=/maven.pomderived=/true=/=/org.eclipse.jst.component.dependency=/\/WEB-INF\/lib=/&lt;org.springframework.data.jpa.repository(JpaRepository.class[JpaRepository" modifiers="1537" timestamp="1694931309626"/>
 </typeInfoHistroy>

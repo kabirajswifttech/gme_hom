@@ -1,0 +1,45 @@
+package com.gme.hom.merchants.kyc.controllers;
+
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gme.hom.api.models.APIRequest;
+import com.gme.hom.api.models.APIRequestFunctionCodes;
+import com.gme.hom.api.models.APIResponse;
+import com.gme.hom.api.models.APIResponseCodes;
+import com.gme.hom.common.services.ObjectToJson;
+import com.gme.hom.merchants.kyc.services.MerchantOnboardingService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping("/merchant/id")
+public class KYCOnboardingController {
+	private final MerchantOnboardingService onboardingService;
+	
+	@PostMapping("")
+	public String onBoardMerchant(@RequestBody APIRequest apiReq, @PathVariable("id") Long id) {
+		APIResponse ar = new APIResponse();
+		if(apiReq.getFunction().equals(APIRequestFunctionCodes.ADD_DATA)) {
+			try {
+				String message = onboardingService.onBoard(apiReq.getData(), id);
+				ar.setStatus(APIResponseCodes.SUCCESS);
+				ar.setDescription(message);
+			}catch(Exception e) {
+				ar.setStatus(APIResponseCodes.FAILURE);
+				ar.setDescription(e.getMessage());
+			}
+		}else {
+			ar.setStatus(APIResponseCodes.FAILURE);
+			ar.setDescription("Invalid function name!");
+		}
+		return ObjectToJson.toJson(ar);
+	}
+
+	
+}

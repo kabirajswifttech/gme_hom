@@ -1,0 +1,7 @@
+package com.gme.hom.kyc.representatives.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MerchantsRepresentativeDetailsLogRepository extends JpaRepository<T, ID> {
+
+}

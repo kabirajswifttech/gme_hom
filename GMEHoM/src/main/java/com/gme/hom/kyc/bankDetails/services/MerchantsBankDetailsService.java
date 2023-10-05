@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetails;
-import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsDTO;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsRequest;
 
 import jakarta.servlet.http.HttpServletRequest;

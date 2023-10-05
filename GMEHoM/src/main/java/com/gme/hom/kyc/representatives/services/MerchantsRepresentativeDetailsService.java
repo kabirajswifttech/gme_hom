@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
-import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
 
 

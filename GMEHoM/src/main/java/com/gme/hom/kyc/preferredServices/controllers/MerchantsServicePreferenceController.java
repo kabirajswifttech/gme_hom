@@ -18,10 +18,10 @@ import com.gme.hom.api.config.APIRequestScopeCode;
 import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
-import com.gme.hom.kyc.codes.ResponseMessageCodes;
+import com.gme.hom.kyc.config.ResponseMessageCodes;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreference;
-import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceDTO;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceRequest;
+import com.gme.hom.kyc.preferredServices.services.MerchantsServicePreferenceDTO;
 import com.gme.hom.kyc.preferredServices.services.MerchantsServicePreferenceService;
 
 import jakarta.persistence.EntityNotFoundException;

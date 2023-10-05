@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.gme.hom.kyc.merchants.model.Merchant;
-import com.gme.hom.kyc.merchants.model.MerchantDTO;
+import com.gme.hom.kyc.merchants.services.MerchantDTO;
 
 @Repository
 public interface MerchantRepository extends JpaRepository<Merchant, Long> {

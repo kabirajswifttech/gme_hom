@@ -10,9 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
-import com.gme.hom.kyc.codes.MerchantStatusCodes;
+import com.gme.hom.kyc.config.MerchantStatusCodes;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreference;
-import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceDTO;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceLog;
 import com.gme.hom.kyc.preferredServices.repositories.MerchantsServicePreferenceLogRepository;
 import com.gme.hom.kyc.preferredServices.repositories.MerchantsServicePreferenceRepository;

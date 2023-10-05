@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreference;
-import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceDTO;
+import com.gme.hom.kyc.preferredServices.services.MerchantsServicePreferenceDTO;
 
 public interface MerchantsServicePreferenceRepository extends JpaRepository<MerchantsServicePreference, Long>{
 

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetails;
-import com.gme.hom.kyc.owners.model.MerchantsOwnersDetailsDTO;
+import com.gme.hom.kyc.owners.services.MerchantsOwnersDetailsDTO;
 
 public interface MerchantsOwnersDetailsRepository extends JpaRepository<MerchantsOwnersDetails, Long> {
 	List<MerchantsOwnersDetails> findByMerchantId(Long id);

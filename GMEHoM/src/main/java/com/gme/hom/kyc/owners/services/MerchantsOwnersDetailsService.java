@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetails;
-import com.gme.hom.kyc.owners.model.MerchantsOwnersDetailsDTO;
 
 public interface MerchantsOwnersDetailsService {
 	MerchantsOwnersDetails save(MerchantsOwnersDetails ownersDetails) throws NoSuchAlgorithmException, IOException;

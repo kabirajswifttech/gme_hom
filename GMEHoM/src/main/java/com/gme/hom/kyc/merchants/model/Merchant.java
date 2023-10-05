@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.gme.hom.common.models.PersistenceEntityWithUpdateApproval;
-import com.gme.hom.kyc.merchants.config.MerchantType;
+import com.gme.hom.kyc.config.MerchantType;
 import com.gme.hom.users.models.UserSignup;
 
 import jakarta.persistence.Column;

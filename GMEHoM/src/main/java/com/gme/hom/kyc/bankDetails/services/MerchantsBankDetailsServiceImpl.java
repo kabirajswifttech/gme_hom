@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetails;
-import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsDTO;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsLog;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsRequest;
 import com.gme.hom.kyc.bankDetails.repositories.MerchantsBankDetailsLogRepository;
 import com.gme.hom.kyc.bankDetails.repositories.MerchantsBankDetailsRepository;
-import com.gme.hom.kyc.codes.MerchantStatusCodes;
-import com.gme.hom.kyc.codes.ResponseMessageCodes;
+import com.gme.hom.kyc.config.MerchantStatusCodes;
+import com.gme.hom.kyc.config.ResponseMessageCodes;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 

@@ -18,10 +18,10 @@ import com.gme.hom.api.config.APIRequestScopeCode;
 import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
-import com.gme.hom.kyc.codes.ResponseMessageCodes;
+import com.gme.hom.kyc.config.ResponseMessageCodes;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
-import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
+import com.gme.hom.kyc.representatives.services.MerchantsRepresentativeDetailsDTO;
 import com.gme.hom.kyc.representatives.services.MerchantsRepresentativeDetailsService;
 
 import jakarta.persistence.EntityNotFoundException;

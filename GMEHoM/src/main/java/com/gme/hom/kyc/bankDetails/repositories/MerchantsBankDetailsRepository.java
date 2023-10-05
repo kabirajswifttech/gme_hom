@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetails;
-import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsDTO;
+import com.gme.hom.kyc.bankDetails.services.MerchantsBankDetailsDTO;
 
 public interface MerchantsBankDetailsRepository extends JpaRepository<MerchantsBankDetails, Long> {
 	@Query(value="SELECT m.merchant_id, m.bank_id, m.account_name, m.account_number, m.swift_code, m.bic_code FROM merchants_bank_details m WHERE m.merchant_id=?1", nativeQuery = true)

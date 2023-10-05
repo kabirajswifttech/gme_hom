@@ -8,9 +8,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
-import com.gme.hom.kyc.codes.MerchantStatusCodes;
+import com.gme.hom.kyc.config.MerchantStatusCodes;
 import com.gme.hom.kyc.stockholders.model.MerchantsStockholdersDetails;
-import com.gme.hom.kyc.stockholders.model.MerchantsStockholdersDetailsDTO;
 import com.gme.hom.kyc.stockholders.model.MerchantsStockholdersDetailsLog;
 import com.gme.hom.kyc.stockholders.repositories.MerchantsStockHolderDetailsRepository;
 import com.gme.hom.kyc.stockholders.repositories.MerchantsStockholderDetailsLogRepository;

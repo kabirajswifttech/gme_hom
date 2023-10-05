@@ -18,10 +18,10 @@ import com.gme.hom.api.config.APIRequestScopeCode;
 import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
-import com.gme.hom.kyc.codes.ResponseMessageCodes;
+import com.gme.hom.kyc.config.ResponseMessageCodes;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetails;
-import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsDTO;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsRequest;
+import com.gme.hom.kyc.directors.services.MerchantsDirectorsDetailsDTO;
 import com.gme.hom.kyc.directors.services.MerchantsDirectorsDetailsService;
 
 import jakarta.persistence.NoResultException;

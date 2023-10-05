@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.merchants.model.Merchant;
-import com.gme.hom.kyc.merchants.model.MerchantDTO;
 import com.gme.hom.kyc.merchants.model.MerchantLog;
 import com.gme.hom.kyc.merchants.repositories.MerchantLogRepository;
 import com.gme.hom.kyc.merchants.repositories.MerchantRepository;

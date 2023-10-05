@@ -1,0 +1,5 @@
+package com.gme.hom.kyc.bankDetails.repositories;
+
+public interface MerchantsBankDetailsLogRepository {
+
+}

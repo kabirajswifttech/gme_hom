@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
-import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
+import com.gme.hom.kyc.representatives.services.MerchantsRepresentativeDetailsDTO;
 
 public interface MerchantsRepresentativeDetailsRepository extends JpaRepository<MerchantsRepresentativeDetails, Long> {
 

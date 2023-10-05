@@ -20,10 +20,10 @@ import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetails;
-import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsDTO;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsRequest;
+import com.gme.hom.kyc.bankDetails.services.MerchantsBankDetailsDTO;
 import com.gme.hom.kyc.bankDetails.services.MerchantsBankDetailsService;
-import com.gme.hom.kyc.codes.ResponseMessageCodes;
+import com.gme.hom.kyc.config.ResponseMessageCodes;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;

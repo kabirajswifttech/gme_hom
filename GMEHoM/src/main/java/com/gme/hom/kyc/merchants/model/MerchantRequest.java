@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gme.hom.kyc.merchants.config.MerchantType;
+import com.gme.hom.kyc.config.MerchantType;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

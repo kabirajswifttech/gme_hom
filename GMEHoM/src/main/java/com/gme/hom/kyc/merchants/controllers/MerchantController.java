@@ -18,10 +18,10 @@ import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
 import com.gme.hom.documents.controllers.DocumentsController;
-import com.gme.hom.kyc.codes.ResponseMessageCodes;
+import com.gme.hom.kyc.config.ResponseMessageCodes;
 import com.gme.hom.kyc.merchants.model.Merchant;
-import com.gme.hom.kyc.merchants.model.MerchantDTO;
 import com.gme.hom.kyc.merchants.model.MerchantRequest;
+import com.gme.hom.kyc.merchants.services.MerchantDTO;
 import com.gme.hom.kyc.merchants.services.MerchantService;
 
 import jakarta.persistence.NoResultException;

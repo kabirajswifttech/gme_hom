@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetails;
-import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsDTO;
+import com.gme.hom.kyc.directors.services.MerchantsDirectorsDetailsDTO;
 
 public interface MerchantsDirectorsDetailsRepository extends JpaRepository<MerchantsDirectorsDetails, Long> {
 	
