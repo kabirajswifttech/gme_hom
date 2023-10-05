@@ -7,9 +7,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetails;
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetailsDTO;
 import com.gme.hom.kyc.owners.repositories.MerchantsOwnersDetailsRepository;
+import com.gme.hom.security.services.ChecksumService;
+import com.gme.hom.usersecurity.services.UserSecurityService;
 
 import lombok.AllArgsConstructor;
 @Service
@@ -19,8 +22,8 @@ public class MerchantsOwnersDetailsServiceImpl implements MerchantsOwnersDetails
 	@Override
 	public MerchantsOwnersDetails save(MerchantsOwnersDetails ownersDetails) throws NoSuchAlgorithmException, IOException {
 
-		//ownersDetails.setCreatedBy(UserSecurityService.getUsername());
-		//ownersDetails.setEntityHash(ChecksumService.getChecksum(ownersDetails, GlobalConfig.DATA_ENTITY_HASH));
+		ownersDetails.setCreatedBy(UserSecurityService.getUsername());
+		ownersDetails.setEntityHash(ChecksumService.getChecksum(ownersDetails, GlobalConfig.DATA_ENTITY_HASH));
 		
 		ownersDetails.setCreatedBy("Dummy text");
 		return ownersRepo.save(ownersDetails);

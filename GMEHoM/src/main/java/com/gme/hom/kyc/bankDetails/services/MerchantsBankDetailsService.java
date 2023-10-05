@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface MerchantsBankDetailsService {
 
-	MerchantsBankDetails addMerchantBankDetails(MerchantsBankDetailsRequest bankDetailsReq, Long merchantId);
+	MerchantsBankDetails addMerchantBankDetails(MerchantsBankDetailsRequest bankDetailsReq, Long merchantId) throws NoSuchAlgorithmException, IOException;
 
 	MerchantsBankDetails save(MerchantsBankDetails merchantBankDetails) throws Exception;
 

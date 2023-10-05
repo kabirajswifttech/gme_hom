@@ -1,5 +1,7 @@
 package com.gme.hom.kyc.preferredServices.services;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,6 @@ public interface MerchantsServicePreferenceService {
 
 	public MerchantsServicePreference update(MerchantsServicePreference merchantServicePref) throws Exception;
 
-	MerchantsServicePreference save(MerchantsServicePreference servicePref);
+	MerchantsServicePreference save(MerchantsServicePreference servicePref) throws NoSuchAlgorithmException, IOException;
 	
 }

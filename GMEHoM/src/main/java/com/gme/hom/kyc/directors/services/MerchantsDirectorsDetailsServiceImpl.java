@@ -17,7 +17,6 @@ import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -34,8 +33,8 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 	}
 	@Override
 	public MerchantsDirectorsDetails save(MerchantsDirectorsDetails directorsDetails) throws NoSuchAlgorithmException, IOException {
-		//directorsDetails.setCreatedBy(UserSecurityService.getUsername());
-		//directorsDetails.setEntityHash(ChecksumService.getChecksum(directorsDetails, GlobalConfig.DATA_ENTITY_HASH));
+		directorsDetails.setCreatedBy(UserSecurityService.getUsername());
+		directorsDetails.setEntityHash(ChecksumService.getChecksum(directorsDetails, GlobalConfig.DATA_ENTITY_HASH));
 		directorsDetails.setActive(true);
 		directorsDetails.setStatus(MerchantStatusCodes.PENDING.toString());
 		return directorsRepo.save(directorsDetails);

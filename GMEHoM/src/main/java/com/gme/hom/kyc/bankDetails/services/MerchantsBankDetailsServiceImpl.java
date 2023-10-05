@@ -1,5 +1,7 @@
 package com.gme.hom.kyc.bankDetails.services;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +31,10 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 	private static final Logger logger = LoggerFactory.getLogger(MerchantsBankDetailsServiceImpl.class);
 	
 	@Override
-	public MerchantsBankDetails addMerchantBankDetails(MerchantsBankDetailsRequest bankDetailsReq, Long merchantId) {
+	public MerchantsBankDetails addMerchantBankDetails(MerchantsBankDetailsRequest bankDetailsReq, Long merchantId) throws NoSuchAlgorithmException, IOException {
 		MerchantsBankDetails bankDetails = new MerchantsBankDetails(bankDetailsReq);
+		bankDetails.setCreatedBy(UserSecurityService.getUsername());
+		bankDetails.setEntityHash(ChecksumService.getChecksum(bankDetails, GlobalConfig.DATA_ENTITY_HASH));
 		bankDetails.setMerchantId(merchantId);
 		bankDetails.setActive(true);
 		bankDetails.setStatus(MerchantStatusCodes.PENDING.toString());

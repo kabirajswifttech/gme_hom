@@ -15,12 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.merchants.model.Merchant;
 import com.gme.hom.kyc.merchants.model.MerchantDTO;
 import com.gme.hom.kyc.merchants.model.MerchantLog;
-import com.gme.hom.kyc.merchants.repositories.MerchantLogRepository;
 import com.gme.hom.kyc.merchants.repositories.MerchantLogSaveRepo;
 import com.gme.hom.kyc.merchants.repositories.MerchantRepository;
+import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
 import jakarta.transaction.Transactional;
@@ -42,10 +43,9 @@ public class MerchantServiceImpl implements MerchantService {
 	@Transactional
 	public Merchant save(Merchant merchant) throws NoSuchAlgorithmException, IOException {
 		if(!emailAlreadyRegistered(merchant.getEmailId()) && !phoneNumberAlreadyRegistered(merchant.getPhoneNumber())) {
-		//merchant.setCreatedBy(UserSecurityService.getUsername());
-		//merchant.setEntityHash(ChecksumService.getChecksum(merchant, GlobalConfig.DATA_ENTITY_HASH));
+		merchant.setCreatedBy(UserSecurityService.getUsername());
+		merchant.setEntityHash(ChecksumService.getChecksum(merchant, GlobalConfig.DATA_ENTITY_HASH));
 		Merchant newMerchant = merchantRepo.save(merchant);
-		//System.out.println(merchant);
 		merchantLogRepo.save(new MerchantLog(newMerchant));
 		return merchant;
 		}

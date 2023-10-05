@@ -26,8 +26,8 @@ public class MerchantsStockholdersDetailsServiceImpl implements MerchantsStockho
 	
 	@Override
 	public MerchantsStockholdersDetails save(MerchantsStockholdersDetails stockholder) throws NoSuchAlgorithmException, IOException {
-		//stockholder.setCreatedBy(UserSecurityService.getUsername());
-		//stockholder.setEntityHash(ChecksumService.getChecksum(stockholder, GlobalConfig.DATA_ENTITY_HASH));
+		stockholder.setCreatedBy(UserSecurityService.getUsername());
+		stockholder.setEntityHash(ChecksumService.getChecksum(stockholder, GlobalConfig.DATA_ENTITY_HASH));
 		stockholder.setActive(true);
 		stockholder.setStatus(MerchantStatusCodes.PENDING.toString());
 		return stockholdersRepo.save(stockholder);
