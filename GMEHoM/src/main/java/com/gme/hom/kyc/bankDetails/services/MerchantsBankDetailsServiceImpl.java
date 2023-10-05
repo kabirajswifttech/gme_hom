@@ -66,9 +66,6 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 	@Override
 	public MerchantsBankDetailsDTO getByMerchantId(Long id) throws Exception {
 		MerchantsBankDetailsDTO bankDetails = bankDetailsRepo.findByMerchantId(id);
-		if(bankDetails == null) {
-			throw new Exception(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
-		}
 		return bankDetails;
 	}
 

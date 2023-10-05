@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.codes.MerchantStatusCodes;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetails;
+import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsDTO;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsRequest;
 import com.gme.hom.kyc.directors.repositories.MerchantsDirectorsDetailsRepository;
 import com.gme.hom.security.services.ChecksumService;
@@ -40,20 +41,20 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 		return directorsRepo.save(directorsDetails);
 	}
 	@Override
-	public List<MerchantsDirectorsDetails> getAll() {
-		return directorsRepo.findAll();
+	public List<MerchantsDirectorsDetailsDTO> getAll() {
+		return directorsRepo.findAllDirectors();
 	}
 	@Override
-	public Optional<MerchantsDirectorsDetails> getById(Long id) {
-		return directorsRepo.findById(id);
+	public Optional<MerchantsDirectorsDetailsDTO> getById(Long id) {
+		return directorsRepo.findByDirectorsId(id);
 	}
 	@Override
-	public List<MerchantsDirectorsDetails> getByMerchantId(Long id) {
+	public List<MerchantsDirectorsDetailsDTO> getByMerchantId(Long id) {
 		return directorsRepo.findByMerchantId(id);
 	}
 	@Override
 	public MerchantsDirectorsDetails update(MerchantsDirectorsDetails merchantsDirectorsDetails) {
-		merchantsDirectorsDetails.setCreatedBy(UserSecurityService.getUsername());
+		//merchantsDirectorsDetails.setCreatedBy(UserSecurityService.getUsername());
 		return directorsRepo.save(merchantsDirectorsDetails);
 	}
 

@@ -1,7 +1,10 @@
 package com.gme.hom.kyc.representatives.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,9 +20,11 @@ import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
+import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
 import com.gme.hom.kyc.representatives.services.MerchantsRepresentativeDetailsService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -32,7 +37,7 @@ public class MerchantRepresentativeDetailsController {
 
 	private MerchantsRepresentativeDetailsService representativesService;
 
-	
+	private static final Logger logger = LoggerFactory.getLogger(MerchantRepresentativeDetailsController.class);
 	
 	@PostMapping("")
 	public ResponseEntity<APIResponse> addMerchantRepresentativeDetails(@Valid @RequestBody APIRequest apiReq) {
@@ -62,29 +67,38 @@ public class MerchantRepresentativeDetailsController {
 	public ResponseEntity<APIResponse> getMerchantsRepresentativesDetails(@Valid @RequestBody APIRequest apiReq) {
 		APIResponse ar = new APIResponse();
 		try {
-			if (apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString())
-					&& apiReq.getScope().equals(APIRequestScopeCode.ALL.toString())) {
-
-				List<MerchantsRepresentativeDetails> merchantsReps = representativesService.getAll();
-				ar.setData(merchantsReps);
-				ar.setStatus(APIResponseCode.SUCCESS.toString());
-				ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
-			} else if (apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString())
-					&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
-				if (apiReq.getData().getQuery().getBy().equals("MERCHANTS_REPRESENTATIVES_DETAILS_ID")
-						&& apiReq.getData().getQuery().getValue() != null) {
-					MerchantsRepresentativeDetails representative = representativesService
-							.getById(Long.parseLong(apiReq.getData().getQuery().getValue()));
-					ar.setData(representative);
+			if ((apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString()))
+					&& (apiReq.getScope().equals(APIRequestScopeCode.ALL.toString()))) {
+				if(apiReq.getData()==null) {
+					List<MerchantsRepresentativeDetailsDTO> merchantsReps = representativesService.getAll();
+					ar.setData(merchantsReps);
 					ar.setStatus(APIResponseCode.SUCCESS.toString());
 					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
-				} else if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID")
+				}else if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID")
 						&& apiReq.getData().getQuery().getValue() != null) {
-					List<MerchantsRepresentativeDetails> representative = representativesService
+					List<MerchantsRepresentativeDetailsDTO> representative = representativesService
 							.getByMerchantId(Long.parseLong(apiReq.getData().getQuery().getValue()));
 					ar.setData(representative);
 					ar.setStatus(APIResponseCode.SUCCESS.toString());
 					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+				} else {
+					ar.setStatus(APIResponseCode.FAILURE.toString());
+					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
+				}
+			
+			} else if ((apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString()))
+					&& (apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString()))) {
+				if (apiReq.getData().getQuery().getBy().equals("MERCHANTS_REPRESENTATIVES_DETAILS_ID")
+						&& apiReq.getData().getQuery().getValue() != null) {
+					Optional<MerchantsRepresentativeDetailsDTO> representative = representativesService
+							.getById(Long.parseLong(apiReq.getData().getQuery().getValue()));
+					if(!representative.isEmpty()) {
+						ar.setData(representative);
+						ar.setStatus(APIResponseCode.SUCCESS.toString());
+						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+					}else {
+						throw new EntityNotFoundException();
+					}
 				} else {
 					ar.setStatus(APIResponseCode.FAILURE.toString());
 					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
@@ -94,6 +108,7 @@ public class MerchantRepresentativeDetailsController {
 				ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 			}
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			ar.setStatus(APIResponseCode.FAILURE.toString());
 			ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 		}
@@ -118,6 +133,7 @@ public class MerchantRepresentativeDetailsController {
 					ar.setStatus(APIResponseCode.SUCCESS.toString());
 					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
 				} catch (Exception e) {
+					logger.error(e.getMessage());
 					ar.setStatus(APIResponseCode.FAILURE.toString());
 					ar.setDescription(ResponseMessageCodes.UPDATE_FAILED.toString());
 				}

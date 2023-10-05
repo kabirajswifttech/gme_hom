@@ -1,0 +1,24 @@
+package com.gme.hom.kyc.preferredServices.services;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
+import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreference;
+import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceDTO;
+import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceRequest;
+import com.google.common.base.Optional;
+
+public interface MerchantsServicePreferenceService {
+
+	public List<MerchantsServicePreferenceDTO> getAll();
+
+	public Optional<MerchantsServicePreferenceDTO> getById(Long merchantsServicePreferenceId) throws Exception;
+
+	public List<MerchantsServicePreferenceDTO> getByIdMerchantId(Long merchantId)throws Exception;
+
+	public MerchantsServicePreference update(MerchantsServicePreference merchantServicePref) throws Exception;
+
+	MerchantsServicePreference save(MerchantsServicePreference servicePref);
+	
+}

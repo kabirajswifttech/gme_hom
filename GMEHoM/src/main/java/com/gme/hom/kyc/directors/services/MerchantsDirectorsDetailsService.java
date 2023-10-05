@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsRequest;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetails;
+import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsDTO;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsRequest;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
@@ -17,11 +18,11 @@ public interface MerchantsDirectorsDetailsService {
 
 	MerchantsDirectorsDetails save(MerchantsDirectorsDetails merchantDirectorsDetails) throws NoSuchAlgorithmException, IOException;
 
-	List<MerchantsDirectorsDetails> getAll();
+	List<MerchantsDirectorsDetailsDTO> getAll();
 
-	Optional<MerchantsDirectorsDetails> getById(Long id);
+	Optional<MerchantsDirectorsDetailsDTO> getById(Long id);
 
-	List<MerchantsDirectorsDetails> getByMerchantId(Long id);
+	List<MerchantsDirectorsDetailsDTO> getByMerchantId(Long id);
 
 	MerchantsDirectorsDetails update(MerchantsDirectorsDetails merchantsDirectorsDetails);
 

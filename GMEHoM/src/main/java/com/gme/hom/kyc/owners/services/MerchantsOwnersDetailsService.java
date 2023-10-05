@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetails;
+import com.gme.hom.kyc.owners.model.MerchantsOwnersDetailsDTO;
 
 public interface MerchantsOwnersDetailsService {
 	MerchantsOwnersDetails save(MerchantsOwnersDetails ownersDetails) throws NoSuchAlgorithmException, IOException;
 
-	List<MerchantsOwnersDetails> getAll();
+	List<MerchantsOwnersDetailsDTO> getAll();
 
-	Optional<MerchantsOwnersDetails> getById(long id);
+	Optional<MerchantsOwnersDetailsDTO> getById(long id);
 
-	List<MerchantsOwnersDetails> getByMerchantId(long parseLong);
+	List<MerchantsOwnersDetailsDTO> getByMerchantId(long parseLong);
 
 	MerchantsOwnersDetails update(MerchantsOwnersDetails owner);
 }

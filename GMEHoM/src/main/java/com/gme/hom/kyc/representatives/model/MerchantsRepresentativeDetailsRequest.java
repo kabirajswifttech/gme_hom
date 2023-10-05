@@ -1,7 +1,6 @@
 package com.gme.hom.kyc.representatives.model;
 
 import java.sql.Date;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

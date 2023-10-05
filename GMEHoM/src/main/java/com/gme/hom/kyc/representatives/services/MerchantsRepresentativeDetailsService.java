@@ -3,8 +3,10 @@ package com.gme.hom.kyc.representatives.services;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
+import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
 
 
@@ -15,11 +17,11 @@ public interface MerchantsRepresentativeDetailsService {
 
 	MerchantsRepresentativeDetails save(MerchantsRepresentativeDetails representative);
 
-	List<MerchantsRepresentativeDetails> getAll();
+	List<MerchantsRepresentativeDetailsDTO> getAll();
 
-	MerchantsRepresentativeDetails getById(long merchantsRepresentativeId) throws Exception;
+	Optional<MerchantsRepresentativeDetailsDTO> getById(long merchantsRepresentativeId) throws Exception;
 
-	List<MerchantsRepresentativeDetails> getByMerchantId(long parseLong) throws Exception;
+	List<MerchantsRepresentativeDetailsDTO> getByMerchantId(long parseLong) throws Exception;
 
 	MerchantsRepresentativeDetails update(MerchantsRepresentativeDetails representativeDetails);
 

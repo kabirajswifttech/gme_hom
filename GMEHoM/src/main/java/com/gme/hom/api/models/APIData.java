@@ -97,7 +97,7 @@ public class APIData {
 	
 	@Valid
 	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_representative_detail")
+	@JsonProperty("merchants_representatives_detail")
 	private MerchantsRepresentativeDetailsRequest merchantsRepresentativeDetailsRequest;
 	
 	@Valid
@@ -107,7 +107,7 @@ public class APIData {
 	
 	@Valid
 	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_service_preference_details")
+	@JsonProperty("merchants_service_preference_detail")
 	private MerchantsServicePreferenceRequest merchantServicePreferenceRequest;
 	
 	@Valid
@@ -117,7 +117,7 @@ public class APIData {
 
 	@Valid
 	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_representative_details")
+	@JsonProperty("merchants_representatives_details")
 	private List<MerchantsRepresentativeDetailsRequest> merchantsRepresentativeDetailsRequests;
 
 	@Valid

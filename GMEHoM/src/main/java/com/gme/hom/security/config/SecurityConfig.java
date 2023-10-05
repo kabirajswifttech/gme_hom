@@ -50,6 +50,7 @@ public class SecurityConfig {
 						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_owners_details/**")).permitAll()
 						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_service_preference/**")).permitAll()
 						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_representative_details/**")).permitAll()
+						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_stockholders_details/**")).permitAll()
 						// .requestMatchers(mvcMatcherBuilder.pattern("/documents/**")).permitAll()	// to be authenticated for production
 						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/**")).authenticated().anyRequest()
 						.authenticated())

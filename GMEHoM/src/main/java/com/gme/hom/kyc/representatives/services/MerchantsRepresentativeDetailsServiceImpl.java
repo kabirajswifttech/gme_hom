@@ -11,6 +11,7 @@ import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.codes.MerchantStatusCodes;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
+import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
 import com.gme.hom.kyc.representatives.repositories.MerchantsRepresentativeDetailsRepository;
 import com.gme.hom.security.services.ChecksumService;
@@ -45,22 +46,19 @@ public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepre
 	}
 
 	@Override
-	public List<MerchantsRepresentativeDetails> getAll() {
-		return representativeRepo.findAll();
+	public List<MerchantsRepresentativeDetailsDTO> getAll() {
+		return representativeRepo.findAllRepresentatives();
 	}
 
 	@Override
-	public MerchantsRepresentativeDetails getById(long merchantsRepresentativeId) throws Exception {
-		Optional<MerchantsRepresentativeDetails> representativeOpt =representativeRepo.findById(merchantsRepresentativeId);
-		if(representativeOpt.isEmpty()) {
-			throw new Exception(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
-		}
-		return representativeRepo.findById(merchantsRepresentativeId).get();
+	public Optional<MerchantsRepresentativeDetailsDTO> getById(long merchantsRepresentativeId) throws Exception {
+		return representativeRepo.findRepresentativeById(merchantsRepresentativeId);
+		
 	}
 
 	@Override
-	public List<MerchantsRepresentativeDetails> getByMerchantId(long merchantId) throws Exception {
-		return representativeRepo.findByMerchantId(merchantId);
+	public List<MerchantsRepresentativeDetailsDTO> getByMerchantId(long merchantId) throws Exception {
+		return representativeRepo.findRepresentativesByMerchantId(merchantId);
 		
 	}
 

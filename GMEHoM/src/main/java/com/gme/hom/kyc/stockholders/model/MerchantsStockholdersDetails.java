@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.gme.hom.common.models.PersistenceEntity;
-import com.gme.hom.common.models.PersistenceEntityWithUpdateApproval;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,16 +16,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity(name = "Merchants_stockholders_details")
 @Table(name = "merchants_stockholders_details")
-public class MerchantsStockholdersDetails extends PersistenceEntityWithUpdateApproval {
+@AllArgsConstructor
+@NoArgsConstructor
+public class MerchantsStockholdersDetails extends PersistenceEntity {
 	@Id
-	@SequenceGenerator(name = "merchants_stockholder_details_seq", sequenceName = "merchants_stockholder_details_id_seq", allocationSize = 1)
+	@SequenceGenerator(name = "merchants_stockholder_details_seq", sequenceName = "merchants_stockholders_details_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_stockholder_details_seq")
 	@Column(name = "id", nullable = false)
 	private long id;

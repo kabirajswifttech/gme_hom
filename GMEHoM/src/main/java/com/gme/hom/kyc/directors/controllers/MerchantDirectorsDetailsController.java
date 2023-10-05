@@ -20,6 +20,7 @@ import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetails;
+import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsDTO;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsRequest;
 import com.gme.hom.kyc.directors.services.MerchantsDirectorsDetailsService;
 
@@ -49,7 +50,7 @@ public class MerchantDirectorsDetailsController {
 				directorsDetails = merchantsDirectorsDetailsService.save(directorsDetails);
 				ar.setStatus(APIResponseCode.SUCCESS.toString());
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
-				ar.setData(directorsDetails);
+				ar.setData(directorsDetails.getId());
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE.toString());
@@ -67,11 +68,11 @@ public class MerchantDirectorsDetailsController {
 		APIResponse ar = new APIResponse();
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.ALL.toString())) {
-			if (apiReq.getData().getQuery().getBy() != null) {
+			if (apiReq.getData()!= null) {
 				if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID")
 						&& apiReq.getData().getQuery().getValue() != null) {
 					try {
-						List<MerchantsDirectorsDetails> merchantsDirectorsDetails = merchantsDirectorsDetailsService
+						List<MerchantsDirectorsDetailsDTO> merchantsDirectorsDetails = merchantsDirectorsDetailsService
 								.getByMerchantId(Long.parseLong(apiReq.getData().getQuery().getValue()));
 						if (!merchantsDirectorsDetails.isEmpty()) {
 							ar.setData(merchantsDirectorsDetails);
@@ -93,7 +94,7 @@ public class MerchantDirectorsDetailsController {
 
 			} else {
 				try {
-					List<MerchantsDirectorsDetails> merchantsDirectorsDetails = merchantsDirectorsDetailsService
+					List<MerchantsDirectorsDetailsDTO> merchantsDirectorsDetails = merchantsDirectorsDetailsService
 							.getAll();
 					ar.setData(merchantsDirectorsDetails);
 					ar.setStatus(APIResponseCode.SUCCESS.toString());
@@ -109,7 +110,7 @@ public class MerchantDirectorsDetailsController {
 			if (apiReq.getData().getQuery().getBy().equals("MERCHANTS_DIRECTORS_DETAILS_ID")
 					&& apiReq.getData().getQuery().getValue() != null) {
 				try {
-					Optional<MerchantsDirectorsDetails> merchantsDirectorsDetails = merchantsDirectorsDetailsService
+					Optional<MerchantsDirectorsDetailsDTO> merchantsDirectorsDetails = merchantsDirectorsDetailsService
 							.getById(Long.parseLong(apiReq.getData().getQuery().getValue()));
 					if (!merchantsDirectorsDetails.isEmpty()) {
 						ar.setData(merchantsDirectorsDetails.get());
@@ -150,6 +151,7 @@ public class MerchantDirectorsDetailsController {
 					ar.setDescription(ResponseMessageCodes.UPDATED_SUCCESSFULLY.toString());
 
 				} catch (Exception e) {
+					logger.error(e.getMessage());
 					ar.setStatus(APIResponseCode.FAILURE.toString());
 					ar.setDescription(ResponseMessageCodes.UPDATE_FAILED.toString());
 				}

@@ -1,6 +1,7 @@
 package com.gme.hom.kyc.preferredServices.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,11 @@ import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreference;
+import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceDTO;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceRequest;
 import com.gme.hom.kyc.preferredServices.services.MerchantsServicePreferenceService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -59,9 +62,9 @@ public class MerchantsServicePreferenceController {
 	public ResponseEntity<APIResponse> getMerchantServicePreference(@Valid @RequestBody APIRequest apiReq) {
 		APIResponse ar = new APIResponse();
 		if(apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString()) && apiReq.getScope().equals(APIRequestScopeCode.ALL.toString())) {
-			if(apiReq.getData().getQuery().getBy()==null) {
+			if(apiReq.getData()==null) {
 				try {
-					List<MerchantsServicePreference> merchantsServicePreferences = servicePrefService.getAll();
+					List<MerchantsServicePreferenceDTO> merchantsServicePreferences = servicePrefService.getAll();
 					ar.setData(merchantsServicePreferences);
 					ar.setStatus(APIResponseCode.SUCCESS.toString());
 					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
@@ -73,7 +76,7 @@ public class MerchantsServicePreferenceController {
 			}else if(apiReq.getData().getQuery().getBy().equals("MERCHANT_ID") && apiReq.getData().getQuery().getValue() != null) {
 				try {
 					Long merchantId = Long.parseLong(apiReq.getData().getQuery().getValue());
-					List<MerchantsServicePreference> merchantsServicePreference = servicePrefService.getByIdMerchantId(merchantId);
+					List<MerchantsServicePreferenceDTO> merchantsServicePreference = servicePrefService.getByIdMerchantId(merchantId);
 					ar.setData(merchantsServicePreference);
 					ar.setStatus(APIResponseCode.SUCCESS.toString());
 					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
@@ -91,15 +94,21 @@ public class MerchantsServicePreferenceController {
 			try {
 				if(apiReq.getData().getQuery().getBy().equals("MERCHANTS_SERVICE_PREFERENCE_ID") && apiReq.getData().getQuery().getValue() != null) {
 					Long merchantsServicePreferenceId = Long.parseLong(apiReq.getData().getQuery().getValue());
-					MerchantsServicePreference merchantsServicePreference = servicePrefService.getById(merchantsServicePreferenceId);
-					ar.setData(merchantsServicePreference);
-					ar.setStatus(APIResponseCode.SUCCESS.toString());
-					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+					Optional<MerchantsServicePreferenceDTO> merchantsServicePreference = servicePrefService.getById(merchantsServicePreferenceId);
+					if(!merchantsServicePreference.isEmpty()) {
+						ar.setData(merchantsServicePreference);
+						ar.setStatus(APIResponseCode.SUCCESS.toString());
+						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+					}
+					else {
+						throw new EntityNotFoundException();
+					}
 				}else {
 					ar.setStatus(APIResponseCode.FAILURE.toString());
 					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 				}
 			}catch (Exception e) {
+				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE.toString());
 				ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 			}
@@ -124,6 +133,7 @@ public class MerchantsServicePreferenceController {
 				ar.setStatus(APIResponseCode.SUCCESS.toString());
 				ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());	
 			}catch (Exception e) {
+				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE.toString());
 				ar.setDescription(ResponseMessageCodes.UPDATE_FAILED.toString());
 			}

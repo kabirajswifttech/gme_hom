@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.gme.hom.kyc.owners.model.MerchantsOwnersDetails;
+import com.gme.hom.kyc.owners.model.MerchantsOwnersDetailsDTO;
 import com.gme.hom.kyc.owners.repositories.MerchantsOwnersDetailsRepository;
 
 import lombok.AllArgsConstructor;
@@ -26,18 +27,18 @@ public class MerchantsOwnersDetailsServiceImpl implements MerchantsOwnersDetails
 	}
 
 	@Override
-	public List<MerchantsOwnersDetails> getAll() {
-		return ownersRepo.findAll();
+	public List<MerchantsOwnersDetailsDTO> getAll() {
+		return ownersRepo.findAllOwners();
 	}
 
 	@Override
-	public Optional<MerchantsOwnersDetails> getById(long id) {
-		return ownersRepo.findById(id);
+	public Optional<MerchantsOwnersDetailsDTO> getById(long id) {
+		return ownersRepo.findOwnersById(id);
 	}
 
 	@Override
-	public List<MerchantsOwnersDetails> getByMerchantId(long id) {
-		return ownersRepo.findByMerchantId(id);
+	public List<MerchantsOwnersDetailsDTO> getByMerchantId(long id) {
+		return ownersRepo.findOwnersByMerchantId(id);
 	}
 
 	public MerchantsOwnersDetails update(MerchantsOwnersDetails owner) {

@@ -2,6 +2,8 @@ package com.gme.hom.kyc.bankDetails.controllers;
 
 import java.util.List;
 
+import javax.naming.InsufficientResourcesException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsRequest;
 import com.gme.hom.kyc.bankDetails.services.MerchantsBankDetailsService;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -46,7 +49,7 @@ public class MerchantBankDetailsController {
 				merchantsBankDetails = merchantsBankDetailsService.save(merchantsBankDetails);
 				ar.setData(merchantsBankDetails.getId());
 				ar.setStatus(APIResponseCode.SUCCESS.toString());
-				ar.setDescription("Data Saved!");
+				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE.toString());
@@ -65,10 +68,26 @@ public class MerchantBankDetailsController {
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.GET_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.ALL.toString())) {
 			try {
-				List<MerchantsBankDetailsDTO> merchantsBankDetails = merchantsBankDetailsService.getAll();
-				ar.setData(merchantsBankDetails);
-				ar.setStatus(APIResponseCode.SUCCESS.toString());
-				ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+				if(apiReq.getData()==null) {
+					List<MerchantsBankDetailsDTO> merchantsBankDetails = merchantsBankDetailsService.getAll();
+					ar.setData(merchantsBankDetails);
+					ar.setStatus(APIResponseCode.SUCCESS.toString());
+					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+				}
+				else if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID") && apiReq.getData().getQuery().getValue() != null) {
+					logger.info("merchant id: "+apiReq.getData().getQuery().getValue());
+					Long merchantId = Long.parseLong(apiReq.getData().getQuery().getValue());
+					MerchantsBankDetailsDTO merchantsBankDetails = merchantsBankDetailsService.getByMerchantId(merchantId);
+					if(merchantsBankDetails!=null) {
+						ar.setData(merchantsBankDetails);
+						ar.setStatus(APIResponseCode.SUCCESS.toString());
+						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+					}else {
+						throw new EntityNotFoundException();
+					}
+				}else {
+					throw new InsufficientResourcesException();
+				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE.toString());
@@ -85,14 +104,7 @@ public class MerchantBankDetailsController {
 					ar.setData(merchantsBankDetails);
 					ar.setStatus(APIResponseCode.SUCCESS.toString());
 					ar.setDescription("Data Saved!");
-				} else if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID") && apiReq.getData().getQuery().getValue() != null) {
-					logger.info("merchant id: "+apiReq.getData().getQuery().getValue());
-					Long merchantId = Long.parseLong(apiReq.getData().getQuery().getValue());
-					MerchantsBankDetailsDTO merchantsBankDetails = merchantsBankDetailsService.getByMerchantId(merchantId);
-					ar.setData(merchantsBankDetails);
-					ar.setStatus(APIResponseCode.SUCCESS.toString());
-					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
-				} else {
+				}  else {
 					ar.setStatus(APIResponseCode.FAILURE.toString());
 					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 				}

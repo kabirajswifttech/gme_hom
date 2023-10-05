@@ -6,16 +6,17 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gme.hom.kyc.stockholders.model.MerchantsStockholdersDetails;
+import com.gme.hom.kyc.stockholders.model.MerchantsStockholdersDetailsDTO;
 
 public interface MerchantsStockholdersDetailsService {
 
 	MerchantsStockholdersDetails save(MerchantsStockholdersDetails stockholdersDetails) throws NoSuchAlgorithmException, IOException;
 
-	List<MerchantsStockholdersDetails> getAll();
+	List<MerchantsStockholdersDetailsDTO> getAll();
 
-	Optional<MerchantsStockholdersDetails> getById(long parseLong);
+	Optional<MerchantsStockholdersDetailsDTO> getById(long parseLong);
 
-	List<MerchantsStockholdersDetails> getByMerchantId(long parseLong);
+	List<MerchantsStockholdersDetailsDTO> getByMerchantId(long parseLong);
 
 	MerchantsStockholdersDetails update(MerchantsStockholdersDetails merchantsStockholdersDetails);
 
