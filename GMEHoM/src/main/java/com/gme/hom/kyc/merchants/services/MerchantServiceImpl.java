@@ -19,22 +19,21 @@ import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.merchants.model.Merchant;
 import com.gme.hom.kyc.merchants.model.MerchantDTO;
 import com.gme.hom.kyc.merchants.model.MerchantLog;
-import com.gme.hom.kyc.merchants.repositories.MerchantLogSaveRepo;
+import com.gme.hom.kyc.merchants.repositories.MerchantLogRepository;
 import com.gme.hom.kyc.merchants.repositories.MerchantRepository;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class MerchantServiceImpl implements MerchantService {
-	@Autowired
+	
 	MerchantRepository merchantRepo;
 	
-	@Autowired
-	MerchantLogSaveRepo merchantLogRepo;
+	MerchantLogRepository merchantLogRepo;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MerchantServiceImpl.class);
 
@@ -66,28 +65,32 @@ public class MerchantServiceImpl implements MerchantService {
 	@Override
 	//@Transactional
 	public Merchant update(Merchant merchant) {
+		
+		Merchant newMerchant = merchantRepo.save(merchant);
+		merchantLogRepo.save(new MerchantLog(newMerchant));
+		return merchant;
 		//merchant.setUpdatedBy(UserSecurityService.getUsername());
-		try {
-			Optional<Merchant> merchantDB = merchantRepo.findById(merchant.getId());
-			if(!merchantDB.isEmpty()) {
-				merchant.setMerchantId(merchantDB.get().getMerchantId());
-				System.out.println(merchant);
-				Merchant newMerchant = merchantRepo.save(merchant);
-				System.out.println(newMerchant);
-				MerchantLog mLog = new MerchantLog(newMerchant);
-				mLog.setId(newMerchant.getId());
-				System.out.println(mLog);
-				//System.out.println(merchantLogRepo.save(mLog));;
-				System.out.println(merchantLogRepo.save(mLog));;
-				return merchant;
-			}
-			else {
-				throw new CredentialNotFoundException();
-			}
-		}catch (Exception e) {
-			System.err.println(e);
-		}
-		return null;
+//		try {
+//			Optional<Merchant> merchantDB = merchantRepo.findById(merchant.getId());
+//			if(!merchantDB.isEmpty()) {
+//				merchant.setMerchantId(merchantDB.get().getMerchantId());
+//				System.out.println(merchant);
+//				Merchant newMerchant = merchantRepo.save(merchant);
+//				System.out.println(newMerchant);
+//				MerchantLog mLog = new MerchantLog(newMerchant);
+//				mLog.setId(newMerchant.getId());
+//				System.out.println(mLog);
+//				//System.out.println(merchantLogRepo.save(mLog));;
+//				System.out.println(merchantLogRepo.save(mLog));;
+//				return merchant;
+//			}
+//			else {
+//				throw new CredentialNotFoundException();
+//			}
+//		}catch (Exception e) {
+//			System.err.println(e);
+//		}
+//		return null;
 	}
 
 	@Override

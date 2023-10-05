@@ -1,14 +1,15 @@
 package com.gme.hom.kyc.merchants.model;
 
-
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 import java.sql.Date;
 import java.util.UUID;
 
+import org.hibernate.annotations.GenericGenerator;
 
-import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.common.models.PersistenceEntityWithUpdateApproval;
 import com.gme.hom.kyc.merchants.config.MerchantType;
+import com.gme.hom.users.models.UserSignup;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +19,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -27,28 +27,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity
+@Entity(name = "Merchant_log")
 @Table(name = "merchants_log")
-public class MerchantLog extends PersistenceEntity{
-	
+public class MerchantLog {
+
 	@Id
-	@GeneratedValue
-	Long x;
-	
-	//@Id
-	//@SequenceGenerator(name = "merchants_log_seq", sequenceName = "merchants_log_id_seq", allocationSize = 1)
-	//@GeneratedValue(strategy = SEQUENCE, generator = "merchants_log_seq")
-	@Column(name="id", nullable = false)
+	@SequenceGenerator(name = "merchants_log_log_id_seq", sequenceName = "merchants_log_log_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_log_log_id_seq")
+	@Column(name="log_id", nullable = false)
+    private Long logId;
+    
+	@Column(name="id", nullable = false, updatable = false)
     private Long id;
 	
-    @Column(name="merchant_id", nullable=false)
-    private UUID merchantId;
+    @Column(name="merchant_id", updatable = false, nullable = false)
+    private UUID merchantId = UUID.randomUUID();
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -206,59 +204,91 @@ public class MerchantLog extends PersistenceEntity{
     @Column(name="entity_hash")
     private String entityHash;
 
-    
-    public MerchantLog(Merchant merchant) {
-    	super();
-    	this.id=merchant.getId();
-		this.merchantId = merchant.getMerchantId();
-		this.merchantType = merchant.getMerchantType();
-        this.emailId = merchant.getEmailId();
-        this.phoneCode = merchant.getPhoneCode();
-        this.phoneNumber = merchant.getPhoneNumber();
-        this.incorporationCountry = merchant.getIncorporationCountry();
-        this.businessName = merchant.getBusinessName();
-        this.businessNameNative = merchant.getBusinessNameNative();
-        this.businessType = merchant.getBusinessType();
-        this.industryType = merchant.getIndustryType();
-        this.productType = merchant.getProductType();
-        this.businessNature = merchant.getBusinessNature();
-        this.incorporationDate = merchant.getIncorporationDate();
-        this.bizzRegNo = merchant.getBizzRegNo();
-        this.corpRegNo = merchant.getCorpRegNo();
-        this.businessProfile = merchant.getBusinessProfile();
-        this.postalCode = merchant.getPostalCode();
-        this.address1 = merchant.getAddress1();
-        this.address2 = merchant.getAddress2();
-        this.city = merchant.getCity();
-        this.website = merchant.getWebsite();
-        this.currencyPreference = merchant.getCurrencyPreference();
-        this.approxTxnMonthlyVolume = merchant.getApproxTxnMonthlyVolume();
-        this.approxTxnYearlyVolume = merchant.getApproxTxnYearlyVolume();
-        this.kycStatus = merchant.getKycStatus();
-        this.kycRemarks = merchant.getKycRemarks();
-        this.rbaStatus = merchant.getRbaStatus();
-        this.rbaRemarks = merchant.getRbaRemarks();
-        this.complianceStatus = merchant.getComplianceStatus();
-        this.complianceRemarks = merchant.getComplianceRemarks();
-        this.notificationMethod = merchant.getNotificationMethod();
-        this.preferredDateFormat = merchant.getPreferredDateFormat();
-        this.preferredTimeZone = merchant.getPreferredTimeZone();
-        this.securityStamp = merchant.getSecurityStamp();
-        this.termsConditionsAccepted = merchant.getTermsConditionsAccepted();
-        this.privacyPolicyAccepted = merchant.getPrivacyPolicyAccepted();
-        this.pricingPolicyAccepted = merchant.getPricingPolicyAccepted();
-        this.marketingEmailSubscription = merchant.getMarketingEmailSubscription();
-        this.remarks = merchant.getRemarks();
-        this.extMapId1 = merchant.getExtMapId1();
-        this.extMapId2 = merchant.getExtMapId2();
-        this.extMapId3 = merchant.getExtMapId3();
-        this.refCol1 = merchant.getRefCol1();
-        this.refCol2 = merchant.getRefCol2();
-        this.refCol3 = merchant.getRefCol3();
-        this.refCol4 = merchant.getRefCol4();
-        this.refCol5 = merchant.getRefCol5();
-    	this.entityHash = merchant.getEntityHash();
-    }
+	@Column(name = "created_by", nullable = false)
+	private String createdBy;
+
+	// @CreationTimestamp
+	// @GeneratedValue
+	@Column(name = "created_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Date createdDate;
+
+	// @CreationTimestamp
+	@Column(name = "created_date_utc", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Date createdDateUTC;
+
+	public MerchantLog(Merchant m) {
+		super();
+		this.id = m.getId();
+		this.merchantId = m.getMerchantId();
+		this.merchantType = m.getMerchantType();
+		this.emailId = m.getEmailId();
+		this.phoneCode = m.getPhoneCode();
+		this.phoneNumber = m.getPhoneNumber();
+		this.incorporationCountry = m.getIncorporationCountry();
+		this.businessName = m.getBusinessName();
+		this.businessNameNative = m.getBusinessNameNative();
+		this.businessType = m.getBusinessType();
+		this.industryType = m.getIndustryType();
+		this.productType = m.getProductType();
+		this.businessNature = m.getBusinessNature();
+		this.incorporationDate = m.getIncorporationDate();
+		this.bizzRegNo = m.getBizzRegNo();
+		this.corpRegNo = m.getCorpRegNo();
+		this.businessProfile = m.getBusinessProfile();
+		this.postalCode = m.getPostalCode();
+		this.address1 = m.getAddress1();
+		this.address2 = m.getAddress2();
+		this.city = m.getCity();
+		this.website = m.getWebsite();
+		this.currencyPreference = m.getCurrencyPreference();
+		this.approxTxnMonthlyVolume = m.getApproxTxnMonthlyVolume();
+		this.approxTxnYearlyVolume = m.getApproxTxnYearlyVolume();
+		this.kycStatus = m.getKycStatus();
+		this.kycRemarks = m.getKycRemarks();
+		this.rbaStatus = m.getRbaStatus();
+		this.rbaRemarks = m.getRbaRemarks();
+		this.complianceStatus = m.getComplianceStatus();
+		this.complianceRemarks = m.getComplianceRemarks();
+		this.docPath = m.getDocPath();
+		this.notificationMethod = m.getNotificationMethod();
+		this.preferredDateFormat = m.getPreferredDateFormat();
+		this.preferredTimeZone = m.getPreferredTimeZone();
+		this.securityStamp = m.getSecurityStamp();
+		this.termsConditionsAccepted = m.getTermsConditionsAccepted();
+		this.privacyPolicyAccepted = m.getPrivacyPolicyAccepted();
+		this.pricingPolicyAccepted = m.getPricingPolicyAccepted();
+		this.marketingEmailSubscription = m.getMarketingEmailSubscription();
+		this.status = m.getStatus();
+		this.isActive = m.getIsActive();
+		this.remarks = m.getRemarks();
+		this.extMapId1 = m.getExtMapId1();
+		this.extMapId2 = m.getExtMapId2();
+		this.extMapId3 = m.getExtMapId3();
+		this.refCol1 = m.getRefCol1();
+		this.refCol2 = m.getRefCol2();
+		this.refCol3 = m.getRefCol3();
+		this.refCol4 = m.getRefCol4();
+		this.refCol5 = m.getRefCol5();
+		this.entityHash = m.getEntityHash();
+	}
+
+   
+	
+
+
+	
+
 	
 	
+
+
+
+	
+	
+
+	
+	
+	
+	
+
 }

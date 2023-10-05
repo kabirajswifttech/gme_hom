@@ -11,7 +11,9 @@ import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.codes.MerchantStatusCodes;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetails;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsDTO;
+import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsLog;
 import com.gme.hom.kyc.directors.model.MerchantsDirectorsDetailsRequest;
+import com.gme.hom.kyc.directors.repositories.MerchantsDirectorsDetailsLogRepository;
 import com.gme.hom.kyc.directors.repositories.MerchantsDirectorsDetailsRepository;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
@@ -23,13 +25,19 @@ import lombok.AllArgsConstructor;
 public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsDetailsService{
 	
 	private MerchantsDirectorsDetailsRepository directorsRepo;
+	private MerchantsDirectorsDetailsLogRepository directorsLogRepo;
 	@Override
 	public MerchantsDirectorsDetails addMerchantDirectorsDetails(MerchantsDirectorsDetailsRequest directorsReq, Long merchantId) {
 		MerchantsDirectorsDetails director = new MerchantsDirectorsDetails(directorsReq);
 		director.setMerchantId(merchantId);
 		director.setActive(true);
 		director.setStatus(MerchantStatusCodes.PENDING.toString());
-		return directorsRepo.save(director);
+		director = directorsRepo.save(director);
+		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(director);
+		directorsLog.setId(director.getId());
+		directorsLogRepo.save(directorsLog);
+		return director;
+		
 	}
 	@Override
 	public MerchantsDirectorsDetails save(MerchantsDirectorsDetails directorsDetails) throws NoSuchAlgorithmException, IOException {
@@ -37,7 +45,11 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 		directorsDetails.setEntityHash(ChecksumService.getChecksum(directorsDetails, GlobalConfig.DATA_ENTITY_HASH));
 		directorsDetails.setActive(true);
 		directorsDetails.setStatus(MerchantStatusCodes.PENDING.toString());
-		return directorsRepo.save(directorsDetails);
+		directorsDetails = directorsRepo.save(directorsDetails);
+		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(directorsDetails);
+		directorsLog.setId(directorsDetails.getId());
+		directorsLogRepo.save(directorsLog);
+		return directorsDetails;
 	}
 	@Override
 	public List<MerchantsDirectorsDetailsDTO> getAll() {
@@ -52,9 +64,13 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 		return directorsRepo.findByMerchantId(id);
 	}
 	@Override
-	public MerchantsDirectorsDetails update(MerchantsDirectorsDetails merchantsDirectorsDetails) {
+	public MerchantsDirectorsDetails update(MerchantsDirectorsDetails directorsDetails) {
 		//merchantsDirectorsDetails.setCreatedBy(UserSecurityService.getUsername());
-		return directorsRepo.save(merchantsDirectorsDetails);
+		directorsDetails = directorsRepo.save(directorsDetails);
+		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(directorsDetails);
+		directorsLog.setId(directorsDetails.getId());
+		directorsLogRepo.save(directorsLog);
+		return directorsDetails;
 	}
 
 }

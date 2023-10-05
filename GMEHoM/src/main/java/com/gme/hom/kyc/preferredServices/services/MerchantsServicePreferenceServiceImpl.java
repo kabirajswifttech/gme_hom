@@ -13,6 +13,8 @@ import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.codes.MerchantStatusCodes;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreference;
 import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceDTO;
+import com.gme.hom.kyc.preferredServices.model.MerchantsServicePreferenceLog;
+import com.gme.hom.kyc.preferredServices.repositories.MerchantsServicePreferenceLogRepository;
 import com.gme.hom.kyc.preferredServices.repositories.MerchantsServicePreferenceRepository;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
@@ -24,6 +26,7 @@ import lombok.AllArgsConstructor;
 public class MerchantsServicePreferenceServiceImpl implements MerchantsServicePreferenceService {
 	
 	private MerchantsServicePreferenceRepository servicePreferenceRepo;
+	private MerchantsServicePreferenceLogRepository servicePreferenceLogRepo;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MerchantsServicePreferenceServiceImpl.class);
 	
@@ -33,7 +36,10 @@ public class MerchantsServicePreferenceServiceImpl implements MerchantsServicePr
 		servicePref.setEntityHash(ChecksumService.getChecksum(servicePref, GlobalConfig.DATA_ENTITY_HASH));
 		servicePref.setActive(true);
 		servicePref.setStatus(MerchantStatusCodes.PENDING.toString());
-		return servicePreferenceRepo.save(servicePref);
+		servicePref = servicePreferenceRepo.save(servicePref);
+		MerchantsServicePreferenceLog serviceLog = new MerchantsServicePreferenceLog(servicePref);
+		servicePreferenceLogRepo.save(serviceLog);
+		return servicePref;
 	}
 
 	@Override
@@ -55,7 +61,10 @@ public class MerchantsServicePreferenceServiceImpl implements MerchantsServicePr
 	public MerchantsServicePreference update(MerchantsServicePreference servicePref)
 			throws Exception {
 		//servicePref.setUpdatedBy(UserSecurityService.getUsername());
-		return servicePreferenceRepo.save(servicePref);
+		servicePref = servicePreferenceRepo.save(servicePref);
+		MerchantsServicePreferenceLog serviceLog = new MerchantsServicePreferenceLog(servicePref);
+		servicePreferenceLogRepo.save(serviceLog);
+		return servicePref;
 	}
 
 	

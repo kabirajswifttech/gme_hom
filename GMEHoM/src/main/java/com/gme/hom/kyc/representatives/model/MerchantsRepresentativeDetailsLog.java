@@ -23,20 +23,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name="Merchants_representative_details")
-@Table(name="merchants_representative_details")
+@Entity(name="Merchants_representative_details_log")
+@Table(name="merchants_representative_details_log")
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class MerchantsRepresentativeDetails extends PersistenceEntity{
+public class MerchantsRepresentativeDetailsLog {
 	@Id
-	@SequenceGenerator(name = "merchants_representative_details_seq", sequenceName = "merchants_representative_details_id_seq", allocationSize = 1)
+	@SequenceGenerator(name = "merchants_representative_details_seq", sequenceName = "merchants_representative_details_log_log_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_representative_details_seq")
+	@Column(name="log_id", nullable = false)
+    private Long logId;
+    
 	@Column(name="id", nullable = false)
     private long id;
 	
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @Column(name="merchant_representative_id", nullable = false)
     private UUID merchantRepresentativeId;
 
@@ -95,28 +96,48 @@ public class MerchantsRepresentativeDetails extends PersistenceEntity{
     private String status;
 
     @Column(name="is_active")
-    private Boolean isActive;
+    private boolean isActive;
 
     @Column(name="entity_hash")
     private String entityHash;
+    
+	@Column(name = "created_by", nullable = false)
+	private String createdBy;
 
-    public MerchantsRepresentativeDetails(MerchantsRepresentativeDetailsRequest merchantRepresentativeRequest) {
-        this.merchantId = merchantRepresentativeRequest.getMerchantId();
-        this.firstName = merchantRepresentativeRequest.getFirstName();
-        this.middleName = merchantRepresentativeRequest.getMiddleName();
-        this.lastName = merchantRepresentativeRequest.getLastName();
-        this.fullName = merchantRepresentativeRequest.getFullName();
-        this.fullNameNative = merchantRepresentativeRequest.getFullNameNative();
-        this.designation = merchantRepresentativeRequest.getDesignation();
-        this.nationality = merchantRepresentativeRequest.getNationality();
-        this.phoneCode = merchantRepresentativeRequest.getPhoneCode();
-        this.phoneNumber = merchantRepresentativeRequest.getPhoneNumber();
-        this.emailId = merchantRepresentativeRequest.getEmailId();
-        this.dob = merchantRepresentativeRequest.getDob();
-        this.residenceCountry = merchantRepresentativeRequest.getResidenceCountry();
-        this.postalCode = merchantRepresentativeRequest.getPostalCode();
-        this.address1 = merchantRepresentativeRequest.getAddress1();
-        this.address2 = merchantRepresentativeRequest.getAddress2();
-        this.city = merchantRepresentativeRequest.getCity();
-    } 
+	// @CreationTimestamp
+	// @GeneratedValue
+	@Column(name = "created_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Date createdDate;
+
+	// @CreationTimestamp
+	@Column(name = "created_date_utc", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Date createdDateUTC;
+
+   	public MerchantsRepresentativeDetailsLog(MerchantsRepresentativeDetails m) {
+
+		this.id = m.getId();
+		this.merchantRepresentativeId = m.getMerchantRepresentativeId();
+		this.merchantId = m.getMerchantId();
+		this.firstName = m.getFirstName();
+		this.middleName = m.getMiddleName();
+		this.lastName = m.getLastName();
+		this.fullName = m.getFullName();
+		this.fullNameNative = m.getFullNameNative();
+		this.designation = m.getDesignation();
+		this.nationality = m.getNationality();
+		this.phoneCode = m.getPhoneCode();
+		this.phoneNumber = m.getPhoneNumber();
+		this.emailId = m.getEmailId();
+		this.dob = m.getDob();
+		this.residenceCountry = m.getResidenceCountry();
+		this.postalCode = m.getPostalCode();
+		this.address1 = m.getAddress1();
+		this.address2 = m.getAddress2();
+		this.city = m.getCity();
+		this.status = m.getStatus();
+		this.isActive = m.getIsActive();
+		this.entityHash = m.getEntityHash();
+	} 
+    
+    
 }

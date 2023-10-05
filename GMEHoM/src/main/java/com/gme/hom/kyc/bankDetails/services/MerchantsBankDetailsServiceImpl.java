@@ -13,13 +13,16 @@ import org.springframework.stereotype.Service;
 import com.gme.hom.GlobalConfig;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetails;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsDTO;
+import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsLog;
 import com.gme.hom.kyc.bankDetails.model.MerchantsBankDetailsRequest;
+import com.gme.hom.kyc.bankDetails.repositories.MerchantsBankDetailsLogRepository;
 import com.gme.hom.kyc.bankDetails.repositories.MerchantsBankDetailsRepository;
 import com.gme.hom.kyc.codes.MerchantStatusCodes;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -27,10 +30,12 @@ import lombok.AllArgsConstructor;
 public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsService{
 	
 	MerchantsBankDetailsRepository bankDetailsRepo;
+	MerchantsBankDetailsLogRepository bankDetailsLogRepo;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MerchantsBankDetailsServiceImpl.class);
 	
 	@Override
+	@Transactional
 	public MerchantsBankDetails addMerchantBankDetails(MerchantsBankDetailsRequest bankDetailsReq, Long merchantId) throws NoSuchAlgorithmException, IOException {
 		MerchantsBankDetails bankDetails = new MerchantsBankDetails(bankDetailsReq);
 		bankDetails.setCreatedBy(UserSecurityService.getUsername());
@@ -38,7 +43,11 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 		bankDetails.setMerchantId(merchantId);
 		bankDetails.setActive(true);
 		bankDetails.setStatus(MerchantStatusCodes.PENDING.toString());
-		return bankDetailsRepo.save(bankDetails);
+		bankDetails = bankDetailsRepo.save(bankDetails);
+		MerchantsBankDetailsLog bankDetaiilsLog = new MerchantsBankDetailsLog(bankDetails);
+		bankDetaiilsLog.setId(bankDetails.getId());
+		bankDetailsLogRepo.save(new MerchantsBankDetailsLog(bankDetails));
+		return bankDetails;
 	}
 
 	@Override
@@ -77,7 +86,11 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 	public MerchantsBankDetails update(MerchantsBankDetailsRequest merchantBankDetailsReq) {
 		MerchantsBankDetails bankDetails = new MerchantsBankDetails(merchantBankDetailsReq);
 		//merchantsBankDetails.setUpdatedBy(UserSecurityService.getUsername());			//move to service
-		return bankDetailsRepo.save(bankDetails);
+		bankDetails = bankDetailsRepo.save(bankDetails);
+		MerchantsBankDetailsLog bankDetaiilsLog = new MerchantsBankDetailsLog(bankDetails);
+		bankDetaiilsLog.setId(bankDetails.getId());
+		bankDetailsLogRepo.save(new MerchantsBankDetailsLog(bankDetails));
+		return bankDetails;
 	}
 
 

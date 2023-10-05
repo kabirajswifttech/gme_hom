@@ -12,7 +12,9 @@ import com.gme.hom.kyc.codes.MerchantStatusCodes;
 import com.gme.hom.kyc.codes.ResponseMessageCodes;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetails;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsDTO;
+import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsLog;
 import com.gme.hom.kyc.representatives.model.MerchantsRepresentativeDetailsRequest;
+import com.gme.hom.kyc.representatives.repositories.MerchantsRepresentativeDetailsLogRepository;
 import com.gme.hom.kyc.representatives.repositories.MerchantsRepresentativeDetailsRepository;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
@@ -24,6 +26,7 @@ import lombok.AllArgsConstructor;
 public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepresentativeDetailsService{
 	
 	MerchantsRepresentativeDetailsRepository representativeRepo;
+	MerchantsRepresentativeDetailsLogRepository representativeLogRepo;
 
 	@Override
 	public MerchantsRepresentativeDetails addMerchantRepresentativesDetails(MerchantsRepresentativeDetailsRequest representativeReq,
@@ -34,7 +37,10 @@ public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepre
 		representative.setMerchantId(merchantId);
 		representative.setActive(true);
 		representative.setStatus(MerchantStatusCodes.PENDING.toString());
-		return representativeRepo.save(representative);
+		representative = representativeRepo.save(representative);
+		MerchantsRepresentativeDetailsLog representativeLog = new MerchantsRepresentativeDetailsLog(representative);
+		representativeLogRepo.save(representativeLog);
+		return representative;
 	}
 
 	@Override
@@ -63,9 +69,12 @@ public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepre
 	}
 
 	@Override
-	public MerchantsRepresentativeDetails update(MerchantsRepresentativeDetails representativeDetails) {
+	public MerchantsRepresentativeDetails update(MerchantsRepresentativeDetails representative) {
 		//representativeDetails.setUpdatedBy(UserSecurityService.getUsername());
-		return representativeRepo.save(representativeDetails);
+		representative = representativeRepo.save(representative);
+		MerchantsRepresentativeDetailsLog representativeLog = new MerchantsRepresentativeDetailsLog(representative);
+		representativeLogRepo.save(representativeLog);
+		return representative;
 	}
 
 }
