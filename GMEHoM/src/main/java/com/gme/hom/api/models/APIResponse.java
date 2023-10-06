@@ -3,7 +3,12 @@ package com.gme.hom.api.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gme.hom.api.config.APIResponseCode;
+import com.gme.hom.api.config.APIResponseScopeCode;
+import com.gme.hom.api.config.APIStatusCode;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,14 +18,18 @@ import lombok.Setter;
 public class APIResponse {
 
 	@NotNull
-	private String status;
-
+	@Enumerated(EnumType.STRING)
 	@JsonInclude(Include.NON_NULL)
+	private APIResponseCode status;
+	
 	@JsonProperty("status_code")
-	private String statusCode;
-
 	@JsonInclude(Include.NON_NULL)
-	private String scope;
+	private APIStatusCode statusCode;
+
+
+	@Enumerated(EnumType.STRING)
+	@JsonInclude(Include.NON_NULL)
+	private APIResponseScopeCode scope;
 
 	@JsonInclude(Include.NON_NULL)
 	private String description;

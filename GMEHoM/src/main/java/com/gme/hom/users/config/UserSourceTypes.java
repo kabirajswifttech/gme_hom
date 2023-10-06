@@ -1,7 +1,8 @@
 package com.gme.hom.users.config;
 
 public enum UserSourceTypes {
-	MERCHANT("MERCHANT");
+	MERCHANT("MERCHANT"),
+	PARTNER("PARTNER");
 	
 	private final String name;
 

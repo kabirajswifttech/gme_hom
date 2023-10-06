@@ -1,7 +1,0 @@
-package com.gme.hom.kyc.stockholders.repositories;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface MerchantsStockholderDetailsLogRepository extends JpaRepository<T, ID> {
-
-}

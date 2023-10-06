@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.gme.hom.category.models.Category;
-import com.gme.hom.category.models.CategoryDTO;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {

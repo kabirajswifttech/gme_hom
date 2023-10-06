@@ -1,5 +1,0 @@
-package com.gme.hom.kyc.owners.services;
-
-public interface MerchantsOwnersDetailsService {
-
-}

@@ -11,6 +11,7 @@ import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
 import com.gme.hom.messaging.models.Message;
+import com.gme.hom.messaging.models.MessageReceiver;
 import com.gme.hom.messaging.models.MessageRequest;
 import com.gme.hom.messaging.services.MessagingService;
 
@@ -41,10 +42,15 @@ public class MessagingController {
 			if (mr != null) {
 				
 				Message m = new Message(mr);
+				
+				MessageReceiver messageReceiver = new MessageReceiver();
+				
+				messageReceiver.setFullname("GME House of Merchants");
+				messageReceiver.setMessage("Hello");
 
-				if (messagingService.sendMessage(m)) {
+				if (messagingService.sendMessage(m, messageReceiver)) {
 
-					ar.setStatus(APIResponseCode.SUCCESS.toString());
+					ar.setStatus(APIResponseCode.SUCCESS);
 
 					ar.setData(mr.getContactInfo());
 
@@ -58,7 +64,7 @@ public class MessagingController {
 			}
 
 		}
-		ar.setStatus(APIResponseCode.FAILURE.toString());
+		ar.setStatus(APIResponseCode.FAILURE);
 
 		return ResponseEntity.ok(ar);
 

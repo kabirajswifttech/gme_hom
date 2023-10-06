@@ -50,13 +50,13 @@ public class DocumentsController {
 
 				if (success) {
 
-					ar.setStatus(APIResponseCode.SUCCESS.toString());
+					ar.setStatus(APIResponseCode.SUCCESS);
 
 					// ar.setData(mr.getContactInfo());
 
 					ar.setDescription("Documents upload successful.");
 				} else {
-					ar.setStatus(APIResponseCode.FAILURE.toString());
+					ar.setStatus(APIResponseCode.FAILURE);
 
 					// ar.setData(mr.getContactInfo());
 
@@ -67,7 +67,7 @@ public class DocumentsController {
 			}
 
 		}
-		ar.setStatus(APIResponseCode.FAILURE.toString());
+		ar.setStatus(APIResponseCode.FAILURE);
 
 		return ResponseEntity.ok(ar);
 

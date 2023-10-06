@@ -3,7 +3,6 @@ package com.gme.hom.api.config;
 public enum APIRequestFunctionCode {
 	SEARCH("SEARCH"), 
 	ADD_DATA("ADD_DATA"),
-	GET_DATA("GET_DATA"),
 	UPDATE_DATA("UPDATE_DATA"),
 	VALIDATE("VALIDATE"),
 	GENERATE("GENERATE"),

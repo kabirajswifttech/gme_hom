@@ -39,21 +39,23 @@ public class SecurityConfig {
 		MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
 		return http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(auth -> auth.requestMatchers(mvcMatcherBuilder.pattern("/internal/**")).permitAll() // to be denyAll for production
-						.requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/common/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/test/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/signup/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchant/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchant_bank_details/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_directors_details/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_owners_details/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_service_preference/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_representative_details/**")).permitAll()
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/merchants_stockholders_details/**")).permitAll()
-						// .requestMatchers(mvcMatcherBuilder.pattern("/documents/**")).permitAll()	// to be authenticated for production
-						.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/**")).authenticated().anyRequest()
-						.authenticated())
+				.authorizeHttpRequests(
+						auth -> auth.requestMatchers(mvcMatcherBuilder.pattern("/internal/**")).permitAll() // to be
+																											// denyAll
+																											// for
+																											// production
+								.requestMatchers(mvcMatcherBuilder.pattern("/common/**")).permitAll()
+								.requestMatchers(mvcMatcherBuilder.pattern("/test/**")).permitAll()
+								.requestMatchers(mvcMatcherBuilder.pattern("/signup/**")).permitAll()
+								.requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll()
+								// .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/*")).permitAll()
+								// .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui")).permitAll()
+								// .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
+								// .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/*")).permitAll()
+								// .requestMatchers(mvcMatcherBuilder.pattern("/documents/**")).permitAll() //
+								// to be authenticated for production
+								.requestMatchers(mvcMatcherBuilder.pattern("/api/v1/**")).authenticated().anyRequest()
+								.authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 				.userDetailsService(jpaUserDetailsService).build();
@@ -61,6 +63,7 @@ public class SecurityConfig {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
+		// return NoOpPasswordEncoder.getInstance();
 		return new BCryptPasswordEncoder();
 	}
 

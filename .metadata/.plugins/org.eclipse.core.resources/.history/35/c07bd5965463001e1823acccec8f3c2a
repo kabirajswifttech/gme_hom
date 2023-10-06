@@ -1,7 +1,0 @@
-package com.gme.hom.kyc.owners.repositories;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface MerchantsOwnersDetailsLogRepository extends JpaRepository<T, ID> {
-
-}

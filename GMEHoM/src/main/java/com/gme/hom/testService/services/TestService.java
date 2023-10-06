@@ -1,5 +1,7 @@
 package com.gme.hom.testService.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.gme.hom.testService.models.Test;
@@ -9,6 +11,9 @@ import com.gme.hom.testService.models.Test;
 public class TestService {
 
 	Test test;
+	
+	@Autowired
+	Environment env;
 
 	public TestService() {
 		test = new Test();

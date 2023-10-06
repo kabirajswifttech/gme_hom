@@ -28,7 +28,7 @@ public class DocumentRequest {
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty(value="source_id", required=true)
-    private long sourceId;
+    private Long sourceId;
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("association_type")
@@ -36,7 +36,7 @@ public class DocumentRequest {
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("association_id")
-    private String associationId;
+    private Long associationId;
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("doc_path")

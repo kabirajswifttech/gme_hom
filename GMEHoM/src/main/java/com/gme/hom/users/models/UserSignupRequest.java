@@ -56,6 +56,10 @@ public class UserSignupRequest {
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("signup_source")
     private String signupSource;
+    
+    @NotNull
+    @JsonProperty("full_name")
+	protected String fullName;
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("password")

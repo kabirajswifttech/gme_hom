@@ -1,5 +1,0 @@
-package com.gme.hom.kyc.merchants.repositories;
-
-public class MerchantLogSaveRepo {
-
-}

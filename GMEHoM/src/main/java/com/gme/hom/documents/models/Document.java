@@ -31,7 +31,7 @@ public class Document extends PersistenceEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documents_sequence")
 	@SequenceGenerator(name = "documents_sequence", sequenceName = "documents_id_seq", allocationSize = 1)
 	@Column(name = "id", updatable = false)
-	private long id;
+	private Long id;
 
 	@Column(name = "doc_id")
 	private UUID docId;
@@ -46,13 +46,13 @@ public class Document extends PersistenceEntity implements Serializable {
 	private String sourceType;
 
 	@Column(name = "source_id")
-	private long sourceId;
+	private Long sourceId;
 
 	@Column(name = "association_type")
 	private String associationType;
 
 	@Column(name = "association_id")
-	private String associationId;
+	private Long associationId;
 
 	@Column(name = "doc_path")
 	private String docPath;

@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
 import com.gme.hom.auth.components.JwtUtils;
-import com.gme.hom.auth.config.AuthStatusCode;
+import com.gme.hom.auth.config.AuthStatusCodes;
 import com.gme.hom.auth.models.AuthResponse;
 import com.gme.hom.users.repository.UserRepository;
-import com.gme.hom.usersecurity.config.UserSecurityStatus;
+import com.gme.hom.usersecurity.config.UserSecurityStatusCodes;
 import com.gme.hom.usersecurity.models.UserAuthRequest;
-import com.gme.hom.usersecurity.models.UserSecurityDTO;
+import com.gme.hom.usersecurity.repository.UserSecurityDTO;
 import com.gme.hom.usersecurity.services.UserSecurityDetailsService;
 
 import jakarta.servlet.http.Cookie;
@@ -37,35 +37,11 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	JwtUtils jwtUtils;
+	
+	@Autowired
+	OtpService otpService;
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
-
-	public AuthResponse authenticateUser(UserAuthRequest userAuthRequest) {
-
-		AuthResponse authResponse = new AuthResponse();
-
-		authResponse.setAuthStatus(AuthStatusCode.BAD_CREDENTIALS);
-
-		// Obtain user details first
-		UserSecurityDTO usDTO = userRepository.getUserSecurityDetails(userAuthRequest.getUsername());
-
-		// If user details are available
-		if (usDTO != null) {
-			if (usDTO.getStatus().equals(UserSecurityStatus.ACTIVE.toString()) && usDTO.getIs_active()
-					&& usDTO.getIs_email_id_verified()) {
-
-				String jwt = authenticateUserJwt(userAuthRequest.getUsername(), userAuthRequest.getPassword());
-
-				if (jwt != null) {
-
-					authResponse.setAuthStatus(AuthStatusCode.AUTHENTICATED);
-					authResponse.setJwt(jwt);
-				}
-			}
-		}
-
-		return authResponse;
-	}
 
 	// Authenticate user then generate jwt
 	private String authenticateUserJwt(String username, String password) {
@@ -99,6 +75,33 @@ public class AuthServiceImpl implements AuthService {
 		return null;
 	}
 
+	public AuthResponse authenticateUser(UserAuthRequest userAuthRequest) {
+
+		AuthResponse authResponse = new AuthResponse();
+
+		authResponse.setAuthStatus(AuthStatusCodes.BAD_CREDENTIALS);
+
+		// Obtain user details first
+		UserSecurityDTO usDTO = userRepository.getUserSecurityDetails(userAuthRequest.getUsername());
+
+		// If user details are available
+		if (usDTO != null) {
+			if (usDTO.getStatus().equals(UserSecurityStatusCodes.ACTIVE.toString()) && usDTO.getIs_active()
+					&& usDTO.getIs_email_id_verified()) {
+
+				String jwt = authenticateUserJwt(userAuthRequest.getUsername(), userAuthRequest.getPassword());
+
+				if (jwt != null) {
+
+					authResponse.setAuthStatus(AuthStatusCodes.AUTHENTICATED);
+					authResponse.setJwt(jwt);
+				}
+			}
+		}
+
+		return authResponse;
+	}
+
 	// Generate cookie
 	public Cookie generateCookie(String jwt) {
 
@@ -112,6 +115,8 @@ public class AuthServiceImpl implements AuthService {
 
 		return cookie;
 	}
+	
+
 
 	/*
 	 * public Optional<User> AddUser(UserRequest user) {

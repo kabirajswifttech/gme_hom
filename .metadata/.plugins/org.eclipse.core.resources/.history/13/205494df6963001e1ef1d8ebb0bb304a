@@ -1,5 +1,0 @@
-package com.gme.hom.kyc.codes;
-
-public enum FindByCodes {
-	MERCHANT_ID
-}

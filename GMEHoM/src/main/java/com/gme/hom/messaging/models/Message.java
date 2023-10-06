@@ -5,11 +5,15 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 import java.io.Serializable;
 import java.util.UUID;
 
+import com.gme.hom.common.models.EntityTypes;
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.messaging.config.MessagePurposeCodes;
 import com.gme.hom.messaging.config.MessageTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
@@ -40,7 +44,8 @@ public class Message extends PersistenceEntity implements Serializable{
 	@Column(name = "message_queue_id")
 	private UUID messageQueueId;
 
-	
+
+	@Enumerated(EnumType.STRING)
 	@Column(name = "message_type")
 	private MessageTypes messageType;
 
@@ -65,14 +70,17 @@ public class Message extends PersistenceEntity implements Serializable{
 	@Column(name = "association_id")
 	private long associationId;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "association_type")
-	private String associationType;
+	private EntityTypes associationType;
 
+	
 	@Column(name = "purpose_id")
 	private long purposeId;
 
+	@Enumerated(EnumType.STRING)	
 	@Column(name = "purpose_type")
-	private String purposeType;
+	private MessagePurposeCodes purposeCode;
 
 	@Column(name = "status")
 	private String status;
@@ -96,9 +104,9 @@ public class Message extends PersistenceEntity implements Serializable{
 		this.content = mr.getContent();
 		this.subject = mr.getSubject();
 		this.associationId = mr.getAssociationId();
-		this.associationType = mr.getAssociationType();
+		this.associationType = EntityTypes.valueOf(mr.getAssociationType());
 		this.purposeId = mr.getPurposeId();
-		this.purposeType = mr.getPurposeType();
+		this.purposeCode = MessagePurposeCodes.valueOf(mr.getPurposeType());
 		this.status = mr.getStatus();
 		this.scheduleTime = mr.getScheduleTime();
 		this.scheduleTimeUtc = mr.getScheduleTimeUtc();

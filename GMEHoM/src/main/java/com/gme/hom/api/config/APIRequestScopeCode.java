@@ -7,7 +7,8 @@ public enum APIRequestScopeCode {
 	BYKEYWORD("BYKEYWORD"),
 	BYSUBTYPE("BYSUBTYPE"),
 	EMAILOTP("EMAILOTP"),
-	SMSOTP("SMSOTP");
+	SMSOTP("SMSOTP"),
+	BYID("BYID");
 	
 	private final String name;
 

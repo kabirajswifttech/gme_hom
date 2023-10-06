@@ -1,9 +1,0 @@
-package com.gme.hom.kyc.merchants.services;
-
-import com.gme.hom.kyc.merchants.repositories.MerchantLogRepository;
-
-public abstract class MerchantLogRepositoryImpl implements MerchantLogRepository {
-
-	
-
-}

@@ -1,7 +1,9 @@
 package com.gme.hom.users.models;
 
-import java.sql.Date;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -13,111 +15,155 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserRequest {
 
-	@JsonProperty("first_name")
-	private String firstName;
+	  @JsonInclude(Include.NON_NULL)
+	    @JsonProperty("id")
+	    private Long id;
 
-	@JsonProperty("middle_name")
-	private String middleName;
+	    @JsonProperty("user_id")
+	    private UUID userId;
 
-	@JsonProperty("last_name")
-	private String lastName;
+	    @JsonProperty("username")
+	    private String username;
 
-	@JsonProperty("email_id")
-	private String emailId;
+	    @JsonProperty("email_id")
+	    private String emailId;
 
-	@JsonProperty("password")
-	private String password;
+	    @JsonProperty("user_type")
+	    private String userType;
 
-	@JsonProperty("roles")
-	private String roles;
+	    @JsonProperty("password")
+	    private String password;
 
-	@JsonProperty("username")
-	private String username;
+	    @JsonProperty("txn_pwd")
+	    private String txnPwd;
 
-	@JsonProperty("txn_pwd")
-	private String txnPwd;
+	    @JsonProperty("security_stamp")
+	    private String securityStamp;
 
-	@JsonProperty("security_stamp")
-	private String securityStamp;
+	    @JsonProperty("phone_code")
+	    private String phoneCode;
 
-	@JsonProperty("phone_code")
-	private String phoneCode;
+	    @JsonProperty("phone_number")
+	    private String phoneNumber;
 
-	@JsonProperty("phone_number")
-	private String phoneNumber;
+	    @JsonProperty("salutation")
+	    private String salutation;
 
-	@JsonProperty("salutation")
-	private String salutation;
+	    @JsonProperty("first_name")
+	    private String firstName;
 
-	@JsonProperty("full_name")
-	private String fullName;
+	    @JsonProperty("middle_name")
+	    private String middleName;
 
-	@JsonProperty("full_name_native")
-	private String fullNameNative;
+	    @JsonProperty("last_name")
+	    private String lastName;
 
-	@JsonProperty("gender")
-	private String gender;
+	    @JsonProperty("full_name")
+	    private String fullName;
 
-	@JsonProperty("dob")
-	Date dob;
+	    @JsonProperty("full_name_native")
+	    private String fullNameNative;
 
-	@JsonProperty("country")
-	private String country;
+	    @JsonProperty("gender")
+	    private String gender;
 
-	@JsonProperty("address1")
-	private String address1;
+	    @JsonProperty("dob")
+	    private java.sql.Date dob;
 
-	@JsonProperty("address2")
-	private String address2;
+	    @JsonProperty("country")
+	    private String country;
 
-	@JsonProperty("profile_image")
-	private String profileImage;
+	    @JsonProperty("address1")
+	    private String address1;
 
-	@JsonProperty("language_preference")
-	private String languagePreference;
+	    @JsonProperty("address2")
+	    private String address2;
 
-	@JsonProperty("notification_preference")
-	private String notificationPreference;
+	    @JsonProperty("profile_image")
+	    private String profileImage;
 
-	@JsonProperty("merchant_id")
-	private long merchantId;
+	    @JsonProperty("language_preference")
+	    private String languagePreference;
 
-	@JsonProperty("partner_id")
-	private long partnerId;
+	    @JsonProperty("notification_preference")
+	    private String notificationPreference;
 
-	@JsonProperty("session_timeout_period")
-	private int sessionTimeoutPeriod;
+	    @JsonProperty("source_id")
+	    private Long sourceId;
 
-	@JsonProperty("pwd_warning_days")
-	private int pwdWarningDays;
+	    @JsonProperty("source_type")
+	    private String sourceType;
 
-	@JsonProperty("pwd_expiry_days")
-	private int pwdExpiryDays;
+	    @JsonProperty("association_id")
+	    private Long associationId;
 
-	@JsonProperty("is_email_id_verified")
-	private boolean isEmailIdVerified;
+	    @JsonProperty("association_type")
+	    private String associationType;
 
-	@JsonProperty("is_force_pwd_change")
-	private boolean isForcePwdChange;
+	    @JsonProperty("session_timeout_period")
+	    private Integer sessionTimeoutPeriod;
 
-	@JsonProperty("is_2fa_enabled")
-	private boolean is2faEnabled;
+	    @JsonProperty("pwd_warning_days")
+	    private Integer pwdWarningDays;
 
-	@JsonProperty("access_failed_count")
-	private int accessFailedCount;
+	    @JsonProperty("pwd_expiry_days")
+	    private Integer pwdExpiryDays;
 
-	@JsonProperty("is_api_user")
-	private boolean isApiUser;
+	    @JsonInclude(Include.NON_NULL)
+	    @JsonProperty("is_email_id_verified")
+	    private Boolean isEmailIdVerified;
 
-	@JsonProperty("remarks")
-	private String remarks;
+	    @JsonInclude(Include.NON_NULL)
+	    @JsonProperty("is_force_pwd_change")
+	    private Boolean isForcePwdChange;
 
-	@JsonProperty("status")
-	private String status;
+	    @JsonInclude(Include.NON_NULL)
+	    @JsonProperty("is_2fa_enabled")
+	    private Boolean is2faEnabled;
 
-	@JsonProperty("is_active")
-	private boolean isActive;
+	    @JsonProperty("access_failed_count")
+	    private Integer accessFailedCount;
 
-	@JsonProperty("last_ip_address")
-	private String lastIpAddress;
+	    @JsonInclude(Include.NON_NULL)
+	    @JsonProperty("is_api_user")
+	    private Boolean isApiUser;
+
+	    @JsonProperty("roles")
+	    private String roles;
+
+	    @JsonProperty("remarks")
+	    private String remarks;
+
+	    @JsonInclude(Include.NON_NULL)
+	    @JsonProperty("status")
+	    private String status;
+
+	    @JsonInclude(Include.NON_NULL)
+	    @JsonProperty("is_active")
+	    private Boolean isActive;
+
+	    @JsonProperty("ext_map_id_1")
+	    private String extMapId1;
+
+	    @JsonProperty("ext_map_id_2")
+	    private String extMapId2;
+
+	    @JsonProperty("ext_map_id_3")
+	    private String extMapId3;
+
+	    @JsonProperty("ref_col_1")
+	    private String refCol1;
+
+	    @JsonProperty("ref_col_2")
+	    private String refCol2;
+
+	    @JsonProperty("ref_col_3")
+	    private String refCol3;
+
+	    @JsonProperty("ref_col_4")
+	    private String refCol4;
+
+	    @JsonProperty("ref_col_5")
+	    private String refCol5;
+
 }

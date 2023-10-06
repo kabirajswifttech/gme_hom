@@ -11,5 +11,7 @@ public interface AuthService {
 	public AuthResponse authenticateUser(UserAuthRequest userAuthRequest);
 
 	public Cookie generateCookie(String jwt);
+	
+	//public OtpStatusCodes requestOtp(EntityTypes sourceType, MessageTypes messageType, String key);
 
 }

@@ -1,32 +1,10 @@
 package com.gme.hom;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@Component
 public class GlobalConfig {
 
-	@Value("$gme.orgname")
-	private String orgName;
-
-	@Value("$db.driver")
-	private String dbDriver;
-
-	@Value("$db.username")
-	private String dbUsername;
-
-	@Value("$db.password")
-	private String dbPassword;
-
-	@Value("$db.url")
-	private String dbUrl;
-
 	public final static String ORG_NAME = "GME Remit";
+	
+	public final static String SYSTEM_DEFAULT = "SYSTEM";
 
 	// public final static String DB_DRIVER = "org.postgresql.Driver";
 	// public final static String DB_USERNAME = "postgres";
@@ -59,7 +37,7 @@ public class GlobalConfig {
 	public final static int AUTH_JWT_TIMEOUT = AUTH_TIMEOUT * 60 * 60 * 1000; // 1 day in milliseconds
 	public final static String AUTH_JWT_SECRET = "pram0d4gm3h0mWalongkeyfortheJWTtokenwintercastleIsCold";
 	public final static int AUTH_COOKIE_MAXAGE = AUTH_TIMEOUT * 60 * 60; // 1 day in seconds public
-	final static int AUTH_OTP_MAXAGE = 10; // minutes
+	public final static int AUTH_OTP_MAXAGE = 30; // minutes
 
 	public final static String DATA_ENTITY_HASH = "MD5";
 	public final static String DATA_ROW_HASH = "SHA256";

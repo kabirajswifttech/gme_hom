@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gme.hom.category.models.CategoryDTO;
+import com.gme.hom.category.repository.CategoryDTO;
 import com.gme.hom.category.repository.CategoryRepository;
 
 import lombok.RequiredArgsConstructor;

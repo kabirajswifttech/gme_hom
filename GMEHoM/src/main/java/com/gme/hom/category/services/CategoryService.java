@@ -2,7 +2,7 @@ package com.gme.hom.category.services;
 
 import java.util.List;
 
-import com.gme.hom.category.models.CategoryDTO;
+import com.gme.hom.category.repository.CategoryDTO;
 
 public interface CategoryService {	
 	

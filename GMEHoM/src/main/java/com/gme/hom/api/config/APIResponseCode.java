@@ -4,7 +4,9 @@ public enum APIResponseCode {
 	SUCCESS("SUCCESS"),
 	FAILURE("FAILURE"),
 	DUPLICATE("DUPLICATE"),
-	UNIQUE("UNIQUE");
+	UNIQUE("UNIQUE"),
+	INVALID_REQUEST("INVALID_REQUEST"),
+	UNKNOWN("UNKNOWN");
 	
 	private final String name;
 

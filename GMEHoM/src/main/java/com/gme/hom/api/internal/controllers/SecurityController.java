@@ -72,12 +72,12 @@ public class SecurityController {
 			if (dedupEntityHash != null) {
 
 				if (dedupService.checkDuplicate(dedupEntityHash.getTableName(), dedupEntityHash.getEntityHash())) {
-					ar.setStatus(APIResponseCode.DUPLICATE.toString());
+					ar.setStatus(APIResponseCode.DUPLICATE);
 
 					ar.setDescription("Duplicate hash found");
 
 				} else {
-					ar.setStatus(APIResponseCode.UNIQUE.toString());
+					ar.setStatus(APIResponseCode.UNIQUE);
 
 					ar.setDescription("The hash is unique in the given table.");
 
@@ -88,7 +88,7 @@ public class SecurityController {
 			}
 
 		}
-		ar.setStatus(APIResponseCode.FAILURE.toString());
+		ar.setStatus(APIResponseCode.FAILURE);
 
 		return ResponseEntity.ok(ar);
 

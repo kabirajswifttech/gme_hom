@@ -15,7 +15,7 @@ import com.gme.hom.api.config.APIResponseScopeCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIRequestQueryParams;
 import com.gme.hom.api.models.APIResponse;
-import com.gme.hom.category.models.CategoryDTO;
+import com.gme.hom.category.repository.CategoryDTO;
 import com.gme.hom.category.services.CategoryService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,9 +43,9 @@ public class CategoryController {
 
 			List<CategoryDTO> categories = categoryService.getAllCategoryRoots();
 
-			ar.setStatus(APIResponseCode.SUCCESS.toString());
+			ar.setStatus(APIResponseCode.SUCCESS);
 
-			ar.setScope(APIResponseScopeCode.MULTIPLE.toString());
+			ar.setScope(APIResponseScopeCode.MULTIPLE);
 
 			ar.setDataType("Category");
 
@@ -60,7 +60,7 @@ public class CategoryController {
 
 			ar.setDataType("Category");
 
-			ar.setScope(APIResponseScopeCode.MULTIPLE.toString());
+			ar.setScope(APIResponseScopeCode.MULTIPLE);
 
 			APIRequestQueryParams arqs = apiRequest.getData().getQuery();
 
@@ -69,7 +69,7 @@ public class CategoryController {
 
 				List<CategoryDTO> result = categoryService.getCategoryByKeyword(arqs.getForOne());
 
-				ar.setStatus(APIResponseCode.SUCCESS.toString());
+				ar.setStatus(APIResponseCode.SUCCESS);
 				
 				ar.setData(result);
 			}
@@ -80,7 +80,7 @@ public class CategoryController {
 						arqs.getValue());
 
 				
-				ar.setStatus(APIResponseCode.SUCCESS.toString());
+				ar.setStatus(APIResponseCode.SUCCESS);
 				
 				ar.setData(result);
 
@@ -97,14 +97,14 @@ public class CategoryController {
 
 			ar.setDataType("Category");
 
-			ar.setScope(APIResponseScopeCode.MULTIPLE.toString());
+			ar.setScope(APIResponseScopeCode.MULTIPLE);
 
 			APIRequestQueryParams arqs = apiRequest.getData().getQuery();
 
 			List<CategoryDTO> result = categoryService.getCategoryBySubtype(arqs.getForOne(), arqs.getSubtype(),
 					arqs.getBy(), arqs.getValue());
 			
-			ar.setStatus(APIResponseCode.SUCCESS.toString());
+			ar.setStatus(APIResponseCode.SUCCESS);
 
 			ar.setData(result);
 
@@ -115,7 +115,7 @@ public class CategoryController {
 			return ResponseEntity.ok(ar);
 
 		} else {
-			ar.setStatus(APIResponseCode.FAILURE.toString());
+			ar.setStatus(APIResponseCode.FAILURE);
 
 			return ResponseEntity.ok(ar);
 		}

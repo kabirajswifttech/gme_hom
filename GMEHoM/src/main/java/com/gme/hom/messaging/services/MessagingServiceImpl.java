@@ -3,20 +3,18 @@ package com.gme.hom.messaging.services;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
-import com.gme.hom.messaging.config.MessageStatusCode;
+import com.gme.hom.messaging.config.MessageStatusCodes;
 import com.gme.hom.messaging.config.MessageTypes;
 import com.gme.hom.messaging.models.Message;
+import com.gme.hom.messaging.models.MessageReceiver;
 import com.gme.hom.messaging.repository.MessagingRepository;
 import com.gme.hom.security.services.ChecksumService;
+import com.gme.hom.templates.services.TemplateService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
-
-import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class MessagingServiceImpl implements MessagingService {
@@ -27,21 +25,23 @@ public class MessagingServiceImpl implements MessagingService {
 	@Autowired
 	MessagingRepository messagingRepository;
 
-	public boolean sendMessage(Message m) {
+	@Autowired
+	MessagingAsyncService messagingAsyncService;
 
-		if (m.getMessageType() ==(MessageTypes.EMAIL)) {
+	@Autowired
+	TemplateService templateService;
 
-			sendEmail(m);
+	public boolean sendMessage(Message m, MessageReceiver mr) {
 
-			return true;
+		if (m.getMessageType() == MessageTypes.EMAIL) {
 
-		} else if (m.getMessageType() == MessageTypes.EMAILMIME) {
+			messagingAsyncService.sendMimeEmail(m);
 
-			sendMimeEmail(m);
-
-			return true;
-
-		} else if (m.getMessageType() == MessageTypes.EMAILWATT) {
+			if (saveMessage(m) != null) {
+				return true;
+			} else {
+				return false;
+			}
 
 		} else if (m.getMessageType() == MessageTypes.SMS) {
 
@@ -94,59 +94,9 @@ public class MessagingServiceImpl implements MessagingService {
 			 * 
 			 * if (smsResponse.getResponseCode() == 100) { return true; }
 			 */
-			return false;
+			return true;
 
 		}
-		return false;
-	}
-
-	private boolean sendEmail(Message m) {
-		try {
-			SimpleMailMessage mailMessage = new SimpleMailMessage();
-			mailMessage.setFrom(GlobalConfig.MAIL_SERVER_FROM.toString());
-			mailMessage.setTo(m.getContactInfo());
-			mailMessage.setText(m.getContent());
-			mailMessage.setSubject(m.getSubject());
-
-			mailSender.send(mailMessage);
-
-			if (saveMessage(m) != null) {
-				return true;
-			} else {
-				return false;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	private boolean sendMimeEmail(Message m) {
-		try {
-			MimeMessage mimeMessage = mailSender.createMimeMessage();
-			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-			mimeMessageHelper.setFrom(GlobalConfig.MAIL_SERVER_FROM.toString());
-			mimeMessageHelper.setTo(m.getContactInfo());
-			mimeMessageHelper.setText(m.getContent(), true);
-			mimeMessageHelper.setSubject(m.getSubject());
-
-			mailSender.send(mimeMessage);
-
-			if (saveMessage(m) != null) {
-				return true;
-			} else {
-				return false;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-		return false;
-	}
-
-	public boolean sendMessageWithAttachment(Message m) {
 		return false;
 	}
 
@@ -154,8 +104,15 @@ public class MessagingServiceImpl implements MessagingService {
 		try {
 			m.setEntityHash(ChecksumService.getChecksum(m, GlobalConfig.DATA_ENTITY_HASH));
 			m.setMessageQueueId(UUID.randomUUID());
-			m.setStatus(MessageStatusCode.SENT.toString());
-			m.setCreatedBy(UserSecurityService.getUsername());
+			m.setStatus(MessageStatusCodes.SENT.toString());
+
+			if (UserSecurityService.getUsername() != null) {
+				// if the message is being sent by authenticated user
+				m.setCreatedBy(UserSecurityService.getUsername());
+			} else {
+				// else, whatever be the purpose code
+				m.setCreatedBy(m.getPurposeCode().toString());
+			}
 
 			return messagingRepository.save(m);
 

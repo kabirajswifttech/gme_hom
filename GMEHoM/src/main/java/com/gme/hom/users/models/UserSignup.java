@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.gme.hom.common.models.PersistenceEntity;
 import com.gme.hom.users.config.UserContactTypes;
+import com.gme.hom.users.config.UserSignupStatusCodes;
 import com.gme.hom.users.config.UserSourceTypes;
 
 import jakarta.persistence.Column;
@@ -69,9 +70,10 @@ public class UserSignup extends PersistenceEntity {
 	@Column(name = "is_sms_otp_verified")
 	protected Boolean isSmsOtpVerified;
 
-	// UserStatusCode
+	// UserSignupCode
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
-	protected String status;
+	protected UserSignupStatusCodes status;
 
 	@Column(name = "ip_address")
 	protected String ipAddress;
@@ -79,6 +81,9 @@ public class UserSignup extends PersistenceEntity {
 	// device information
 	@Column(name = "signup_source")
 	protected String signupSource;
+	
+	@Column(name = "full_name")
+	protected String fullName;
 	
 	@Transient
 	protected String password;
@@ -97,6 +102,7 @@ public class UserSignup extends PersistenceEntity {
 		this.phoneCode = userSignupRequest.getPhoneCode();
 		this.phoneNumber = userSignupRequest.getPhoneNumber();
 		this.signupSource = userSignupRequest.getSignupSource();
+		this.fullName = userSignupRequest.getFullName();
 		this.password = userSignupRequest.getPassword();
 	}
 }

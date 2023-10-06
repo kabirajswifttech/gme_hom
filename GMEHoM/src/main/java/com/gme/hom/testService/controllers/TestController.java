@@ -41,12 +41,12 @@ public class TestController {
 		// logger.debug("Test controller");
 		APIResponse ar = new APIResponse();
 		
-		ar.setStatus(APIResponseCode.SUCCESS.toString());
+		ar.setStatus(APIResponseCode.SUCCESS);
 
 		ar.setDescription("Test service");
 		
 		ar.setData(testService.getInfo());
-
+		
 		return ResponseEntity.ok(ar);		
 		
 	}
