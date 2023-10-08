@@ -38,7 +38,7 @@ public class MerchantsServicePreferenceServiceImpl implements MerchantsServicePr
 		servicePref.setCreatedBy(UserSecurityService.getUsername());
 		servicePref.setEntityHash(ChecksumService.getChecksum(servicePref, GlobalConfig.DATA_ENTITY_HASH));
 		servicePref.setActive(true);
-		servicePref.setStatus(MerchantStatusCodes.PENDING.toString());
+		servicePref.setStatus(MerchantStatusCodes.PENDING);
 		servicePref = servicePreferenceRepo.save(servicePref);
 		MerchantsServicePreferenceLog serviceLog = new MerchantsServicePreferenceLog(servicePref);
 		servicePreferenceLogRepo.save(serviceLog);

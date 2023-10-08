@@ -1,5 +1,7 @@
 package com.gme.hom.merchants.owners.controllers;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,12 +47,19 @@ public class MerchantsOwnersDetailsController {
 		APIResponse ar = new APIResponse();
 		if(apiReq.getFunction().equals(APIRequestFunctionCode.ADD_DATA.toString()) && apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
 			try {
-				MerchantsOwnersDetailsRequest ownersDetailsReq = apiReq.getData().getMerchantsOwnersDetailsRequest();
-				MerchantsOwnersDetails ownersDetails = new MerchantsOwnersDetails(ownersDetailsReq);
-				MerchantsOwnersDetails merchantsDirectorsDetails =  ownersService.save(ownersDetails);
+				List<MerchantsOwnersDetailsRequest> ownersDetailsReqs = apiReq.getData().getMerchantsOwnersDetailsRequests();
+				ownersDetailsReqs.forEach(req->{
+					MerchantsOwnersDetails ownersDetails = new MerchantsOwnersDetails(req);
+					try {
+						ownersService.save(ownersDetails);
+					} catch (NoSuchAlgorithmException | IOException e) {
+						logger.error(e.getMessage());
+						ar.setStatus(APIResponseCode.FAILURE);
+						ar.setDescription(ResponseMessageCodes.CREATION_FAILED.toString());
+					} 
+				});
 				ar.setStatus(APIResponseCode.SUCCESS);
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
-				ar.setData(merchantsDirectorsDetails.getId());
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE);
@@ -136,8 +145,9 @@ public class MerchantsOwnersDetailsController {
 		if(apiReq.getFunction().equals(APIRequestFunctionCode.UPDATE_DATA.toString()) && apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
 			if(apiReq.getData().getQuery().getBy().equals("MERCHANT_OWNERS_DETAILS_ID") && apiReq.getData().getQuery().getValue() != null) {
 				try {
-					MerchantsOwnersDetails owner = new MerchantsOwnersDetails(apiReq.getData().getMerchantsOwnersDetailsRequest());
+					MerchantsOwnersDetails owner = new MerchantsOwnersDetails(apiReq.getData().getMerchantsOwnersDetailsRequests().get(0));
 					owner.setId(Long.parseLong(apiReq.getData().getQuery().getValue()));
+					new MerchantsOwnersDetails();
 					owner =  ownersService.update(owner);					
 						ar.setData(owner);
 						ar.setStatus(APIResponseCode.SUCCESS);

@@ -2,12 +2,15 @@ package com.gme.hom.merchants.directors.model;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.common.models.PersistenceEntityWithUpdateApproval;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +31,10 @@ import lombok.Setter;
 @Table(name="merchants_directors_details")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantsDirectorsDetails extends PersistenceEntity {
+public class MerchantsDirectorsDetails extends PersistenceEntity implements Serializable {
+
+	private static final long serialVersionUID = -8241707224809528906L;
+
 	@Id
 	@SequenceGenerator(name = "merchants_directors_seq", sequenceName = "merchants_directors_details_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_directors_seq")
@@ -37,8 +43,8 @@ public class MerchantsDirectorsDetails extends PersistenceEntity {
 	
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name="merchant_director_id", nullable = false)
-    private UUID merchantDirectorId;
+    @Column(name="uuid", nullable = false)
+    private UUID uuid = UUID.randomUUID();
 
 	@NotNull
     @Column(name="merchant_id", nullable = false)
@@ -73,13 +79,16 @@ public class MerchantsDirectorsDetails extends PersistenceEntity {
     private String remarks;
 
     @Column(name="status")
-    private String status;
+    private MerchantStatusCodes status;
 
     @Column(name="is_active")
     private Boolean isActive;
 
     @Column(name="entity_hash")
     private String entityHash;
+    
+    @Column(name="isVerified")
+    private Boolean isVerified;
 
 
     public MerchantsDirectorsDetails(MerchantsDirectorsDetailsRequest merchantsDirectorsDetailsRequest) {

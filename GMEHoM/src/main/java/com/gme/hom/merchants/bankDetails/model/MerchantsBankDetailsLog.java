@@ -5,8 +5,12 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.gme.hom.merchants.config.MerchantStatusCodes;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
@@ -24,16 +28,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchantsBankDetailsLog{
     @Id
-    @SequenceGenerator(name = "merchants_bank_details_seq", sequenceName = "merchants_bank_details_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "merchants_bank_details_seq", sequenceName = "merchants_bank_details_log_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_bank_details_seq")
-    @Column(name="log_id", nullable = false)
-    private Long logId;
+    @Column(name="id", nullable = false)
+    private Long Id;
     
-	@Column(name="id", nullable = false)
-    private Long id;
-    
+    @Column(name="merchant_bank_uuid", nullable = false)
+    private UUID merchantBankUuid;
+
     @Column(name="merchant_bank_id", nullable = false)
-    private UUID merchantBankId;
+    private Long merchantBankid;
 
     @Column(name="merchant_id", nullable = false)
     private Long merchantId;
@@ -61,9 +65,10 @@ public class MerchantsBankDetailsLog{
 
     @Column(name="is_verified")
     private Boolean isVerified;
-
+    
+    @Enumerated(EnumType.STRING)
     @Column(name="status")
-    private String status;
+    private MerchantStatusCodes status;
 
     @Column(name="is_active")
     private Boolean isActive;
@@ -89,8 +94,8 @@ public class MerchantsBankDetailsLog{
 
 	public MerchantsBankDetailsLog(MerchantsBankDetails m) {
 
-		this.id = m.getId();
-		this.merchantBankId =m.getMerchantBankId();
+		this.merchantBankid = m.getId();
+		this.merchantBankUuid =m.getMerchantBankUuid();
 		this.merchantId = m.getMerchantId();
 		this.bankId = m.getBankId();
 		this.accountName = m.getAccountName();

@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsDetailsService{
 	
+	private static final Logger logger = LoggerFactory.getLogger(MerchantsDirectorsDetailsServiceImpl.class); 
+	
 	@Autowired
 	private MerchantsDirectorsDetailsRepository directorsRepo;
 	
@@ -34,11 +38,12 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 	public MerchantsDirectorsDetails addMerchantDirectorsDetails(MerchantsDirectorsDetailsRequest directorsReq, Long merchantId) {
 		MerchantsDirectorsDetails director = new MerchantsDirectorsDetails(directorsReq);
 		director.setMerchantId(merchantId);
-		director.setActive(true);
-		director.setStatus(MerchantStatusCodes.PENDING.toString());
+		director.setIsActive(true);
+		director.setIsVerified(false);
+		director.setStatus(MerchantStatusCodes.PENDING);
 		director = directorsRepo.save(director);
 		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(director);
-		directorsLog.setId(director.getId());
+		directorsLog.setCreatedBy(UserSecurityService.getUsername());
 		directorsLogRepo.save(directorsLog);
 		return director;
 		
@@ -47,11 +52,11 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 	public MerchantsDirectorsDetails save(MerchantsDirectorsDetails directorsDetails) throws NoSuchAlgorithmException, IOException {
 		directorsDetails.setCreatedBy(UserSecurityService.getUsername());
 		directorsDetails.setEntityHash(ChecksumService.getChecksum(directorsDetails, GlobalConfig.DATA_ENTITY_HASH));
-		directorsDetails.setActive(true);
-		directorsDetails.setStatus(MerchantStatusCodes.PENDING.toString());
+		directorsDetails.setIsActive(true);
+		directorsDetails.setStatus(MerchantStatusCodes.PENDING);
 		directorsDetails = directorsRepo.save(directorsDetails);
 		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(directorsDetails);
-		directorsLog.setId(directorsDetails.getId());
+		directorsLog.setCreatedBy(UserSecurityService.getUsername());
 		directorsLogRepo.save(directorsLog);
 		return directorsDetails;
 	}
@@ -70,8 +75,15 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 	@Override
 	public MerchantsDirectorsDetails update(MerchantsDirectorsDetails directorsDetails) {
 		//merchantsDirectorsDetails.setCreatedBy(UserSecurityService.getUsername());
+		Optional<MerchantsDirectorsDetailsDTO> directorInDB = getById(directorsDetails.getId());
+		logger.error(directorInDB.get().getStatus());
+		//directorsDetails.setUpdatedBy(UserSecurityService.getUsername());
+		directorsDetails.setIsActive(directorInDB.get().getIs_active());
+		logger.error(directorInDB.get().getStatus().getClass().toString());
+		directorsDetails.setStatus(MerchantStatusCodes.valueOf(directorInDB.get().getStatus()));
 		directorsDetails = directorsRepo.save(directorsDetails);
 		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(directorsDetails);
+		directorsLog.setCreatedBy(UserSecurityService.getUsername());
 		directorsLog.setId(directorsDetails.getId());
 		directorsLogRepo.save(directorsLog);
 		return directorsDetails;

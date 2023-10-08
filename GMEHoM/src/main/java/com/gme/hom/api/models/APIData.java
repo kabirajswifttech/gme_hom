@@ -94,21 +94,6 @@ public class APIData {
 
 	@Valid
 	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_directors_detail")
-	private MerchantsDirectorsDetailsRequest merchantsDirectorsDetailsRequest;
-
-	@Valid
-	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_representatives_detail")
-	private MerchantsRepresentativeDetailsRequest merchantsRepresentativeDetailsRequest;
-
-	@Valid
-	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_stockholders_detail")
-	private MerchantsStockholdersDetailsRequest merchantsStockholdersDetailsRequest;
-
-	@Valid
-	@JsonInclude(Include.NON_NULL)
 	@JsonProperty("merchants_service_preference_detail")
 	private MerchantsServicePreferenceRequest merchantServicePreferenceRequest;
 
@@ -136,11 +121,6 @@ public class APIData {
 	@JsonInclude(Include.NON_NULL)
 	@JsonProperty("get_payment_infos")
 	private List<MerchantsServicePreferenceRequest> getPaymentInfoRequests;
-
-	@Valid
-	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_owners_detail")
-	private MerchantsOwnersDetailsRequest merchantsOwnersDetailsRequest;
 
 	@Valid
 	@JsonInclude(Include.NON_NULL)

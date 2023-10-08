@@ -19,7 +19,7 @@ public interface MerchantsBankDetailsService {
 
 	MerchantsBankDetailsDTO getByMerchantId(Long id) throws Exception;
 
-	MerchantsBankDetails update(MerchantsBankDetailsRequest merchantBankDetailsReq);
+	MerchantsBankDetails update(MerchantsBankDetailsRequest merchantBankDetailsReq) throws Exception;
 
 	
 

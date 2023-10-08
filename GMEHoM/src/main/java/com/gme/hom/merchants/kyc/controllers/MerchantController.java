@@ -20,6 +20,7 @@ import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
 import com.gme.hom.documents.models.DocumentRequest;
 import com.gme.hom.documents.services.DocumentService;
+import com.gme.hom.merchants.config.FindByCodes;
 import com.gme.hom.merchants.config.ResponseMessageCodes;
 import com.gme.hom.merchants.kyc.model.Merchant;
 import com.gme.hom.merchants.kyc.model.MerchantRequest;
@@ -95,30 +96,31 @@ public class MerchantController {
 			}
 		} else if (apiReq.getFunction().equals(APIRequestFunctionCode.SEARCH.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
-			if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID")
+			if (apiReq.getData().getQuery().getBy().equals(FindByCodes.MERCHANT_ID.toString())
 					&& apiReq.getData().getQuery().getValue() != null) {
 				try {
+					
 					MerchantDTO merchant = merchantService
 							.getById(Long.parseLong(apiReq.getData().getQuery().getValue()));
+					//logger.error(merchant.toString());
 					if (merchant != null) {
 						ar.setData(merchant);
 						ar.setStatus(APIResponseCode.SUCCESS);
 						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
 					} else {
-						throw new NoResultException();
+						throw new NoResultException("Merchant not found exception!");
 					}
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 					ar.setStatus(APIResponseCode.FAILURE);
 					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 				}
-			}else if (apiReq.getData().getQuery().getBy().equals("MERCHANT_EMAIL_ID")
+			}else if (apiReq.getData().getQuery().getBy().equals(FindByCodes.EMAIL_ID.toString())
 					&& apiReq.getData().getQuery().getValue() != null) {
 				try {
 					MerchantDTO merchant = merchantService
 							.getMerchantByEmailId(apiReq.getData().getQuery().getValue());
 					if (merchant != null) {
-						logger.error(merchant.getIncorporation_country());
 						ar.setData(merchant);
 						ar.setStatus(APIResponseCode.SUCCESS);
 						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());

@@ -24,6 +24,7 @@ import com.gme.hom.merchants.bankDetails.model.MerchantsBankDetails;
 import com.gme.hom.merchants.bankDetails.model.MerchantsBankDetailsRequest;
 import com.gme.hom.merchants.bankDetails.services.MerchantsBankDetailsDTO;
 import com.gme.hom.merchants.bankDetails.services.MerchantsBankDetailsService;
+import com.gme.hom.merchants.config.FindByCodes;
 import com.gme.hom.merchants.config.ResponseMessageCodes;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -76,8 +77,7 @@ public class MerchantBankDetailsController {
 					ar.setStatus(APIResponseCode.SUCCESS);
 					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
 				}
-				else if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID") && apiReq.getData().getQuery().getValue() != null) {
-					logger.info("merchant id: "+apiReq.getData().getQuery().getValue());
+				else if (apiReq.getData().getQuery().getBy().equals(FindByCodes.MERCHANT_ID.toString()) && apiReq.getData().getQuery().getValue() != null) {
 					Long merchantId = Long.parseLong(apiReq.getData().getQuery().getValue());
 					MerchantsBankDetailsDTO merchantsBankDetails = merchantsBankDetailsService.getByMerchantId(merchantId);
 					if(merchantsBankDetails!=null) {
@@ -85,10 +85,10 @@ public class MerchantBankDetailsController {
 						ar.setStatus(APIResponseCode.SUCCESS);
 						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
 					}else {
-						throw new EntityNotFoundException();
+						throw new EntityNotFoundException("No such data found!");
 					}
 				}else {
-					throw new InsufficientResourcesException();
+					throw new InsufficientResourcesException("Insufficient information!");
 				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());
@@ -98,7 +98,7 @@ public class MerchantBankDetailsController {
 		} else if (apiReq.getFunction().equals(APIRequestFunctionCode.SEARCH.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
 			try {
-				if (apiReq.getData().getQuery().getBy().equals("MERCHANTS_BANK_DETAIL_ID")
+				if (apiReq.getData().getQuery().getBy().equals(FindByCodes.MERCHANTS_BANK_DETAIL_ID.toString())
 						&& apiReq.getData().getQuery().getValue() != null) {
 					Long merchantBankDetailsId = Long.parseLong(apiReq.getData().getQuery().getValue());
 					MerchantsBankDetailsDTO merchantsBankDetails = merchantsBankDetailsService
@@ -106,6 +106,16 @@ public class MerchantBankDetailsController {
 					ar.setData(merchantsBankDetails);
 					ar.setStatus(APIResponseCode.SUCCESS);
 					ar.setDescription("Data Saved!");
+				}else if (apiReq.getData().getQuery().getBy().equals(FindByCodes.MERCHANT_ID.toString()) && apiReq.getData().getQuery().getValue() != null) {
+					Long merchantId = Long.parseLong(apiReq.getData().getQuery().getValue());
+					MerchantsBankDetailsDTO merchantsBankDetails = merchantsBankDetailsService.getByMerchantId(merchantId);
+					if(merchantsBankDetails!=null) {
+						ar.setData(merchantsBankDetails);
+						ar.setStatus(APIResponseCode.SUCCESS);
+						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
+					}else {
+						throw new EntityNotFoundException("No such data found!");
+					}
 				}  else {
 					ar.setStatus(APIResponseCode.FAILURE);
 					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
@@ -117,6 +127,7 @@ public class MerchantBankDetailsController {
 				ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 			}
 		} else {
+			logger.error("search conditions not match!");
 			ar.setStatus(APIResponseCode.FAILURE);
 			ar.setDescription(ResponseMessageCodes.INVALID_FUNCTION_CODE_OR_SCOPE.toString());
 		}

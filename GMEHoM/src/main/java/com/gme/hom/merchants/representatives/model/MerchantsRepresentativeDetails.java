@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +39,7 @@ public class MerchantsRepresentativeDetails extends PersistenceEntity{
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @Column(name="merchant_representative_id", nullable = false)
-    private UUID merchantRepresentativeId;
+    private UUID merchantRepresentativeId = UUID.randomUUID();
 
     @Column(name="merchant_id", nullable = false)
     private long merchantId;
@@ -92,7 +93,7 @@ public class MerchantsRepresentativeDetails extends PersistenceEntity{
     private String city;
 
     @Column(name="status")
-    private String status;
+    private MerchantStatusCodes status;
 
     @Column(name="is_active")
     private Boolean isActive;

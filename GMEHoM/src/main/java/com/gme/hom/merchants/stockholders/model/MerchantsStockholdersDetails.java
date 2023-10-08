@@ -37,7 +37,7 @@ public class MerchantsStockholdersDetails extends PersistenceEntity {
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @Column(name = "merchant_stockholder_id")
-	private UUID merchantStockholderId;
+	private UUID merchantStockholderId = UUID.randomUUID();
 
 	@Column(name = "merchant_id", nullable = false)
 	private long merchantId;

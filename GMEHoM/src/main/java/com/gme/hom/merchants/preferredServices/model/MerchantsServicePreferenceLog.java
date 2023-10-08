@@ -5,6 +5,8 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.gme.hom.merchants.config.MerchantStatusCodes;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,7 +47,7 @@ public class MerchantsServicePreferenceLog {
     private String serviceId;
 
     @Column(name="status")
-    private String status;
+    private MerchantStatusCodes status;
 
     @Column(name="is_active")
     private boolean isActive;

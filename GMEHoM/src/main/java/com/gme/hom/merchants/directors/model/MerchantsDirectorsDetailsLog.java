@@ -5,6 +5,8 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.gme.hom.merchants.config.MerchantStatusCodes;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,16 +27,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchantsDirectorsDetailsLog {
 	@Id
-	@SequenceGenerator(name = "merchants_directors_log_log_seq", sequenceName = "merchants_directors_details_log_log_id_seq", allocationSize = 1)
-	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_directors_log_log_seq")
-	@Column(name="log_id", nullable = false)
-    private Long logId;
-    
+	@SequenceGenerator(name = "merchants_directors_log_seq", sequenceName = "merchants_directors_details_log_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_directors_log_seq")
 	@Column(name="id", nullable = false)
     private Long id;
 	
-    @Column(name="merchant_director_id", nullable = false)
-    private UUID merchantDirectorId;
+    @Column(name="merchants_directors_details_uuid", nullable = false)
+    private UUID merchantsDirectorsDetailsUuid;
 
 	@NotNull
     @Column(name="merchant_id", nullable = false)
@@ -69,7 +68,7 @@ public class MerchantsDirectorsDetailsLog {
     private String remarks;
 
     @Column(name="status")
-    private String status;
+    private MerchantStatusCodes status;
 
     @Column(name="is_active")
     private Boolean isActive;
@@ -91,8 +90,7 @@ public class MerchantsDirectorsDetailsLog {
 
 
 	public MerchantsDirectorsDetailsLog(MerchantsDirectorsDetails m) {
-		this.id = m.getId();
-		this.merchantDirectorId =m.getMerchantDirectorId();
+		this.merchantsDirectorsDetailsUuid =m.getUuid();
 		this.merchantId = m.getMerchantId();
 		this.fullName = m.getFullName();
 		this.fullNameNative = m.getFullNameNative();

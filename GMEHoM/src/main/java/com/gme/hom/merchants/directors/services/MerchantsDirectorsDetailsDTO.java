@@ -5,6 +5,10 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 public interface MerchantsDirectorsDetailsDTO {
     @JsonInclude(Include.NON_NULL)
@@ -42,9 +46,11 @@ public interface MerchantsDirectorsDetailsDTO {
 
     @JsonInclude(Include.NON_NULL)
     String getRemarks();
-
+    
+    //@Enumerated(EnumType.STRING)
     @JsonInclude(Include.NON_NULL)
     String getStatus();
+    //MerchantStatusCodes getStatus();
 
     @JsonInclude(Include.NON_NULL)
     Boolean getIs_active();

@@ -3,6 +3,7 @@ package com.gme.hom.merchants.bankDetails.services;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +44,10 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 		bankDetails.setCreatedBy(UserSecurityService.getUsername());
 		bankDetails.setEntityHash(ChecksumService.getChecksum(bankDetails, GlobalConfig.DATA_ENTITY_HASH));
 		bankDetails.setMerchantId(merchantId);
-		bankDetails.setActive(true);
-		bankDetails.setStatus(MerchantStatusCodes.PENDING.toString());
+		bankDetails.setIsActive(true);
+		bankDetails.setIsVerified(true);
+		bankDetails.setStatus(MerchantStatusCodes.PENDING);
+		logger.error(bankDetails.toString());
 		bankDetails = bankDetailsRepo.save(bankDetails);
 		MerchantsBankDetailsLog bankDetaiilsLog = new MerchantsBankDetailsLog(bankDetails);
 		bankDetaiilsLog.setId(bankDetails.getId());
@@ -55,10 +58,11 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 	@Override
 	public MerchantsBankDetails save(MerchantsBankDetails merchantsBankDetails) throws Exception{
 			if(getByMerchantId(merchantsBankDetails.getMerchantId()) == null) {
-				//merchantsBankDetails.setCreatedBy(UserSecurityService.getUsername());			//move to service
-				//merchantsBankDetails.setEntityHash(ChecksumService.getChecksum(merchantsBankDetails, GlobalConfig.DATA_ENTITY_HASH)); //move to service
-				merchantsBankDetails.setActive(true);
-				merchantsBankDetails.setStatus(MerchantStatusCodes.PENDING.toString());
+				merchantsBankDetails.setCreatedBy(UserSecurityService.getUsername());			//move to service
+				merchantsBankDetails.setEntityHash(ChecksumService.getChecksum(merchantsBankDetails, GlobalConfig.DATA_ENTITY_HASH)); //move to service
+				merchantsBankDetails.setIsActive(true);
+				merchantsBankDetails.setStatus(MerchantStatusCodes.PENDING);
+				merchantsBankDetails.setIsVerified(false);
 				return bankDetailsRepo.save(merchantsBankDetails);
 			}
 			throw new DuplicateKeyException("Merchnats bank details already set!");
@@ -85,14 +89,22 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 	}
 
 	@Override
-	public MerchantsBankDetails update(MerchantsBankDetailsRequest merchantBankDetailsReq) {
-		MerchantsBankDetails bankDetails = new MerchantsBankDetails(merchantBankDetailsReq);
-		//merchantsBankDetails.setUpdatedBy(UserSecurityService.getUsername());			//move to service
-		bankDetails = bankDetailsRepo.save(bankDetails);
-		MerchantsBankDetailsLog bankDetaiilsLog = new MerchantsBankDetailsLog(bankDetails);
-		bankDetaiilsLog.setId(bankDetails.getId());
-		bankDetailsLogRepo.save(new MerchantsBankDetailsLog(bankDetails));
-		return bankDetails;
+	public MerchantsBankDetails update(MerchantsBankDetailsRequest merchantBankDetailsReq) throws Exception {
+		//bankDetails.setUpdatedBy(UserSecurityService.getUsername());			//move to service
+		try {
+			MerchantsBankDetails bankDetails = new MerchantsBankDetails(merchantBankDetailsReq);
+			MerchantsBankDetailsDTO bankDetailsInDB = getById(bankDetails.getId());
+			bankDetails.setIsVerified(bankDetailsInDB.getIs_verified());
+			bankDetails = bankDetailsRepo.save(bankDetails);
+			MerchantsBankDetailsLog bankDetaiilsLog = new MerchantsBankDetailsLog(bankDetails);
+			bankDetaiilsLog.setId(bankDetails.getId());
+			bankDetailsLogRepo.save(new MerchantsBankDetailsLog(bankDetails));
+			return bankDetails;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 

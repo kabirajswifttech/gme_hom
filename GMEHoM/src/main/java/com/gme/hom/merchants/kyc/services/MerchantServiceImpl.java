@@ -3,6 +3,7 @@ package com.gme.hom.merchants.kyc.services;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import com.gme.hom.merchants.kyc.repositories.MerchantRepository;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -57,13 +59,22 @@ public class MerchantServiceImpl implements MerchantService {
 
 	@Override
 	public MerchantDTO getById(long id) {
-		MerchantDTO merchant = merchantRepo.getMerchantById(id);
-		return merchant;
+		Optional<MerchantDTO> merchant = merchantRepo.findByMerchantId(id);
+		if(!merchant.isEmpty()) {
+			return merchant.get();
+		}else {
+			throw new EntityNotFoundException("Do such data found.");
+		}
 	}
 
 	@Override
 	public MerchantDTO getMerchantByEmailId(String email) {
-		return merchantRepo.findByEmailId(email);
+		Optional<MerchantDTO> merchant =  merchantRepo.findByEmailId(email);
+		if(!merchant.isEmpty()) {
+			return merchant.get();
+		}else {
+			throw new EntityNotFoundException("Do such data found.");
+		}
 	}
 
 	@Override

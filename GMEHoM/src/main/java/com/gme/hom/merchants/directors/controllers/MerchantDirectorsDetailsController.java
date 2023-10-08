@@ -1,5 +1,7 @@
 package com.gme.hom.merchants.directors.controllers;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ import com.gme.hom.api.config.APIRequestScopeCode;
 import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
+import com.gme.hom.merchants.config.FindByCodes;
 import com.gme.hom.merchants.config.ResponseMessageCodes;
 import com.gme.hom.merchants.directors.model.MerchantsDirectorsDetails;
 import com.gme.hom.merchants.directors.model.MerchantsDirectorsDetailsRequest;
@@ -48,13 +51,21 @@ public class MerchantDirectorsDetailsController {
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.ADD_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
 			try {
-				MerchantsDirectorsDetailsRequest directorsDetailsReq = apiReq.getData()
-						.getMerchantsDirectorsDetailsRequest();
-				MerchantsDirectorsDetails directorsDetails = new MerchantsDirectorsDetails(directorsDetailsReq);
-				directorsDetails = merchantsDirectorsDetailsService.save(directorsDetails);
+				List<MerchantsDirectorsDetailsRequest> directorsDetailsReqs = apiReq.getData()
+						.getMerchantsDirectorsDetailsRequests();
+				directorsDetailsReqs.forEach(req->{
+					
+					try {
+						merchantsDirectorsDetailsService.save(new MerchantsDirectorsDetails(req));
+					} catch (NoSuchAlgorithmException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					
+				});
 				ar.setStatus(APIResponseCode.SUCCESS);
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
-				ar.setData(directorsDetails.getId());
+				//ar.setData(directorsDetails.getId());
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE);
@@ -73,7 +84,7 @@ public class MerchantDirectorsDetailsController {
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.SEARCH.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.ALL.toString())) {
 			if (apiReq.getData()!= null) {
-				if (apiReq.getData().getQuery().getBy().equals("MERCHANT_ID")
+				if (apiReq.getData().getQuery().getBy().equals(FindByCodes.MERCHANT_ID.toString())
 						&& apiReq.getData().getQuery().getValue() != null) {
 					try {
 						List<MerchantsDirectorsDetailsDTO> merchantsDirectorsDetails = merchantsDirectorsDetailsService
@@ -109,9 +120,10 @@ public class MerchantDirectorsDetailsController {
 					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 				}
 			}
-		} else if (apiReq.getFunction().equals(APIRequestFunctionCode.SEARCH.toString())
-				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
-			if (apiReq.getData().getQuery().getBy().equals("MERCHANTS_DIRECTORS_DETAILS_ID")
+		} else if ((apiReq.getFunction().equals(APIRequestFunctionCode.SEARCH.toString()))
+				&& (apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString()))) {
+			logger.error("Hello");
+			if (apiReq.getData().getQuery().getBy().equals(FindByCodes.MERCHANTS_DIRECTORS_DETAILS_ID.toString())
 					&& apiReq.getData().getQuery().getValue() != null) {
 				try {
 					Optional<MerchantsDirectorsDetailsDTO> merchantsDirectorsDetails = merchantsDirectorsDetailsService
@@ -143,14 +155,14 @@ public class MerchantDirectorsDetailsController {
 		APIResponse ar = new APIResponse();
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.UPDATE_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
-			if (apiReq.getData().getQuery().getBy().equals("MERCHANT_DIRECTORS_DETAILS_ID")
+			if (apiReq.getData().getQuery().getBy().equals(FindByCodes.MERCHANTS_DIRECTORS_DETAILS_ID.toString())
 					&& apiReq.getData().getQuery().getValue() != null) {
 				try {
-					MerchantsDirectorsDetails merchantsDirectorsDetails = new MerchantsDirectorsDetails(
-							apiReq.getData().getMerchantsDirectorsDetailsRequest());
-					merchantsDirectorsDetails.setId(Long.parseLong(apiReq.getData().getQuery().getValue()));
-					merchantsDirectorsDetails = merchantsDirectorsDetailsService.update(merchantsDirectorsDetails);
-					ar.setData(merchantsDirectorsDetails);
+					List<MerchantsDirectorsDetailsRequest> merchantsDirectorsDetails = apiReq.getData().getMerchantsDirectorsDetailsRequests();
+					MerchantsDirectorsDetails merchantsDirectorsDetail = new MerchantsDirectorsDetails(merchantsDirectorsDetails.get(0));
+					merchantsDirectorsDetail.setId(Long.parseLong(apiReq.getData().getQuery().getValue()));
+					merchantsDirectorsDetail = merchantsDirectorsDetailsService.update(merchantsDirectorsDetail);
+					ar.setData(merchantsDirectorsDetail);
 					ar.setStatus(APIResponseCode.SUCCESS);
 					ar.setDescription(ResponseMessageCodes.UPDATED_SUCCESSFULLY.toString());
 

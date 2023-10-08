@@ -45,11 +45,11 @@ public class MerchantRepresentativeDetailsController {
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.ADD_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
 			try {
-				MerchantsRepresentativeDetailsRequest representativeReq = apiReq.getData()
-						.getMerchantsRepresentativeDetailsRequest();
-				MerchantsRepresentativeDetails representative = new MerchantsRepresentativeDetails(representativeReq);
-				representative = representativesService.save(representative);
-				ar.setData(representative.getId());
+				List<MerchantsRepresentativeDetailsRequest> representativeReqs = apiReq.getData()
+						.getMerchantsRepresentativeDetailsRequests();
+				representativeReqs.forEach(req->{
+					representativesService.save(new MerchantsRepresentativeDetails(req));
+				});
 				ar.setStatus(APIResponseCode.SUCCESS);
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
 			} catch (Exception e) {
@@ -124,7 +124,7 @@ public class MerchantRepresentativeDetailsController {
 					&& apiReq.getData().getQuery().getValue() != null) {
 				try {
 					MerchantsRepresentativeDetailsRequest merchantBankDetailsReq = apiReq.getData()
-							.getMerchantsRepresentativeDetailsRequest();
+							.getMerchantsRepresentativeDetailsRequests().get(0);
 					MerchantsRepresentativeDetails merchantsRepresentativeDetails = new MerchantsRepresentativeDetails(
 							merchantBankDetailsReq);
 					merchantsRepresentativeDetails.setId(Long.parseLong(apiReq.getData().getQuery().getValue()));

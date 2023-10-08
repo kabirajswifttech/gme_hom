@@ -2,14 +2,18 @@ package com.gme.hom.merchants.bankDetails.model;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,15 +23,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @Entity(name="Merchants_bank_details")
 @Table(name="merchants_bank_details")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantsBankDetails extends PersistenceEntity{
-    @Id
+public class MerchantsBankDetails extends PersistenceEntity implements Serializable{
+
+	private static final long serialVersionUID = -3273266239209721857L;
+
+	@Id
     @SequenceGenerator(name = "merchants_bank_details_seq", sequenceName = "merchants_bank_details_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_bank_details_seq")
 	@Column(name="id", nullable = false)
@@ -35,8 +44,8 @@ public class MerchantsBankDetails extends PersistenceEntity{
     
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name="merchant_bank_id", nullable = false)
-    private UUID merchantBankId;
+    @Column(name="merchant_bank_uuid", nullable = false)
+    private UUID merchantBankUuid = UUID.randomUUID();
 
     @Column(name="merchant_id", nullable = false)
     private Long merchantId;
@@ -62,13 +71,14 @@ public class MerchantsBankDetails extends PersistenceEntity{
     @Column(name="iban_cbu_card_number")
     private String ibanCbuCardNumber;
 
-    @Column(name="is_verified")
+    @Column(name="is_verified", nullable = false)
     private Boolean isVerified;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="status")
-    private String status;
+    private MerchantStatusCodes status;
 
-    @Column(name="is_active")
+    @Column(name="is_active", nullable = false)
     private Boolean isActive;
 
     @Column(name="entity_hash")

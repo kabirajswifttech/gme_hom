@@ -46,10 +46,10 @@ public class MerchantsStockholdersDetailsController {
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.ADD_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
 			try {
-				MerchantsStockholdersDetailsRequest stockholdersDetailsReq = apiReq.getData()
-						.getMerchantsStockholdersDetailsRequest();
+				List<MerchantsStockholdersDetailsRequest> stockholdersDetailsReqs = apiReq.getData()
+						.getMerchantsStockholdersDetailsRequests();
 				MerchantsStockholdersDetails stockholdersDetails = new MerchantsStockholdersDetails(
-						stockholdersDetailsReq);
+						stockholdersDetailsReqs.get(0));
 				stockholdersDetails = stockholdersService.save(stockholdersDetails);
 				ar.setStatus(APIResponseCode.SUCCESS);
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
@@ -138,7 +138,7 @@ public class MerchantsStockholdersDetailsController {
 					&& apiReq.getData().getQuery().getValue() != null) {
 				try {
 					MerchantsStockholdersDetails merchantsStockholdersDetails = new MerchantsStockholdersDetails(
-							apiReq.getData().getMerchantsStockholdersDetailsRequest());
+							apiReq.getData().getMerchantsStockholdersDetailsRequests().get(0));
 					merchantsStockholdersDetails.setId(Long.parseLong(apiReq.getData().getQuery().getValue()));
 					merchantsStockholdersDetails = stockholdersService.update(merchantsStockholdersDetails);
 					ar.setData(merchantsStockholdersDetails);

@@ -38,7 +38,7 @@ public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepre
 		representative.setEntityHash(ChecksumService.getChecksum(representative, GlobalConfig.DATA_ENTITY_HASH));
 		representative.setMerchantId(merchantId);
 		representative.setActive(true);
-		representative.setStatus(MerchantStatusCodes.PENDING.toString());
+		representative.setStatus(MerchantStatusCodes.PENDING);
 		representative = representativeRepo.save(representative);
 		MerchantsRepresentativeDetailsLog representativeLog = new MerchantsRepresentativeDetailsLog(representative);
 		representativeLogRepo.save(representativeLog);
@@ -48,7 +48,7 @@ public class MerchantsRepresentativeDetailsServiceImpl implements MerchantsRepre
 	@Override
 	public MerchantsRepresentativeDetails save(MerchantsRepresentativeDetails representative) {
 		representative.setActive(true);
-		representative.setStatus(MerchantStatusCodes.PENDING.toString());
+		representative.setStatus(MerchantStatusCodes.PENDING);
 		return representativeRepo.save(representative);
 		
 	}
