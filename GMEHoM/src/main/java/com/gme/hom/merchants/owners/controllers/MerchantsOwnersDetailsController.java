@@ -154,6 +154,7 @@ public class MerchantsOwnersDetailsController {
 						ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
 					
 				} catch (Exception e) {
+					logger.error(e.getMessage());
 					ar.setStatus(APIResponseCode.FAILURE);
 					ar.setDescription(ResponseMessageCodes.NO_RESULTS_FOUND_FOR_YOUR_SEARCH_QUERY.toString());
 				}

@@ -5,6 +5,7 @@ import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -55,7 +56,7 @@ public class MerchantsStockholdersDetailsRequest {
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("status")
-    private String status;
+    private MerchantStatusCodes status;
 
   
 

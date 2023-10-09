@@ -31,9 +31,12 @@ public class MerchantsDirectorsDetailsLog {
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_directors_log_seq")
 	@Column(name="id", nullable = false)
     private Long id;
-	
-    @Column(name="merchants_directors_details_uuid", nullable = false)
-    private UUID merchantsDirectorsDetailsUuid;
+		
+	@Column(name="director_id", nullable = false)
+	private Long directorId;
+    
+	@Column(name="director_uuid", nullable = false)
+    private UUID directorUuid;
 
 	@NotNull
     @Column(name="merchant_id", nullable = false)
@@ -90,7 +93,8 @@ public class MerchantsDirectorsDetailsLog {
 
 
 	public MerchantsDirectorsDetailsLog(MerchantsDirectorsDetails m) {
-		this.merchantsDirectorsDetailsUuid =m.getUuid();
+		this.directorUuid =m.getDirectorUuid();
+		this.directorId =m.getId();
 		this.merchantId = m.getMerchantId();
 		this.fullName = m.getFullName();
 		this.fullNameNative = m.getFullNameNative();

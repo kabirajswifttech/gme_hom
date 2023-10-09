@@ -49,13 +49,14 @@ public interface MerchantsDirectorsDetailsDTO {
     
     //@Enumerated(EnumType.STRING)
     @JsonInclude(Include.NON_NULL)
-    String getStatus();
-    //MerchantStatusCodes getStatus();
+    MerchantStatusCodes getStatus();
+    //String getStatus();
 
     @JsonInclude(Include.NON_NULL)
     Boolean getIs_active();
 
     @JsonInclude(Include.NON_NULL)
     String getEntity_hash();
+
 
 }

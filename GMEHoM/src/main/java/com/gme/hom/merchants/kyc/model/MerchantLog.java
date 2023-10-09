@@ -39,8 +39,8 @@ public class MerchantLog {
 	@Column(name = "id", nullable = false, updatable = false)
 	private Long id;
 
-	@Column(name = "merchant_uuid", updatable = false, nullable = false)
-	private UUID merchantUuid = UUID.randomUUID();
+	@Column(name = "uuid", updatable = false, nullable = false)
+	private UUID uuid;
 	
 	@Column(name = "merchant_id", updatable = false, nullable = false)
 	private Long merchantId;
@@ -218,7 +218,7 @@ public class MerchantLog {
 		super();
 		// this.id = m.getId();
 		this.merchantId = m.getId();
-		this.merchantUuid = m.getMerchantUuid();
+		this.uuid = m.getUuid();
 		this.merchantType = m.getMerchantType();
 		this.emailId = m.getEmailId();
 		this.phoneCode = m.getPhoneCode();

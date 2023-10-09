@@ -3,11 +3,13 @@ package com.gme.hom.merchants.preferredServices.services;
 import java.util.UUID;
 
 public interface MerchantsServicePreferenceDTO {
-    long getId();
+    Long getId();
 
-    UUID getMerchant_service_preference_id();
+    Long getService_preference_id();
 
-    long getMerchant_id();
+    UUID getService_preference_uuid();
+
+    Long getMerchant_id();
 
     String getService_type();
 
@@ -15,7 +17,7 @@ public interface MerchantsServicePreferenceDTO {
 
     String getStatus();
 
-    boolean getIs_active();
+    Boolean getIs_active();
 
     String getEntity_hash();
 

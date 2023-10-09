@@ -2,16 +2,19 @@ package com.gme.hom.merchants.representatives.model;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.common.models.PersistenceEntityWithUpdate;
 import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,20 +32,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class MerchantsRepresentativeDetails extends PersistenceEntity{
+public class MerchantsRepresentativeDetails extends PersistenceEntityWithUpdate implements Serializable{
+
+	private static final long serialVersionUID = -1649894393654961445L;
+
 	@Id
 	@SequenceGenerator(name = "merchants_representative_details_seq", sequenceName = "merchants_representative_details_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_representative_details_seq")
 	@Column(name="id", nullable = false)
-    private long id;
-	
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name="merchant_representative_id", nullable = false)
-    private UUID merchantRepresentativeId = UUID.randomUUID();
+    private Long id;
+
+    @Column(name="representative_uuid", nullable = false)
+    private UUID representativeUuid = UUID.randomUUID();
 
     @Column(name="merchant_id", nullable = false)
-    private long merchantId;
+    private Long merchantId;
 
     @Column(name="first_name", nullable = false)
     private String firstName;
@@ -92,11 +96,9 @@ public class MerchantsRepresentativeDetails extends PersistenceEntity{
     @Column(name="city")
     private String city;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="status")
     private MerchantStatusCodes status;
-
-    @Column(name="is_active")
-    private Boolean isActive;
 
     @Column(name="entity_hash")
     private String entityHash;

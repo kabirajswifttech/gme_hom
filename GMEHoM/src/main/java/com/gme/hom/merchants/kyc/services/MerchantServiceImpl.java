@@ -29,62 +29,69 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class MerchantServiceImpl implements MerchantService {
-	
+
 	@Autowired
 	MerchantRepository merchantRepo;
-	
+
 	@Autowired
 	MerchantLogRepository merchantLogRepo;
-	
-	private static final Logger logger = LoggerFactory.getLogger(MerchantServiceImpl.class);
 
+	private static final Logger logger = LoggerFactory.getLogger(MerchantServiceImpl.class);
 
 	@Override
 	@Transactional
 	public Merchant save(Merchant merchant) throws NoSuchAlgorithmException, IOException {
-		if(!emailAlreadyRegistered(merchant.getEmailId()) && !phoneNumberAlreadyRegistered(merchant.getPhoneNumber())) {
-		
-		merchant.setStatus(MerchantStatusCodes.PENDING);
-		merchant.setIsActive(true);
-		merchant.setCreatedBy(UserSecurityService.getUsername());
-		
-		merchant.setEntityHash(ChecksumService.getChecksum(merchant, GlobalConfig.DATA_ENTITY_HASH));
-		
-		Merchant newMerchant = merchantRepo.save(merchant);
-		merchantLogRepo.save(new MerchantLog(newMerchant));
-		return merchant;
-		}
-		throw new DuplicateKeyException("Merchant already Registered!");
+		logger.error("duplicate check");
+		if (!emailAlreadyRegistered(merchant.getEmailId())
+				&& !phoneNumberAlreadyRegistered(merchant.getPhoneNumber())) {
+
+			merchant.setStatus(MerchantStatusCodes.PENDING);
+			merchant.setIsActive(true);
+			merchant.setCreatedBy(UserSecurityService.getUsername());
+
+			merchant.setEntityHash(ChecksumService.getChecksum(merchant, GlobalConfig.DATA_ENTITY_HASH));
+
+			Merchant newMerchant = merchantRepo.save(merchant);
+			merchantLogRepo.save(new MerchantLog(newMerchant));
+			return merchant;
+		} else
+			throw new DuplicateKeyException("Merchant already Registered!");
 	}
 
 	@Override
 	public MerchantDTO getById(long id) {
 		Optional<MerchantDTO> merchant = merchantRepo.findByMerchantId(id);
-		if(!merchant.isEmpty()) {
+		if (!merchant.isEmpty()) {
 			return merchant.get();
-		}else {
+		} else {
 			throw new EntityNotFoundException("Do such data found.");
 		}
 	}
 
 	@Override
 	public MerchantDTO getMerchantByEmailId(String email) {
-		Optional<MerchantDTO> merchant =  merchantRepo.findByEmailId(email);
-		if(!merchant.isEmpty()) {
+		Optional<MerchantDTO> merchant = merchantRepo.findByEmailId(email);
+		if (!merchant.isEmpty()) {
 			return merchant.get();
-		}else {
+		} else {
 			throw new EntityNotFoundException("Do such data found.");
 		}
 	}
 
 	@Override
-	//@Transactional
+	@Transactional
 	public Merchant update(Merchant merchant) {
-		
+
+		Merchant dbMerchant = merchantRepo.getById(merchant.getId());
+		//merchant.setEmailId(dbMerchant.getEmailId());
+		merchant.setStatus(dbMerchant.getStatus());
+		merchant.setIsActive(dbMerchant.getIsActive());
+		merchant.setCreatedBy(dbMerchant.getCreatedBy());
 		Merchant newMerchant = merchantRepo.save(merchant);
+		merchant.setUpdatedBy(UserSecurityService.getUsername());
+		System.out.println("merchant Status"+dbMerchant.getStatus());
 		merchantLogRepo.save(new MerchantLog(newMerchant));
 		return merchant;
-		//merchant.setUpdatedBy(UserSecurityService.getUsername());
 //		try {
 //			Optional<Merchant> merchantDB = merchantRepo.findById(merchant.getId());
 //			if(!merchantDB.isEmpty()) {
@@ -112,23 +119,24 @@ public class MerchantServiceImpl implements MerchantService {
 	public List<MerchantDTO> getAllMerchants() {
 		return merchantRepo.getAllMerchants();
 	}
-	
+
 	@Override
 	public Page<Merchant> getAllMerchants(PageRequest pageRequest) {
 		return merchantRepo.findAll(pageRequest);
 	}
-	
+
 	@Override
-	public boolean emailAlreadyRegistered( String email ) {
-		return merchantRepo.findByEmailId(email) != null;
+	public boolean emailAlreadyRegistered(String email) {
+		logger.error("email check");
+		Optional<MerchantDTO> merchant = merchantRepo.findByEmailId(email);
+		return  !merchant.isEmpty();
 	}
-	
 
 	@Override
 	public boolean phoneNumberAlreadyRegistered(String phoneNumber) {
-		return merchantRepo.findByPhoneNumber(phoneNumber) != null;
+		logger.error("phone check");
+		Optional<MerchantDTO> merchant = merchantRepo.findByPhoneNumber(phoneNumber);
+		return  !merchant.isEmpty();
 	}
-
-
 
 }

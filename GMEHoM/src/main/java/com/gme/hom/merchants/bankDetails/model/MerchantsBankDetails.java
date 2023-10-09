@@ -5,9 +5,12 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.common.models.PersistenceEntityWithUpdate;
 import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
@@ -32,7 +35,7 @@ import lombok.ToString;
 @Table(name="merchants_bank_details")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantsBankDetails extends PersistenceEntity implements Serializable{
+public class MerchantsBankDetails extends PersistenceEntityWithUpdate implements Serializable{
 
 	private static final long serialVersionUID = -3273266239209721857L;
 
@@ -41,11 +44,10 @@ public class MerchantsBankDetails extends PersistenceEntity implements Serializa
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_bank_details_seq")
 	@Column(name="id", nullable = false)
     private Long id;
-    
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name="merchant_bank_uuid", nullable = false)
-    private UUID merchantBankUuid = UUID.randomUUID();
+	
+	@GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name="bank_uuid", nullable = false)
+    private UUID bankUuid = UUID.randomUUID();
 
     @Column(name="merchant_id", nullable = false)
     private Long merchantId;

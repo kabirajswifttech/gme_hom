@@ -19,8 +19,8 @@ public class UserRequest {
 	    @JsonProperty("id")
 	    private Long id;
 
-	    @JsonProperty("user_id")
-	    private UUID userId;
+	    @JsonProperty("uuid")
+	    private UUID uuid;
 
 	    @JsonProperty("username")
 	    private String username;

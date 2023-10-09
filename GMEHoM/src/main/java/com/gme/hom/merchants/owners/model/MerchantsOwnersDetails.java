@@ -7,9 +7,13 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.common.models.PersistenceEntityWithUpdate;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +30,7 @@ import lombok.Setter;
 @Table(name="merchants_owners_details")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantsOwnersDetails extends PersistenceEntity {
+public class MerchantsOwnersDetails extends PersistenceEntityWithUpdate {
     @Id
     @SequenceGenerator(name = "merchants_owners_seq", sequenceName = "merchants_owners_details_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_owners_seq")
@@ -35,11 +39,11 @@ public class MerchantsOwnersDetails extends PersistenceEntity {
 
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name="merchant_owener_id")
-    private UUID merchantOwenerId = UUID.randomUUID();
+    @Column(name="owner_uuid")
+    private UUID ownerUuid = UUID.randomUUID();
 
     @Column(name="merchant_id", nullable = false)
-    private long merchantId;
+    private Long merchantId;
 
     @Column(name="full_name")
     private String fullName;
@@ -64,6 +68,12 @@ public class MerchantsOwnersDetails extends PersistenceEntity {
 
     @Column(name="email_id")
     private String emailId;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name="status")
+    private MerchantStatusCodes status;
+    
+    
 
 
     public MerchantsOwnersDetails(MerchantsOwnersDetailsRequest merchantOwnersDetailsRequest) {

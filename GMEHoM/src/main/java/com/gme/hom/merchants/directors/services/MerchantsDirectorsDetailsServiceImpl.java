@@ -20,6 +20,7 @@ import com.gme.hom.merchants.directors.repositories.MerchantsDirectorsDetailsRep
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -39,7 +40,7 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 		MerchantsDirectorsDetails director = new MerchantsDirectorsDetails(directorsReq);
 		director.setMerchantId(merchantId);
 		director.setIsActive(true);
-		director.setIsVerified(false);
+		//director.setIsVerified(false);
 		director.setStatus(MerchantStatusCodes.PENDING);
 		director = directorsRepo.save(director);
 		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(director);
@@ -53,6 +54,7 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 		directorsDetails.setCreatedBy(UserSecurityService.getUsername());
 		directorsDetails.setEntityHash(ChecksumService.getChecksum(directorsDetails, GlobalConfig.DATA_ENTITY_HASH));
 		directorsDetails.setIsActive(true);
+		//directorsDetails.setIsVerified(false);
 		directorsDetails.setStatus(MerchantStatusCodes.PENDING);
 		directorsDetails = directorsRepo.save(directorsDetails);
 		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(directorsDetails);
@@ -74,19 +76,23 @@ public class MerchantsDirectorsDetailsServiceImpl implements MerchantsDirectorsD
 	}
 	@Override
 	public MerchantsDirectorsDetails update(MerchantsDirectorsDetails directorsDetails) {
-		//merchantsDirectorsDetails.setCreatedBy(UserSecurityService.getUsername());
-		Optional<MerchantsDirectorsDetailsDTO> directorInDB = getById(directorsDetails.getId());
-		logger.error(directorInDB.get().getStatus());
-		//directorsDetails.setUpdatedBy(UserSecurityService.getUsername());
-		directorsDetails.setIsActive(directorInDB.get().getIs_active());
-		logger.error(directorInDB.get().getStatus().getClass().toString());
-		directorsDetails.setStatus(MerchantStatusCodes.valueOf(directorInDB.get().getStatus()));
-		directorsDetails = directorsRepo.save(directorsDetails);
-		MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(directorsDetails);
-		directorsLog.setCreatedBy(UserSecurityService.getUsername());
-		directorsLog.setId(directorsDetails.getId());
-		directorsLogRepo.save(directorsLog);
-		return directorsDetails;
+		Optional<MerchantsDirectorsDetails> directorInDB = directorsRepo.findById(directorsDetails.getId());
+		if(!directorInDB.isEmpty() && directorInDB.get().getMerchantId() == directorsDetails.getMerchantId()) {
+			directorsDetails.setUpdatedBy(UserSecurityService.getUsername());
+			directorsDetails.setIsActive(directorInDB.get().getIsActive());
+			logger.error(directorInDB.get().getStatus().getClass().toString());
+			directorsDetails.setCreatedBy(directorInDB.get().getCreatedBy());
+			directorsDetails.setStatus(directorInDB.get().getStatus());
+			directorsDetails = directorsRepo.save(directorsDetails);
+			MerchantsDirectorsDetailsLog directorsLog = new MerchantsDirectorsDetailsLog(directorsDetails);
+			directorsLog.setCreatedBy(UserSecurityService.getUsername());
+			directorsLog.setId(directorsDetails.getId());
+			directorsLogRepo.save(directorsLog);
+			return directorsDetails;
+		}
+		else {
+			throw new EntityNotFoundException("No such entity found!");
+		}
 	}
 
 }

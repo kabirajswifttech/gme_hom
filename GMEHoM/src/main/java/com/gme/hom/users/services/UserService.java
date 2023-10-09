@@ -2,6 +2,7 @@ package com.gme.hom.users.services;
 
 import java.util.List;
 
+import com.gme.hom.auth.models.PasswordResponse;
 import com.gme.hom.users.models.User;
 import com.gme.hom.users.models.UserRequest;
 import com.gme.hom.users.models.UserResponse;
@@ -42,7 +43,10 @@ public interface UserService {
 
 	public UserResponse updateProfile(UserRequest userRequest, Long id,String loggedInUserType, String actionUserName);		
 	
+	// used for validationg old password for change password change
+	public boolean isValidPassword(String password,Long id);
 	
+	public PasswordResponse changePassword (String newpassword,String username,Long id);
 	/*
 	 * public List<UserDTO> getAllUsers();
 	 * 

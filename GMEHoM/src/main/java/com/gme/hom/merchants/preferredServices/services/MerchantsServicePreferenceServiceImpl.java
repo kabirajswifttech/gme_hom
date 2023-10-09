@@ -19,6 +19,7 @@ import com.gme.hom.merchants.preferredServices.repositories.MerchantsServicePref
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -37,10 +38,11 @@ public class MerchantsServicePreferenceServiceImpl implements MerchantsServicePr
 	public MerchantsServicePreference save(MerchantsServicePreference servicePref) throws NoSuchAlgorithmException, IOException {
 		servicePref.setCreatedBy(UserSecurityService.getUsername());
 		servicePref.setEntityHash(ChecksumService.getChecksum(servicePref, GlobalConfig.DATA_ENTITY_HASH));
-		servicePref.setActive(true);
+		servicePref.setIsActive(true);
 		servicePref.setStatus(MerchantStatusCodes.PENDING);
 		servicePref = servicePreferenceRepo.save(servicePref);
 		MerchantsServicePreferenceLog serviceLog = new MerchantsServicePreferenceLog(servicePref);
+		serviceLog.setCreatedBy(UserSecurityService.getUsername());
 		servicePreferenceLogRepo.save(serviceLog);
 		return servicePref;
 	}
@@ -63,11 +65,20 @@ public class MerchantsServicePreferenceServiceImpl implements MerchantsServicePr
 	@Override
 	public MerchantsServicePreference update(MerchantsServicePreference servicePref)
 			throws Exception {
-		//servicePref.setUpdatedBy(UserSecurityService.getUsername());
-		servicePref = servicePreferenceRepo.save(servicePref);
-		MerchantsServicePreferenceLog serviceLog = new MerchantsServicePreferenceLog(servicePref);
-		servicePreferenceLogRepo.save(serviceLog);
-		return servicePref;
+		Optional<MerchantsServicePreference> dbService = servicePreferenceRepo.findById(servicePref.getId());
+		if(!dbService.isEmpty() && dbService.get().getMerchantId()==servicePref.getMerchantId()) {
+			servicePref.setUpdatedBy(UserSecurityService.getUsername());
+			servicePref.setIsActive(dbService.get().getIsActive());
+			servicePref.setCreatedBy(dbService.get().getCreatedBy());
+			servicePref.setStatus(dbService.get().getStatus());
+			servicePref = servicePreferenceRepo.save(servicePref);
+			MerchantsServicePreferenceLog serviceLog = new MerchantsServicePreferenceLog(servicePref);
+			serviceLog.setCreatedBy(UserSecurityService.getUsername());
+			servicePreferenceLogRepo.save(serviceLog);
+			return servicePref;
+		}else {
+			throw new EntityNotFoundException("No such entity found!");
+		}
 	}
 
 	

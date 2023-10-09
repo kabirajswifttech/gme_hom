@@ -5,8 +5,12 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.gme.hom.merchants.config.MerchantStatusCodes;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
@@ -24,16 +28,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchantsOwnersDetailsLog {
     @Id
-    @SequenceGenerator(name = "merchants_owners_seq", sequenceName = "merchants_owners_details_log_log_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "merchants_owners_seq", sequenceName = "merchants_owners_details_log_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_owners_seq")
-    @Column(name="log_id", nullable = false)
-    private Long logId;
-    
-	@Column(name="id", nullable = false)
+    @Column(name="id", nullable = false)
     private Long id;
 
-    @Column(name="merchant_owener_id")
-    private UUID merchantOwenerId;
+    @Column(name="owner_id")
+    private Long ownerId;
+    
+    @Column(name="owner_uuid")
+    private UUID ownerUuid;
 
     @Column(name="merchant_id", nullable = false)
     private long merchantId;
@@ -61,6 +65,10 @@ public class MerchantsOwnersDetailsLog {
 
     @Column(name="email_id")
     private String emailId;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name="status")
+    private MerchantStatusCodes status;
 
 	@Column(name = "created_by", nullable = false)
 	private String createdBy;
@@ -78,7 +86,8 @@ public class MerchantsOwnersDetailsLog {
 	public MerchantsOwnersDetailsLog(MerchantsOwnersDetails m) {
 	
 		this.id = m.getId();
-		this.merchantOwenerId = m.getMerchantOwenerId();
+		this.ownerId = m.getId();
+		this.ownerUuid = m.getOwnerUuid();
 		this.merchantId = m.getMerchantId();
 		this.fullName = m.getFullName();
 		this.fullNameNative = m.getFullNameNative();
@@ -88,6 +97,7 @@ public class MerchantsOwnersDetailsLog {
 		this.phoneCode = m.getPhoneCode();
 		this.phoneNumber = m.getPhoneNumber();
 		this.emailId = m.getEmailId();
+		this.status = m.getStatus();
 	} 
     
     

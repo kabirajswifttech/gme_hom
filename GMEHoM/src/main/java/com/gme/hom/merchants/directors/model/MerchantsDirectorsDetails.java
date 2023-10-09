@@ -9,11 +9,14 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.common.models.PersistenceEntityWithUpdate;
 import com.gme.hom.common.models.PersistenceEntityWithUpdateApproval;
 import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +34,7 @@ import lombok.Setter;
 @Table(name="merchants_directors_details")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantsDirectorsDetails extends PersistenceEntity implements Serializable {
+public class MerchantsDirectorsDetails extends PersistenceEntityWithUpdate  implements Serializable {
 
 	private static final long serialVersionUID = -8241707224809528906L;
 
@@ -43,8 +46,8 @@ public class MerchantsDirectorsDetails extends PersistenceEntity implements Seri
 	
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name="uuid", nullable = false)
-    private UUID uuid = UUID.randomUUID();
+    @Column(name="director_uuid", nullable = false)
+    private UUID directorUuid = UUID.randomUUID();
 
 	@NotNull
     @Column(name="merchant_id", nullable = false)
@@ -77,7 +80,8 @@ public class MerchantsDirectorsDetails extends PersistenceEntity implements Seri
 
     @Column(name="remarks")
     private String remarks;
-
+    
+    @Enumerated(EnumType.STRING)
     @Column(name="status")
     private MerchantStatusCodes status;
 
@@ -87,9 +91,6 @@ public class MerchantsDirectorsDetails extends PersistenceEntity implements Seri
     @Column(name="entity_hash")
     private String entityHash;
     
-    @Column(name="isVerified")
-    private Boolean isVerified;
-
 
     public MerchantsDirectorsDetails(MerchantsDirectorsDetailsRequest merchantsDirectorsDetailsRequest) {
         this.merchantId = merchantsDirectorsDetailsRequest.getMerchantId();

@@ -6,9 +6,12 @@ import java.sql.Date;
 import java.util.UUID;
 
 import com.gme.hom.merchants.config.MerchantStatusCodes;
+import com.gme.hom.merchants.config.ServicePreferenceType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
@@ -26,31 +29,30 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchantsServicePreferenceLog {
     @Id
-    @SequenceGenerator(name = "merchants_service_preference_seq", sequenceName = "merchants_service_preferences_log_log_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "merchants_service_preference_seq", sequenceName = "merchants_service_preferences_log_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_service_preference_seq")
-    @Column(name="log_id", nullable = false)
-    private Long logId;
-    
-	@Column(name="id", nullable = false)
+    @Column(name="id", nullable = false)
     private long id;
     
-    @Column(name="merchant_service_preference_id")
-    private UUID merchantServicePreferenceId;
+    @Column(name="service_preference_id")
+    private Long servicePreferenceId;
+    
+    @Column(name="service_preference_uuid")
+    private UUID servicePreferenceUuid;
 
     @Column(name="merchant_id", nullable = false)
     private long merchantId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="service_type")
-    private String serviceType;
+    private ServicePreferenceType serviceType;
 
     @Column(name="service_id")
     private String serviceId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="status")
     private MerchantStatusCodes status;
-
-    @Column(name="is_active")
-    private boolean isActive;
 
     @Column(name="entity_hash")
     private String entityHash;
@@ -72,12 +74,12 @@ public class MerchantsServicePreferenceLog {
 	public MerchantsServicePreferenceLog(MerchantsServicePreference m) {
 
 		this.id = getId();
-		this.merchantServicePreferenceId = m.getMerchantServicePreferenceId();
+		this.servicePreferenceId = m.getId();
+		this.servicePreferenceUuid = m.getServicePreferenceUuid();
 		this.merchantId = m.getMerchantId();
 		this.serviceType = m.getServiceType();
 		this.serviceId = m.getServiceId();
 		this.status = m.getStatus();
-		this.isActive = m.isActive();
 		this.entityHash = m.getEntityHash();
 	} 
     

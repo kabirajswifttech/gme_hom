@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,7 +56,7 @@ public class MerchantController {
 				Merchant merchant = new Merchant(merchantReq);
 				merchant = merchantService.save(merchant);
 				Long id = merchant.getId();
-				logger.debug("Merchant with email id '" + merchant.getEmailId() + "' created.");
+				//logger.debug("Merchant with email id '" + merchant.getEmailId() + "' created.");
 				ar.setStatus(APIResponseCode.SUCCESS);
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
 				ar.setData(merchant.getId());
@@ -144,7 +144,7 @@ public class MerchantController {
 		return ResponseEntity.ok(ar);
 	}
 
-	@PatchMapping("")
+	@PutMapping("")
 	public ResponseEntity<APIResponse> updateMerchantDetails(@Valid @RequestBody APIRequest apiReq) {
 		APIResponse ar = new APIResponse();
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.UPDATE_DATA.toString())

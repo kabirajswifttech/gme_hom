@@ -11,7 +11,7 @@ public class GlobalConfig {
 	// public final static String DB_PASSWORD = "w!nterc@stle";
 	// public final static String DB_URL =
 	// "jdbc:postgresql://192.168.137.2:5432/gme_hom";
-	public final static String DB_URL = "jdbc:postgresql://localhost:5432/gme_hom";
+	public final static String DB_URL = "jdbc:postgresql://localhost:5432/local_gme";
 
 	public final static String MAIL_SERVER_HOST = "smtp.office365.com";
 	public final static int MAIL_SERVER_PORT = 587;

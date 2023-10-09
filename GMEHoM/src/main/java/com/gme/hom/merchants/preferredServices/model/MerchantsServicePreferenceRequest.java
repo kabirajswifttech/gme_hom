@@ -3,6 +3,7 @@ package com.gme.hom.merchants.preferredServices.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gme.hom.merchants.config.ServicePreferenceType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class MerchantsServicePreferenceRequest {
     private long merchantId;
 
     @JsonProperty("service_type")
-    private String serviceType;
+    private ServicePreferenceType serviceType;
 
     @JsonProperty("service_id")
     private String serviceId;

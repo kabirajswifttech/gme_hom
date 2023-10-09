@@ -6,9 +6,12 @@ import java.sql.Date;
 import java.util.UUID;
 
 import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
@@ -26,19 +29,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchantsStockholdersDetailsLog extends PersistenceEntity {
 	@Id
-	@SequenceGenerator(name = "merchants_stockholder_details_seq", sequenceName = "merchants_stockholders_details_log_log_id_seq", allocationSize = 1)
+	@SequenceGenerator(name = "merchants_stockholder_details_seq", sequenceName = "merchants_stockholders_details_log_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_stockholder_details_seq")
-	@Column(name="log_id", nullable = false)
-    private Long logId;
-    
 	@Column(name = "id", nullable = false)
-	private long id;
+	private Long id;
+	
+	@Column(name = "stockholder_id")
+	private Long stockholderId;
 
-    @Column(name = "merchant_stockholder_id")
-	private UUID merchantStockholderId;
+    @Column(name = "stockholder_uuid")
+	private UUID stockholderUuid;
 
 	@Column(name = "merchant_id", nullable = false)
-	private long merchantId;
+	private Long merchantId;
 
 	@Column(name = "full_name")
 	private String fullName;
@@ -67,11 +70,12 @@ public class MerchantsStockholdersDetailsLog extends PersistenceEntity {
 	@Column(name = "percentage_of_share")
 	private Float percentageOfShare;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
-	private String status;
+	private MerchantStatusCodes status;
 
 	@Column(name = "is_active")
-	private boolean isActive;
+	private Boolean isActive;
 
 	@Column(name = "remarks")
 	private String remarks;
@@ -95,8 +99,8 @@ public class MerchantsStockholdersDetailsLog extends PersistenceEntity {
 
 	public MerchantsStockholdersDetailsLog(MerchantsStockholdersDetails m) {
 	
-		this.id = m.getId();
-		this.merchantStockholderId = m.getMerchantStockholderId();
+		this.stockholderId = m.getId();
+		this.stockholderUuid = m.getStockholderUuid();
 		this.merchantId = m.getMerchantId();
 		this.fullName = m.getFullName();
 		this.fullNameNative = m.getFullNameNative();
@@ -108,7 +112,7 @@ public class MerchantsStockholdersDetailsLog extends PersistenceEntity {
 		this.residenceCountry = m.getResidenceCountry();
 		this.percentageOfShare = m.getPercentageOfShare();
 		this.status = m.getStatus();
-		this.isActive = m.isActive();
+		this.isActive = m.getIsActive();
 		this.remarks = m.getRemarks();
 		this.entityHash = m.getEntityHash();
 	}

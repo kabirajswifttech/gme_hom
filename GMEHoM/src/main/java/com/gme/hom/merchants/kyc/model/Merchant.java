@@ -50,8 +50,8 @@ public class Merchant extends PersistenceEntityWithUpdateApproval implements Ser
 	
 	@GenericGenerator(strategy="org.hibernate.id.UUIDGenerator",name = "uuid2")
 	@GeneratedValue(generator = "uuid2")
-    @Column(name="merchant_uuid", updatable = false, nullable = false)
-    private UUID merchantUuid = UUID.randomUUID();
+    @Column(name="uuid", updatable = false, nullable = false)
+    private UUID uuid = UUID.randomUUID();
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -264,7 +264,7 @@ public class Merchant extends PersistenceEntityWithUpdateApproval implements Ser
 
 
 
-	public Merchant(Long id, UUID merchantUuid, MerchantType merchantType, String emailId, String phoneNumber,
+	public Merchant(Long id, UUID uuid, MerchantType merchantType, String emailId, String phoneNumber,
 			String incorporationCountry, String businessName, String businessNameNative, String businessType,String productType,
 			String businessNature, Date incorporationDate, String bizzRegNo, String corpRegNo,
 			String businessProfile, String postalCode, String address1, String address2, String city, String website,
@@ -274,7 +274,7 @@ public class Merchant extends PersistenceEntityWithUpdateApproval implements Ser
 			String notificationMethod, String preferredDateFormat, String preferredTimeZone) {
 		super();
 		this.id = id;
-		this.merchantUuid = merchantUuid;
+		this.uuid = uuid;
 		this.merchantType = merchantType;
 		this.emailId = emailId;
 		this.phoneNumber = phoneNumber;

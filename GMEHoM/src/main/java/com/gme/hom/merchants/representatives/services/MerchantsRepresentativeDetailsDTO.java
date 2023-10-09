@@ -4,11 +4,11 @@ import java.sql.Date;
 import java.util.UUID;
 
 public interface MerchantsRepresentativeDetailsDTO {
-    long getId();
+    Long getId();
 
     UUID getMerchant_representative_id();
 
-    long getMerchant_id();
+    Long getMerchant_id();
 
     String getFirst_name();
 
@@ -44,6 +44,6 @@ public interface MerchantsRepresentativeDetailsDTO {
 
     String getStatus();
 
-    boolean getIs_active();
+    Boolean getIs_active();
 
 }

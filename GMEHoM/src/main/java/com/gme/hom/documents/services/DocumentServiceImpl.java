@@ -69,7 +69,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		logger.debug("Client address: " + clientAddress);
 		doc.setDocPath(parentDir + filename);
-		doc.setActive(DocumentCodes.DOCUMENT_IS_ACTIVE_DEFAULT);
+		doc.setIsActive(DocumentCodes.DOCUMENT_IS_ACTIVE_DEFAULT);
 		doc.setStatus(DocumentCodes.DOCUMENT_STATUS_DEFAULT);
 
 		try {

@@ -37,8 +37,8 @@ public class User extends PersistenceEntityWithUpdateApproval implements Seriali
 	private Long id;
 
 	@GeneratedValue()
-	@Column(name = "user_id")
-	private UUID userId;
+	@Column(name = "uuid")
+	private UUID uuid;
 
 	@Column(name = "user_type")
 	private String userType;
@@ -199,7 +199,7 @@ public class User extends PersistenceEntityWithUpdateApproval implements Seriali
 
 	public User(UserRequest userRequest) {
 		this.id = userRequest.getId();
-		this.userId = userRequest.getUserId();
+		this.uuid = userRequest.getUuid();
 		this.username = userRequest.getUsername();
 		this.emailId = userRequest.getEmailId();
 		this.userType = userRequest.getUserType();

@@ -66,5 +66,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ " ,roles,is_email_id_verified,user_type,source_id ,source_type ,created_by,created_date from users"
 			+ "  where id=?1", nativeQuery = true)
 	UserDTO getUserInfoById(Long id);
-
+	
+	@Query(value = "select u.password from users u where u.id=?1", nativeQuery = true)
+	String getUserPasswordFormId(Long id);
+	
+	
 }

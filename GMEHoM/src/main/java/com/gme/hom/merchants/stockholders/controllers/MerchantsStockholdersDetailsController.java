@@ -130,7 +130,6 @@ public class MerchantsStockholdersDetailsController {
 
 	@PutMapping("")
 	public ResponseEntity<APIResponse> updateMerchantStockholdersDetails(@Valid @RequestBody APIRequest apiReq) {
-		logger.error("here");
 		APIResponse ar = new APIResponse();
 		if (apiReq.getFunction().equals(APIRequestFunctionCode.UPDATE_DATA.toString())
 				&& apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {

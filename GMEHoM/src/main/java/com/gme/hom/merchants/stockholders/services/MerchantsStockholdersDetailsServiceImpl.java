@@ -17,6 +17,7 @@ import com.gme.hom.merchants.stockholders.repositories.MerchantsStockholderDetai
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.usersecurity.services.UserSecurityService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -33,10 +34,11 @@ public class MerchantsStockholdersDetailsServiceImpl implements MerchantsStockho
 	public MerchantsStockholdersDetails save(MerchantsStockholdersDetails stockholder) throws NoSuchAlgorithmException, IOException {
 		stockholder.setCreatedBy(UserSecurityService.getUsername());
 		stockholder.setEntityHash(ChecksumService.getChecksum(stockholder, GlobalConfig.DATA_ENTITY_HASH));
-		stockholder.setActive(true);
-		stockholder.setStatus(MerchantStatusCodes.PENDING.toString());
+		stockholder.setIsActive(true);
+		stockholder.setStatus(MerchantStatusCodes.PENDING);
 		stockholder = stockholdersRepo.save(stockholder);
 		MerchantsStockholdersDetailsLog stockholderLog = new MerchantsStockholdersDetailsLog(stockholder);
+		stockholderLog.setCreatedBy(UserSecurityService.getUsername());
 		stockholdersLogRepo.save(stockholderLog);
 		return stockholder;
 	}
@@ -58,11 +60,22 @@ public class MerchantsStockholdersDetailsServiceImpl implements MerchantsStockho
 
 	@Override
 	public MerchantsStockholdersDetails update(MerchantsStockholdersDetails stockholder) {
-		//merchantsStockholdersDetails.setUpdatedBy(UserSecurityService.getUsername());
-		stockholder = stockholdersRepo.save(stockholder);
-		MerchantsStockholdersDetailsLog stockholderLog = new MerchantsStockholdersDetailsLog(stockholder);
-		stockholdersLogRepo.save(stockholderLog);
-		return stockholder;
+		Optional<MerchantsStockholdersDetails> dbStockholder = stockholdersRepo.findById(stockholder.getId());
+		if(!dbStockholder.isEmpty() && dbStockholder.get().getMerchantId()==stockholder.getMerchantId()) {
+			stockholder.setUpdatedBy(UserSecurityService.getUsername());
+			stockholder.setIsActive(dbStockholder.get().getIsActive());
+			stockholder.setEntityHash(dbStockholder.get().getEntityHash());
+			stockholder.setStatus(dbStockholder.get().getStatus());
+			stockholder.setCreatedBy(dbStockholder.get().getCreatedBy());
+			stockholder = stockholdersRepo.save(stockholder);
+			MerchantsStockholdersDetailsLog stockholderLog = new MerchantsStockholdersDetailsLog(stockholder);
+			stockholderLog.setCreatedBy(UserSecurityService.getUsername());
+			stockholdersLogRepo.save(stockholderLog);
+			return stockholder;
+		}
+		else {
+			throw new EntityNotFoundException("No such data found!");
+		}
 	}
 
 }

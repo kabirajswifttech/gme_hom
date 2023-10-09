@@ -2,15 +2,19 @@ package com.gme.hom.merchants.stockholders.model;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.gme.hom.common.models.PersistenceEntity;
+import com.gme.hom.common.models.PersistenceEntityWithUpdate;
+import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +31,12 @@ import lombok.Setter;
 @Table(name = "merchants_stockholders_details")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantsStockholdersDetails extends PersistenceEntity {
+public class MerchantsStockholdersDetails extends PersistenceEntityWithUpdate implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5297631251152899567L;
+
 	@Id
 	@SequenceGenerator(name = "merchants_stockholder_details_seq", sequenceName = "merchants_stockholders_details_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_stockholder_details_seq")
@@ -36,11 +45,11 @@ public class MerchantsStockholdersDetails extends PersistenceEntity {
 
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(name = "merchant_stockholder_id")
-	private UUID merchantStockholderId = UUID.randomUUID();
+    @Column(name = "stockholder_uuid")
+	private UUID stockholderUuid = UUID.randomUUID();
 
 	@Column(name = "merchant_id", nullable = false)
-	private long merchantId;
+	private Long merchantId;
 
 	@Column(name = "full_name")
 	private String fullName;
@@ -69,14 +78,9 @@ public class MerchantsStockholdersDetails extends PersistenceEntity {
 	@Column(name = "percentage_of_share")
 	private Float percentageOfShare;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
-	private String status;
-
-	@Column(name = "is_active")
-	private boolean isActive;
-
-	@Column(name = "remarks")
-	private String remarks;
+	private MerchantStatusCodes status;
 
 	@Column(name = "entity_hash")
 	private String entityHash;

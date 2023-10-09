@@ -47,15 +47,15 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 		bankDetails.setIsActive(true);
 		bankDetails.setIsVerified(true);
 		bankDetails.setStatus(MerchantStatusCodes.PENDING);
-		logger.error(bankDetails.toString());
 		bankDetails = bankDetailsRepo.save(bankDetails);
-		MerchantsBankDetailsLog bankDetaiilsLog = new MerchantsBankDetailsLog(bankDetails);
-		bankDetaiilsLog.setId(bankDetails.getId());
-		bankDetailsLogRepo.save(new MerchantsBankDetailsLog(bankDetails));
+		MerchantsBankDetailsLog bankDetailsLog = new MerchantsBankDetailsLog(bankDetails);
+		bankDetailsLog.setCreatedBy(UserSecurityService.getUsername());
+		bankDetailsLogRepo.save(bankDetailsLog);
 		return bankDetails;
 	}
 
 	@Override
+	@Transactional
 	public MerchantsBankDetails save(MerchantsBankDetails merchantsBankDetails) throws Exception{
 			if(getByMerchantId(merchantsBankDetails.getMerchantId()) == null) {
 				merchantsBankDetails.setCreatedBy(UserSecurityService.getUsername());			//move to service
@@ -89,6 +89,7 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 	}
 
 	@Override
+	@Transactional
 	public MerchantsBankDetails update(MerchantsBankDetailsRequest merchantBankDetailsReq) throws Exception {
 		//bankDetails.setUpdatedBy(UserSecurityService.getUsername());			//move to service
 		try {
@@ -96,13 +97,12 @@ public class MerchantsBankDetailsServiceImpl implements MerchantsBankDetailsServ
 			MerchantsBankDetailsDTO bankDetailsInDB = getById(bankDetails.getId());
 			bankDetails.setIsVerified(bankDetailsInDB.getIs_verified());
 			bankDetails = bankDetailsRepo.save(bankDetails);
-			MerchantsBankDetailsLog bankDetaiilsLog = new MerchantsBankDetailsLog(bankDetails);
-			bankDetaiilsLog.setId(bankDetails.getId());
-			bankDetailsLogRepo.save(new MerchantsBankDetailsLog(bankDetails));
+			MerchantsBankDetailsLog bankDetailsLog = new MerchantsBankDetailsLog(bankDetails);
+			bankDetailsLog.setCreatedBy(UserSecurityService.getUsername());
+			bankDetailsLogRepo.save(bankDetailsLog);
 			return bankDetails;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return null;
 	}

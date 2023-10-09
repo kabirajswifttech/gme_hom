@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gme.hom.auth.models.OtpRequest;
+import com.gme.hom.auth.models.PasswordRequest;
 import com.gme.hom.documents.models.DocumentRequest;
 import com.gme.hom.merchants.bankDetails.model.MerchantsBankDetailsRequest;
 import com.gme.hom.merchants.directors.model.MerchantsDirectorsDetailsRequest;
@@ -94,8 +95,8 @@ public class APIData {
 
 	@Valid
 	@JsonInclude(Include.NON_NULL)
-	@JsonProperty("merchants_service_preference_detail")
-	private MerchantsServicePreferenceRequest merchantServicePreferenceRequest;
+	@JsonProperty("merchants_service_preference_details")
+	private List<MerchantsServicePreferenceRequest> merchantServicePreferenceRequests;
 
 	@Valid
 	@JsonInclude(Include.NON_NULL)
@@ -127,4 +128,9 @@ public class APIData {
 	@JsonProperty("merchants_owners_details")
 	private List<MerchantsOwnersDetailsRequest> merchantsOwnersDetailsRequests;
 
+	@Valid
+	@JsonInclude(Include.NON_NULL)
+	@JsonProperty("password")
+	private PasswordRequest passwordRequest;
+	
 }

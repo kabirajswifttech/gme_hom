@@ -74,7 +74,7 @@ public class OtpServiceImpl implements OtpService {
 			otp.setEntityHash(ChecksumService.getChecksum(otp, GlobalConfig.DATA_ENTITY_HASH));
 			otp.setOtpId(UUID.randomUUID());
 			otp.setStatus(OtpStatusCodes.SENT);
-			otp.setActive(true);
+			otp.setIsActive(true);
 
 			if (UserSecurityService.getUsername() != null) {
 				// if the message is being sent by authenticated user

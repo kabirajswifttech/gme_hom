@@ -16,7 +16,7 @@ public class MerchantsRepresentativeDetailsRequest {
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("merchant_id")
-    private long merchantId;
+    private Long merchantId;
 
     @JsonProperty("first_name")
     private String firstName;

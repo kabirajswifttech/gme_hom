@@ -2,6 +2,7 @@ package com.gme.hom.users.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import com.gme.hom.api.config.APIResponseCode;
 import com.gme.hom.api.config.APIResponseScopeCode;
 import com.gme.hom.api.models.APIRequest;
 import com.gme.hom.api.models.APIResponse;
+import com.gme.hom.auth.service.PasswordService;
 import com.gme.hom.messaging.config.MessageTypes;
 import com.gme.hom.messaging.models.Message;
 import com.gme.hom.messaging.models.MessageReceiver;
@@ -43,11 +45,12 @@ public class UserController {
 
 	private final TemplateService templateService;
 	private final MessagingService messagingService;
-
-	UserController(UserService userService, TemplateService templateService, MessagingService messagingService) {
+	private final PasswordService passwordService;
+	UserController(UserService userService, TemplateService templateService, MessagingService messagingService,PasswordService passwordService) {
 		this.userService = userService;
 		this.templateService = templateService;
 		this.messagingService = messagingService;
+		this.passwordService=passwordService;
 	}
 
 	// @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
@@ -136,6 +139,7 @@ public class UserController {
 	@PostMapping("")
 	public ResponseEntity<APIResponse> UserServices(@RequestBody APIRequest apiRequest, HttpServletRequest httpRequest,
 			HttpServletResponse httpResponse) {
+		String RequestedIp=UserSecurityService.getClientAddress(httpRequest);
 		APIResponse ar = new APIResponse();
 		String actionUserName = UserSecurityService.getUsername();
 		String loggedInUserType = userService.getUserTypeByUsername(actionUserName);
@@ -245,49 +249,20 @@ public class UserController {
 							ar.setStatus(APIResponseCode.SUCCESS);
 							ar.setDescription("Created successfully.");
 							ar.setData(userResponse);
+							// reset password email service
+							// building message using message template
+							passwordService.generateResetPasswordLink(userResponse.getId(), actionUserName,RequestedIp);	
+							return ResponseEntity.ok(ar);
 						} else {
 							ar.setStatus(APIResponseCode.FAILURE);
 							ar.setDescription("Creation Failed.");
+							return ResponseEntity.ok(ar);
 						}
 					} else {
 						ar.setStatus(APIResponseCode.FAILURE);
 						ar.setDescription("Creation Failed.");
+						return ResponseEntity.ok(ar);
 					}
-
-					// reset password email service
-					// building message using message template
-
-					ResetPassword sot = (ResetPassword) MessageTemplateFactory
-							.newMessageTemplate(MessageTemplateTypes.RESET_PASSWORD);
-
-					TemplateDTO mt = templateService.getTemplateByTypeAndPurpose(MessageTypes.EMAIL,
-							MessageTemplateTypes.RESET_PASSWORD);
-
-					sot.setTemplate(mt.getTemplate());
-
-					sot.setFull_name(userRequest.getFirstName() + " " + userRequest.getMiddleName() + " "
-							+ userRequest.getLastName());
-					sot.setLink("/auth/resetpass/8759235923euiweuwier");
-
-					String message = sot.buildMessage();
-
-					// send otp in email
-					Message m = new Message();
-					m.setContactInfo(userRequest.getEmailId());
-					m.setContent(message);
-					m.setMessageType(MessageTypes.EMAIL);
-					m.setSubject(mt.getSubject());
-					// m.setAssociationId(us.getId());
-					// m.setAssociationType(EntityTypes.USER_SIGNUP);
-					// m.setPurposeCode(MessagePurposeCodes.);
-					MessageReceiver mr = new MessageReceiver();
-					mr.setFullname(userRequest.getFirstName() + " " + userRequest.getMiddleName() + " "
-							+ userRequest.getLastName());
-					// mr.setMessage(message);
-					// boolean messageSendingSuccess =
-					messagingService.sendMessage(m, mr);
-
-					return ResponseEntity.ok(ar);
 
 				} catch (Exception e) {
 
@@ -367,39 +342,9 @@ public class UserController {
 					}
 
 					if (isEmailChanged) {
-
 						// reset password email service
 						// building message using message template
-
-						ResetPassword sot = (ResetPassword) MessageTemplateFactory
-								.newMessageTemplate(MessageTemplateTypes.RESET_PASSWORD);
-
-						TemplateDTO mt = templateService.getTemplateByTypeAndPurpose(MessageTypes.EMAIL,
-								MessageTemplateTypes.RESET_PASSWORD);
-
-						sot.setTemplate(mt.getTemplate());
-
-						sot.setFull_name(userRequest.getFirstName() + " " + userRequest.getMiddleName() + " "
-								+ userRequest.getLastName());
-						sot.setLink("/auth/resetpass/8759235923euiweuwier");
-
-						String message = sot.buildMessage();
-
-						// send otp in email
-						Message m = new Message();
-						m.setContactInfo(userRequest.getEmailId());
-						m.setContent(message);
-						m.setMessageType(MessageTypes.EMAIL);
-						m.setSubject(mt.getSubject());
-						// m.setAssociationId(us.getId());
-						// m.setAssociationType(EntityTypes.USER_SIGNUP);
-						// m.setPurposeCode(MessagePurposeCodes.);
-						MessageReceiver mr = new MessageReceiver();
-						mr.setFullname(userRequest.getFirstName() + " " + userRequest.getMiddleName() + " "
-								+ userRequest.getLastName());
-						// mr.setMessage(message);
-						// boolean messageSendingSuccess =
-						messagingService.sendMessage(m, mr);
+						passwordService.generateResetPasswordLink(userResponse.getId(), actionUserName,RequestedIp);				
 					}
 
 					return ResponseEntity.ok(ar);

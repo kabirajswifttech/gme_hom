@@ -1,5 +1,7 @@
 package com.gme.hom.merchants.representatives.controllers;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +50,11 @@ public class MerchantRepresentativeDetailsController {
 				List<MerchantsRepresentativeDetailsRequest> representativeReqs = apiReq.getData()
 						.getMerchantsRepresentativeDetailsRequests();
 				representativeReqs.forEach(req->{
-					representativesService.save(new MerchantsRepresentativeDetails(req));
+					try {
+						representativesService.save(new MerchantsRepresentativeDetails(req));
+					} catch (NoSuchAlgorithmException | IOException e) {
+						e.printStackTrace();
+					} 
 				});
 				ar.setStatus(APIResponseCode.SUCCESS);
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
@@ -129,7 +135,7 @@ public class MerchantRepresentativeDetailsController {
 							merchantBankDetailsReq);
 					merchantsRepresentativeDetails.setId(Long.parseLong(apiReq.getData().getQuery().getValue()));
 					merchantsRepresentativeDetails = representativesService.update(merchantsRepresentativeDetails);
-					ar.setData(merchantsRepresentativeDetails);
+					//ar.setData(merchantsRepresentativeDetails);
 					ar.setStatus(APIResponseCode.SUCCESS);
 					ar.setDescription(ResponseMessageCodes.DATA_RETRIEVED_SUCCESSFULLY.toString());
 				} catch (Exception e) {

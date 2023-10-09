@@ -1,6 +1,10 @@
 package com.gme.hom.common.models;
 
+
+
 import java.sql.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -10,45 +14,42 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public class PersistenceEntityWithUpdateApproval {
+public class PersistenceEntityWithUpdate {
 
 	@Column(name = "is_active")
+	@JsonIgnore
 	private Boolean isActive;
 
 	@Column(name = "remarks")
+	@JsonIgnore
 	private String remarks;
 
 	@Column(name = "created_by", nullable = false)
+	@JsonIgnore
 	private String createdBy;
 
 	// @CreationTimestamp
 	// @GeneratedValue
 	@Column(name = "created_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-	private java.sql.Date createdDate;
+	@JsonIgnore
+	private Date createdDate;
 
 	// @CreationTimestamp
 	@Column(name = "created_date_utc", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-	private java.sql.Date createdDateUTC;
-
-	// @UpdateTimestamp
-		@Column(name = "updated_by")
-		private String updatedBy;
-
-		@Column(name = "updated_date")
-		private Date updatedDate;
-
-		@Column(name = "updated_date_utc")
-		private Date updatedDateUTC;
-
-	@Column(name = "approved_by")
-	private String approvedBy;
-
-	@Column(name = "approved_date")
-	private java.sql.Date approvedDate;
-
-	@Column(name = "approved_date_utc")
-	private java.sql.Date approvedDateUTC;
+	@JsonIgnore
+	private Date createdDateUTC;
 
 	@Column(name = "entity_hash")
+	@JsonIgnore
 	private String entityHash;
+	
+	// @UpdateTimestamp
+	@Column(name = "updated_by")
+	private String updatedBy;
+
+	@Column(name = "updated_date")
+	private Date updatedDate;
+
+	@Column(name = "updated_date_utc")
+	private Date updatedDateUTC;
 }

@@ -14,7 +14,7 @@ public interface MerchantsRepresentativeDetailsService {
 	MerchantsRepresentativeDetails addMerchantRepresentativesDetails(
 			MerchantsRepresentativeDetailsRequest representativeReq, Long merchantId) throws NoSuchAlgorithmException, IOException;
 
-	MerchantsRepresentativeDetails save(MerchantsRepresentativeDetails representative);
+	MerchantsRepresentativeDetails save(MerchantsRepresentativeDetails representative) throws NoSuchAlgorithmException, IOException;
 
 	List<MerchantsRepresentativeDetailsDTO> getAll();
 

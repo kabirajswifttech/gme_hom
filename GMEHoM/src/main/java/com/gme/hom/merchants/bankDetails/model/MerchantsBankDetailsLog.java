@@ -2,9 +2,9 @@ package com.gme.hom.merchants.bankDetails.model;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
-import java.sql.Date;
 import java.util.UUID;
 
+import com.gme.hom.common.models.PersistenceEntity;
 import com.gme.hom.merchants.config.MerchantStatusCodes;
 
 import jakarta.persistence.Column;
@@ -26,18 +26,18 @@ import lombok.Setter;
 @Table(name="merchants_bank_details_log")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantsBankDetailsLog{
+public class MerchantsBankDetailsLog extends PersistenceEntity{
     @Id
     @SequenceGenerator(name = "merchants_bank_details_seq", sequenceName = "merchants_bank_details_log_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "merchants_bank_details_seq")
     @Column(name="id", nullable = false)
     private Long Id;
-    
-    @Column(name="merchant_bank_uuid", nullable = false)
-    private UUID merchantBankUuid;
 
-    @Column(name="merchant_bank_id", nullable = false)
-    private Long merchantBankid;
+	@Column(name="bank_details_id", nullable = false)
+    private Long bankDetailsId;
+	
+    @Column(name="bank_details_uuid", nullable = false)
+    private UUID bankDetailsUuid;
 
     @Column(name="merchant_id", nullable = false)
     private Long merchantId;
@@ -76,26 +76,14 @@ public class MerchantsBankDetailsLog{
     @Column(name="entity_hash")
     private String entityHash;
 
-	@Column(name = "created_by", nullable = false)
-	private String createdBy;
-
-	// @CreationTimestamp
-	// @GeneratedValue
-	@Column(name = "created_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-	private Date createdDate;
-
-	// @CreationTimestamp
-	@Column(name = "created_date_utc", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-	private Date createdDateUTC;
-
 
  
 
 
 	public MerchantsBankDetailsLog(MerchantsBankDetails m) {
 
-		this.merchantBankid = m.getId();
-		this.merchantBankUuid =m.getMerchantBankUuid();
+		this.bankDetailsId = m.getId();
+		this.bankDetailsUuid =m.getBankUuid();
 		this.merchantId = m.getMerchantId();
 		this.bankId = m.getBankId();
 		this.accountName = m.getAccountName();

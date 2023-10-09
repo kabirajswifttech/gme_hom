@@ -5,7 +5,7 @@ import java.util.UUID;
 public interface MerchantsOwnersDetailsDTO {
     Long getId();
 
-    UUID getMerchantOwenerId();
+    UUID getOwener_uuid();
 
     long getMerchantId();
 

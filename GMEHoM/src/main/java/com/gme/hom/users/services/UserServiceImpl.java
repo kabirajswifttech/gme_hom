@@ -1,5 +1,9 @@
 package com.gme.hom.users.services;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,8 +15,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gme.hom.GlobalConfig;
+import com.gme.hom.auth.config.PasswordStatusCodes;
+import com.gme.hom.auth.models.PasswordResponse;
+import com.gme.hom.messaging.config.MessageTypes;
+import com.gme.hom.messaging.models.Message;
+import com.gme.hom.messaging.models.MessageReceiver;
+import com.gme.hom.messaging.services.MessagingService;
 import com.gme.hom.security.services.ChecksumService;
 import com.gme.hom.security.services.PasswordGenerator;
+import com.gme.hom.templates.config.MessageTemplateTypes;
+import com.gme.hom.templates.models.MessageTemplateFactory;
+import com.gme.hom.templates.models.PasswordChanged;
+import com.gme.hom.templates.repository.TemplateDTO;
+import com.gme.hom.templates.services.TemplateService;
 import com.gme.hom.users.config.UserStatusCodes;
 import com.gme.hom.users.config.UserTypeCodes;
 import com.gme.hom.users.models.User;
@@ -33,6 +48,11 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserLogRepository userLogRepo;
+	
+	@Autowired
+	private  MessagingService messagingService;
+	@Autowired
+	private final TemplateService templateService;
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -139,7 +159,7 @@ public class UserServiceImpl implements UserService {
 			newUser.set2faEnabled(false);
 
 			final UUID uuid = UUID.randomUUID();
-			newUser.setUserId(uuid);
+			newUser.setUuid(uuid);
 			newUser.setEntityHash(ChecksumService.getChecksum(newUser, GlobalConfig.DATA_ENTITY_HASH));
 
 			userRepository.save(newUser);
@@ -173,11 +193,12 @@ public class UserServiceImpl implements UserService {
 			Optional<User> entity = userRepository.findById((long) userRequest.getId());
 			if (entity.isPresent()) {
 
-				long currentTimeMillis = System.currentTimeMillis();
-				java.sql.Date sqlDate = new java.sql.Date(currentTimeMillis);
-
-				long utcTimestampMillis = System.currentTimeMillis();
-				java.sql.Date utcsqlDate = new java.sql.Date(utcTimestampMillis);
+				LocalDateTime localDateTime = LocalDateTime.now();
+				Timestamp localtimestamp = Timestamp.valueOf(localDateTime);	
+				
+				// Convert to UTC
+		        ZonedDateTime utcDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
+		    	Timestamp localutctimestamp = Timestamp.valueOf(localDateTime);	
 
 				User newUser = entity.get();
 
@@ -204,9 +225,9 @@ public class UserServiceImpl implements UserService {
 				// newUser.setNationality(user.getNationality());
 				newUser.setSalutation(userRequest.getSalutation());
 				newUser.setRoles(userRequest.getRoles());
-				newUser.setUpdatedBy(actionUserName);
-				newUser.setUpdatedDate(sqlDate);
-				newUser.setUpdatedDateUTC(utcsqlDate);
+				//newUser.setUpdatedBy(actionUserName);
+				//newUser.setUpdatedDate(localtimestamp);
+				//newUser.setUpdatedDateUTC(localutctimestamp);
 				newUser.setEntityHash(ChecksumService.getChecksum(newUser, GlobalConfig.DATA_ENTITY_HASH));
 				userRepository.save(newUser);
 
@@ -247,12 +268,12 @@ public class UserServiceImpl implements UserService {
 
 			Optional<User> entity = userRepository.findById(id);
 			if (entity.isPresent()) {
-
-				long currentTimeMillis = System.currentTimeMillis();
-				java.sql.Date sqlDate = new java.sql.Date(currentTimeMillis);
-
-				long utcTimestampMillis = System.currentTimeMillis();
-				java.sql.Date utcsqlDate = new java.sql.Date(utcTimestampMillis);
+				LocalDateTime localDateTime = LocalDateTime.now();
+				Timestamp localtimestamp = Timestamp.valueOf(localDateTime);	
+				
+				// Convert to UTC
+		        ZonedDateTime utcDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
+		    	Timestamp localutctimestamp = Timestamp.valueOf(localDateTime);	
 
 				User myDetail = entity.get();
 
@@ -283,9 +304,9 @@ public class UserServiceImpl implements UserService {
 				myDetail.setNotificationPreference(userRequest.getNotificationPreference());
 				myDetail.setProfileImage(userRequest.getProfileImage());
 
-				myDetail.setUpdatedBy(actionUserName);
-				myDetail.setUpdatedDate(sqlDate);
-				myDetail.setUpdatedDateUTC(utcsqlDate);
+				//myDetail.setUpdatedBy(actionUserName);
+				//myDetail.setUpdatedDate(localtimestamp);
+				//myDetail.setUpdatedDateUTC(localutctimestamp);
 
 				myDetail.setEntityHash(ChecksumService.getChecksum(myDetail, GlobalConfig.DATA_ENTITY_HASH));
 
@@ -309,6 +330,96 @@ public class UserServiceImpl implements UserService {
 		return response;
 	}
 
+	@Override
+	public boolean isValidPassword(String password,Long id) {
+		
+		BCryptPasswordEncoder b = new BCryptPasswordEncoder();		
+	    String pass=userRepository.getUserPasswordFormId(id);	   
+	    if(pass!=null) {	    	
+	    	boolean isMatched= b.matches(password, pass);
+	    	if(isMatched) {
+	    		return true;
+	    	}else {
+	    		return false;
+	    	}
+	    }	    
+		return false;
+	}
+
+	@Override
+	public PasswordResponse changePassword(String newpassword, String username, Long id) {
+		PasswordResponse response =new PasswordResponse();
+		try {
+			LocalDateTime localDateTime = LocalDateTime.now();
+			Timestamp localtimestamp = Timestamp.valueOf(localDateTime);	
+			
+			// Convert to UTC
+	        ZonedDateTime utcDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
+	    	Timestamp localutctimestamp = Timestamp.valueOf(localDateTime);	
+			Optional<User> entity = userRepository.findById(id);
+			if (entity.isPresent()) {
+				newpassword=new BCryptPasswordEncoder().encode(newpassword);				
+				
+				User myDetail = entity.get();
+				myDetail.setPassword(newpassword);
+				//myDetail.setUpdatedBy(username);
+				//myDetail.setUpdatedDate(localtimestamp);
+				//myDetail.setUpdatedDateUTC(localutctimestamp);
+				myDetail.setEntityHash(ChecksumService.getChecksum(myDetail, GlobalConfig.DATA_ENTITY_HASH));
+				userRepository.save(myDetail);						
+				
+				UserLog userLog = new UserLog(myDetail);
+				userLogRepo.save(userLog);
+				response.setPasswordStatus(PasswordStatusCodes.SUCCESS);
+				response.setId(id);	
+				//response.setFullName(myDetail.getFullName());	
+				//response.setEmailId(myDetail.getEmailId());	
+				
+				
+				// building message using message template
+				PasswordChanged sot = (PasswordChanged) MessageTemplateFactory
+						.newMessageTemplate(MessageTemplateTypes.PASSWORD_CHANGED);
+
+				TemplateDTO mt = templateService.getTemplateByTypeAndPurpose(MessageTypes.EMAIL,
+						MessageTemplateTypes.PASSWORD_CHANGED);
+
+				sot.setTemplate(mt.getTemplate());
+				sot.setFull_name(myDetail.getFullName());
+				
+
+				String message = sot.buildMessage();
+
+				// send otp in email
+				Message m = new Message();
+				m.setContactInfo(myDetail.getEmailId());
+				m.setContent(message);
+				m.setMessageType(MessageTypes.EMAIL);
+				m.setSubject(mt.getSubject());
+				// m.setAssociationId(us.getId());
+				// m.setAssociationType(EntityTypes.USER_SIGNUP);
+				// m.setPurposeCode(MessagePurposeCodes.);
+				MessageReceiver mr = new MessageReceiver();
+				mr.setFullname(myDetail.getFullName());
+				// mr.setMessage(message);
+				// boolean messageSendingSuccess =
+				messagingService.sendMessage(m, mr);
+				
+				
+			}else {
+				response.setPasswordStatus(PasswordStatusCodes.FAILURE);
+				response.setId(id);
+			}
+					
+		}catch(Exception e) {
+			var msg = e.getMessage();
+			logger.error(e.getMessage());
+			response.setPasswordStatus(PasswordStatusCodes.FAILURE);
+			response.setId(id);
+		}
+		return response;
+	}
+	
+	
 	// private final UserRepository UserRepository;
 
 	/*

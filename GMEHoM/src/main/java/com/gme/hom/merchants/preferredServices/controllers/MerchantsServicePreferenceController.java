@@ -45,17 +45,23 @@ public class MerchantsServicePreferenceController {
 	public ResponseEntity<APIResponse> addMerchantPreferedService(@Valid @RequestBody APIRequest apiReq) {
 		APIResponse ar = new APIResponse();
 		if(apiReq.getFunction().equals(APIRequestFunctionCode.ADD_DATA.toString()) && apiReq.getScope().equals(APIRequestScopeCode.SINGLE.toString())) {
-			MerchantsServicePreferenceRequest servicePrefereReq = apiReq.getData().getMerchantServicePreferenceRequest();
+			MerchantsServicePreferenceRequest servicePrefereReq = apiReq.getData().getMerchantServicePreferenceRequests().get(0);
 			try {
 				MerchantsServicePreference merchantsServicePreference = servicePrefService.save(new MerchantsServicePreference(servicePrefereReq));
-				ar.setData(merchantsServicePreference.getId());
+				//ar.setData(merchantsServicePreference.getId());
 				ar.setStatus(APIResponseCode.SUCCESS);
 				ar.setDescription(ResponseMessageCodes.CREATED_SUCCESSFULLY.toString());
 				
 			}catch (Exception e) {
+				logger.error(e.getMessage());
 				ar.setStatus(APIResponseCode.FAILURE);
 				ar.setDescription(ResponseMessageCodes.CREATION_FAILED.toString());
 			}
+		}
+		else {
+			logger.error("function of scope didnot match!");
+			ar.setStatus(APIResponseCode.FAILURE);
+			ar.setDescription(ResponseMessageCodes.CREATION_FAILED.toString());
 		}
 		return ResponseEntity.ok(ar);
 	}
@@ -127,7 +133,7 @@ public class MerchantsServicePreferenceController {
 			if (apiReq.getData().getQuery().getBy().equals("MERCHANT_SERVICE_PREFERENCE_ID")
 					&& apiReq.getData().getQuery().getValue() != null) {
 			try {
-				MerchantsServicePreferenceRequest merchantServicePreferenceReq = apiReq.getData().getMerchantServicePreferenceRequest();
+				MerchantsServicePreferenceRequest merchantServicePreferenceReq = apiReq.getData().getMerchantServicePreferenceRequests().get(0);
 				MerchantsServicePreference merchantsServicePreferenceDetails =  new MerchantsServicePreference(merchantServicePreferenceReq);
 				merchantsServicePreferenceDetails.setId(Long.parseLong(apiReq.getData().getQuery().getValue()));
 				servicePrefService.update(merchantsServicePreferenceDetails);

@@ -3,6 +3,7 @@ package com.gme.hom.users.models;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import com.gme.hom.common.models.PersistenceEntity;
@@ -25,16 +26,16 @@ import lombok.ToString;
 public class UserLog extends PersistenceEntity{
 
 	@Id
-	@SequenceGenerator(name = "users_log_log_id_seq", sequenceName = "users_log_log_id_seq", allocationSize = 1)
-	@GeneratedValue(strategy = SEQUENCE, generator = "users_log_log_id_seq")
-	@Column(name = "log_id", nullable = false)
-	protected long log_id;
-
-	@Column(name = "id")
-	private Long id;
+	@SequenceGenerator(name = "users_log_id_seq", sequenceName = "users_log_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = SEQUENCE, generator = "users_log_id_seq")
+	@Column(name = "id", nullable = false)
+	protected long id;
 
 	@Column(name = "user_id")
-	private UUID userId;
+	private Long userId;
+
+	@Column(name = "uuid")
+	private UUID uuid;
 
 	@Column(name = "username")
 	private String username;
@@ -203,8 +204,9 @@ public class UserLog extends PersistenceEntity{
 
 	public UserLog(User usersLogRequest) {
 		super();
-		this.id = usersLogRequest.getId();
-		this.userId = usersLogRequest.getUserId();
+		//this.id = usersLogRequest.getId();
+		this.userId = usersLogRequest.getId();
+		this.uuid = usersLogRequest.getUuid();
 		this.username = usersLogRequest.getUsername();
 		this.emailId = usersLogRequest.getEmailId();
 		this.userType = usersLogRequest.getUserType();
